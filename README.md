@@ -13,3 +13,4 @@ Do contrário, se todas as seções fosses obrigatórias, o código ficaria dema
 * (opc.) **Hipóteses:**      descreve as assertivas consideradas válidas antes de ser executada a função.
 * (opc.) **Restrições:**     descreve possíveis incompatibilidades da função.
 * (opc.) **Funcionamento:**  descreve a implementação da função.
+
