@@ -22,11 +22,11 @@ public class FonteCarta {
 		
 	}
 	
-	boolean checaEmbaralha() {
-		return fonte.equals(copiaOrdenada);
+	public boolean checaEmbaralha() {
+		return !fonte.equals(copiaOrdenada);
 	}
 	
-	void embaralha() {
+	public void embaralha() {
 		Collections.shuffle(fonte);
 	}
 	

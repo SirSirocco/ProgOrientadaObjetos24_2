@@ -9,11 +9,11 @@ public class Carta {
 		this.valor = valor;
 	}
 
-	String GetNaipe() {
+	public String GetNaipe() {
 		return naipe;
 	}
 	
-	String GetValor() {
+	public String GetValor() {
 		return valor;
 	}
 }
