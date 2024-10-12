@@ -56,6 +56,15 @@ class Jogador extends Participante {
 	}
 	
 	/**
+	 * Supoe que o Dealer nao possua Blackjack.
+	 * Recupera metade do valor apostado.
+	 * Se valor nao for divisivel por 2, retorna metade de (valor - 1).
+	 */
+	void surrender() { // OK
+		balanco += apostaMao[0] / 2; // Recupera metade da aposta
+	}
+	
+	/**
 	 * Incrementa aposta da mao indMao com valor.
 	 * Se aposta valida retorna true. De contrario, false.
 	 */
@@ -69,15 +78,6 @@ class Jogador extends Participante {
 		}
 		
 		return valido;
-	}
-	
-	/**
-	 * Supoe que o Dealer nao possua Blackjack.
-	 * Recupera metade do valor apostado.
-	 * Se valor nao for divisivel por 2, retorna metade de (valor - 1).
-	 */
-	void surrender() { // OK
-		balanco += apostaMao[0] / 2; // Recupera metade da aposta
 	}
 	
 	/**
