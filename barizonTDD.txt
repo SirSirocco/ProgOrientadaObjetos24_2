@@ -1,0 +1,28 @@
+validaAposta
+{
+    Caso 1: valor igual a referencia
+        Esperado: true
+
+    Caso 2: valor maior que referencia
+        Esperado: true
+
+    Caso 3: valor menor que referencia
+        Esperado: false
+}
+
+possuiBlackjack
+{
+    Caso 1: Participante possui blackjack
+        Esperado: true
+
+    Caso 2: Participante nao possui blackjack nem 21 pontos
+        Esperado: false
+
+    Caso 3: jogador possui 21 pontos mas nao testaBlackjack
+        Esperado: false
+}
+    
+surrender
+{
+
+}

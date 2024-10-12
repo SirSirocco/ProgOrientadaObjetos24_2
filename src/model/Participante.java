@@ -17,4 +17,36 @@ abstract class Participante {
 		
 		// Falta colocar a criacao das maos
 	}
+	
+	static boolean validaAposta(int referencia, int valor) {
+		return valor >= referencia;
+	}
+	
+//	static boolean possuiBlackjack(int indMao) {
+//		String as = "A", dezes = "JKQ";
+//		
+//		/*
+//		 Um participante tera blackjack se possuir duas cartas
+//		 e seu somatorio corresponder a 21. Para isso, deve possuir
+//		 um as e uma carta com valor de 10 pontos, isto eh, "J", "K" ou "Q".
+//		 Isso explica o uso de contains.
+//		*/
+//		
+//		if (mao[indMao].length == 2 &&
+//				(
+//						(
+//								as.contains([indMao][0].getValor()) &&
+//								dezes.contains([indMao][1].getValor()
+//						) ||
+//						(
+//								as.contains([indMao][1].getValor()) &&
+//								dezes.contains([indMao][0].getValor()
+//						)
+//				)
+//			) {
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 }

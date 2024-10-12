@@ -1,0 +1,17 @@
+Inicio do Turno
+    - Jogador faz aposta
+        - Aposta deve ser de no minimo 50 $
+        ***
+        Criar funcao de testar validaAposta
+        Criar funcao de apostar
+        ***
+    - Dealer compra duas cartas
+    - Jogador compra duas cartas
+    *** Devemos testar hit ***
+    
+    Se dealer nao possui blackjack, jogador pode desistir
+    ***
+    Criar funcao de teste de blackjack no dealer
+    Criar funcao surrender
+
+    
