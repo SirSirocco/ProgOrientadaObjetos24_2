@@ -1,3 +1,5 @@
+# Participante
+
 validaAposta
 {
     Caso 1: valor igual a referencia
@@ -18,11 +20,56 @@ possuiBlackjack
     Caso 2: Participante nao possui blackjack nem 21 pontos
         Esperado: false
 
-    Caso 3: jogador possui 21 pontos mas nao testaBlackjack
+    Caso 3: jogador possui 21 pontos mas nao possui blackjack
         Esperado: false
 }
-    
+
+# Jogador
+
+verificaCartasIguais
+{
+    Caso 1: Cartas de valores diferentes
+    Esperado: false
+
+    Caso 2: Dois ases
+    Esperado: true
+
+    Caso 3: Dois valetes
+    Esperado: true
+
+    Caso 4: Duas cartas com simbolo numerico.
+    Esperado: true.
+}
+
+aposta
+{
+    Caso 1: min <= valor && balanco <= valor
+        Esperado: consegue apostar
+
+    Caso 2: min > valor && balanco <= valor
+        Esperado: nao consegue apostar
+
+    Caso 3: min <= valor && balanco > valor
+        Esperado: nao consegue apostar
+
+    Caso 4: min > valor && balanco > valor
+        Esperado: nao consegue apostar
+}
+
 surrender
 {
+    Caso 1: Jogador faz surrender de 2N fichas, com N natural
+        Esperado: Jogador deve recuperar N fichas
 
+    Caso 2: Jogador faz surrender de 2N + 1 fichas, com N natural
+        Esperado: Jogador deve recuperar N fichas
+}
+
+double_
+{
+    Decai para os casos de teste de aposta. Para simplificar, faremos dois casos.
+
+    Caso 1: jogador consegue fazer double.
+
+    Caso 2: jogador nao consegue fazer double.
 }
