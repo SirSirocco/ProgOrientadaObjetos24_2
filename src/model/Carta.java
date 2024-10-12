@@ -1,17 +1,19 @@
 package model;
 
 public class Carta {
-	String naipe;
-	String valor;
+	private String naipe;
+	private String valor;
 	
 	public Carta(String naipe, String valor) {
 		this.naipe = naipe;
 		this.valor = valor;
 	}
 
-	void GetNaipe() {
+	String GetNaipe() {
+		return naipe;
 	}
 	
-	void GetValor() {
+	String GetValor() {
+		return valor;
 	}
 }
