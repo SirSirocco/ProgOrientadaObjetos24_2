@@ -11,10 +11,9 @@ public class FonteCartaTeste {
 
 	@Test
 	public void testCompraCarta() {
-		Carta teste = new Carta("Paus", "A");
 		Carta retorno = fonte.compraCarta();
-		assertEquals(teste.GetNaipe(), retorno.GetNaipe());
-		assertEquals(teste.GetValor(), retorno.GetValor());
+		assertEquals("Paus", retorno.GetNaipe());
+		assertEquals("A", retorno.GetValor());
 	}
 
 	@Test
