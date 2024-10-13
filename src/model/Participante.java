@@ -18,8 +18,9 @@ abstract class Participante {
 		// Falta colocar a criacao das maos
 	}
 	
-	static boolean validaAposta(int referencia, int valor) {
-		return valor >= referencia;
+	// OK
+	static boolean validaAposta(int valor) {
+		return valor >= apostaMin;
 	}
 	
 //	static boolean possuiBlackjack(int indMao) {

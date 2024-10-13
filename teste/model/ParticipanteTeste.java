@@ -9,27 +9,30 @@ public class ParticipanteTeste {
 	public void testValidaApostaIgual() {
 		// Caso 1: valor igual a referencia
 		// Esperado: true
+		// ref = 50
 		
-		int ref = 10, val = 10;
-		assertTrue(Participante.validaAposta(ref, val));
+		int val = 50;
+		assertTrue(Participante.validaAposta(val));
 	}
 	
 	@Test
 	public void testValidaApostaMaior() {
 		// Caso 2: valor maior que referencia
 		// Esperado: true
+		// ref = 50
 		
-		int ref = 10, val = 20;
-		assertTrue(Participante.validaAposta(ref, val));
+		int val = 60;
+		assertTrue(Participante.validaAposta(val));
 	}
 	
 	@Test
 	public void testValidaApostaMenor() {
 		// Caso 3: valor menor que referencia
 		// Esperado: false
+		// ref = 49
 		
-		int ref = 10, val = 1;
-		assertFalse(Participante.validaAposta(ref, val));
+		int val = 1;
+		assertFalse(Participante.validaAposta(val));
 	}
 	
 	
