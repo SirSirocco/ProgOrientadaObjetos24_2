@@ -8,7 +8,7 @@ public class FonteCartaTeste {
 	FonteCarta fonte = new FonteCarta();
 
 	/**
-	 * Testa se é possível comprar cartas no topo do baralho
+	 * Testa se é possível comprar cartas no topo do baralho.
 	 */
 	@Test
 	public void testCompraCarta() {
@@ -18,7 +18,7 @@ public class FonteCartaTeste {
 	}
 	
 	/**
-	 * Checa se a função "checaEmbaralha" está retornando devidamente
+	 * Checa se a função "checaEmbaralha" está retornando devidamente.
 	 */
 	@Test
 	public void testChecaEmbaralha() {

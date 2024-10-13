@@ -24,25 +24,25 @@ class FonteCarta {
 	}
 
 	/**
-	 * Checa se o baralho precisa embaralhar
+	 * Checa se o baralho precisa embaralhar.
 	 * 
-	 * @return Verdadeiro ou falso
+	 * @return True caso preciso embaralhar, falso caso contrário.
 	 */
 	static boolean checaEmbaralha() {
 		return contCartas >= numBaralhos * 52 * limiteEmbaralha;
 	}
 
 	/**
-	 * Embaralha todos os baralhos
+	 * Embaralha todos os baralhos.
 	 */
 	static void embaralha() {
 		Collections.shuffle(fonte);
 	}
 
 	/**
-	 * Retira uma carta do início da fila e coloca no final
+	 * Retira uma carta do início da fila e coloca no final.
 	 * 
-	 * @return Carta retirada
+	 * @return Carta retirada.
 	 */
 	static Carta compraCarta() {
 		Carta cartaRetorno = fonte.remove(0);
