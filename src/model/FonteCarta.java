@@ -26,16 +26,23 @@ class FonteCarta {
 	/**
 	 * Checa se o baralho precisa embaralhar
 	 * 
-	 * @return true ou false
+	 * @return Verdadeiro ou falso
 	 */
 	public boolean checaEmbaralha() {
 		return contCartas >= numBaralhos * 52 * limiteEmbaralha;
 	}
 
+	/**
+	 * Embaralha todos os baralhos
+	 */
 	public void embaralha() {
 		Collections.shuffle(fonte);
 	}
 
+	/**
+	 * Retira uma carta do início da fila e coloca no final
+	 * @return Carta retirada
+	 */
 	public Carta compraCarta() {
 		Carta cartaRetorno = fonte.remove(0);
 		contCartas++;
