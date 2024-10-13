@@ -6,42 +6,66 @@ import org.junit.Test;
 
 public class MaoTeste {
 	Mao teste = new Mao();
+	Carta carta1 = new Carta("Paus", "A");
+	Carta carta2 = new Carta("Paus", "K");
+	Carta carta3 = new Carta("Paus", "Q");
+	Carta carta4 = new Carta("Paus", "J");
+	Carta carta5 = new Carta("Paus", "3");
 
+	/**
+	 * Testa se as cartas K e A são devidamente contabilizadas
+	 */
 	@Test
-	public void testCalcPontos() {
-		Carta carta1 = new Carta("Paus", "A");
-		Carta carta2 = new Carta("Paus", "K");
-		Carta carta3 = new Carta("Paus", "Q");
-		Carta carta4 = new Carta("Paus", "J");
-		Carta carta5 = new Carta("Paus", "3");
+	public void testMaoCartaAeK() {
 		
-		// Testa se a carta K e A é devidamente contabilizada
 		teste.insere(carta1);
 		teste.insere(carta2);
 		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
-		teste.limpa();
+	}
 
-		// Testa se a carta Q e A é devidamente contabilizada
-		teste.insere(carta1);
-		teste.insere(carta3);
-		assertEquals("Cartas Q e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
-		teste.limpa();
-
-		// Testa se a carta J e A é devidamente contabilizada
-		teste.insere(carta1);
-		teste.insere(carta4);
-		assertEquals("Cartas J e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
-		teste.limpa();
+	/**
+	 * Testa se as cartas Q e A são devidamente contabilizadas
+	 */
+	@Test
+	public void testMaoCartaAeQ() {
 		
-		// Testa se a carta A contabiliza como 1 caso a mão não seja um blackjack
+		teste.insere(carta1);
+		teste.insere(carta2);
+		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
+	}
+
+	/**
+	 * Testa se as cartas J e A são devidamente contabilizadas
+	 */
+	@Test
+	public void testMaoCartaAeJ() {
+		
+		teste.insere(carta1);
+		teste.insere(carta2);
+		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
+	}
+
+	/**
+	 * Testa se a carta A está sendo contablizidada como 1 a depender da mão
+	 */
+	@Test
+	public void testCartaAValor1() {
 		teste.insere(carta1);
 		teste.insere(carta1);
 		teste.insere(carta2);
 		assertEquals("Carta A contabilizando um valor errado", 12, teste.calcPontos());
-		
-		// Testa se carta com numero é devidamente contabilizada
+	}
+	
+	/**
+	 * Testa se carta com numero é devidamente contabilizada
+	 */
+	
+	@Test
+	public void testeValorCartaComNumero() {
+		teste.insere(carta1);
+		teste.insere(carta1);
+		teste.insere(carta2);
 		teste.insere(carta5);
 		assertEquals("Carta com número não sendo devidamente contablizada", 15, teste.calcPontos());
 	}
-
 }
