@@ -47,10 +47,12 @@ public abstract class Participante {
  			return mapeamento;
  		return -1;
  	}
- 	
+
+ 	/*
  	static boolean verificaVencedor(Jogador jogador, int indMao, int asesSplitFlag) {
  		
  	}
+ 	
  	
  	/**
  	 * Funcao auxiliar que mapeia os valores simbolicos das cartas
