@@ -41,7 +41,7 @@ class Mao {
 		cartas.add(carta);
 	}
 	
-	void limpa() {
+	void limpaMao() {
 		cartas.clear();
 	}
 }
