@@ -6,7 +6,7 @@ public abstract class Participante {
 	// VARIAVEIS DE CLASSE
     static final int apostaMin = 50;
     static Dealer dealer;
-    static List<Jogador> jogador;
+    static List<Jogador> jogador = new ArrayList<Jogador>();
     
     // VARIAVEIS DE INSTANCIA
     List<Mao> mao;
@@ -47,12 +47,18 @@ public abstract class Participante {
  			return mapeamento;
  		return -1;
  	}
-
- 	/*
- 	static boolean verificaVencedor(Jogador jogador, int indMao, int asesSplitFlag) {
- 		
+ 	
+ 	int possuiBlackjack(int indMao, boolean asesSplitFlag) {
+ 		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21 && !asesSplitFlag)
+ 			return 1;
+ 		return 0;
  	}
  	
+ 	static int verificaVencedor(Jogador jogador, int indMao, boolean asesSplitFlag, int pontosDealer) {
+ 		int pontosJogador = jogador.possuiBlackjack(indMao, asesSplitFlag) + jogador.mao.get(indMao).calculaPontosMao();
+ 		
+ 		return pontosJogador - pontosDealer;
+ 	}
  	
  	/**
  	 * Funcao auxiliar que mapeia os valores simbolicos das cartas
