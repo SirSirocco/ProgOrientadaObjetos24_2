@@ -24,7 +24,7 @@ class Jogador extends Participante {
 	private static int mapeamentoAux(Carta carta) {
 		String valor;
 		
-		switch((valor = carta.GetValor())) {
+		switch((valor = carta.getValor())) {
 		case "A":
 			return 1;
 		case "J":
