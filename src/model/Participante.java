@@ -2,52 +2,57 @@ package model;
 
 import java.util.List;
 
-abstract class Participante {
-	static final int apostaMin = 50; 	// Valor minimo a ser apostado
-	static Dealer dealer;				// Banca (dealer)
-	static List<Jogador> jogador;		// Lista de jogadores ativos
+public abstract class Participante {
+    protected static final int apostaMin = 50;
+    protected static Dealer dealer;
+    protected static List<Jogador> jogador;
+    protected int numMaosMax;
+    protected List<Mao> mao;
+    protected int numMaosAtivas;
 
-	int numMaosMax,						// Numero maximo de maos
-		numMaosAtivas;					// Numero de maos ativas
-	List<Mao> mao;						// Maos do participante
+    // Método estático para limpar as mãos de todos os participantes
+    public static void limpa() {
+        dealer.mao.limpa();
+        for (Jogador j : jogador) {
+            j.getMao().forEach(Mao::limpa);
+        }
+    }
 
-	Participante(int numMaos) {
-		numMaosMax = numMaos;
-		numMaosAtivas = 1;
-		
-		// Falta colocar a criacao das maos
-	}
-	
-	// OK
-	static boolean validaAposta(int valor) {
-		return valor >= apostaMin;
-	}
-	
-//	static boolean possuiBlackjack(int indMao) {
-//		String as = "A", dezes = "JKQ";
-//		
-//		/*
-//		 Um participante tera blackjack se possuir duas cartas
-//		 e seu somatorio corresponder a 21. Para isso, deve possuir
-//		 um as e uma carta com valor de 10 pontos, isto eh, "J", "K" ou "Q".
-//		 Isso explica o uso de contains.
-//		*/
-//		
-//		if (mao[indMao].length == 2 &&
-//				(
-//						(
-//								as.contains([indMao][0].getValor()) &&
-//								dezes.contains([indMao][1].getValor()
-//						) ||
-//						(
-//								as.contains([indMao][1].getValor()) &&
-//								dezes.contains([indMao][0].getValor()
-//						)
-//				)
-//			) {
-//			return true;
-//		}
-//		
-//		return false;
-//	}
+    // Método estático para iniciar uma nova rodada
+    public static void novaRodada() {
+        limpa();
+        dealer.distribuirCartas();
+    }
+
+    // Método estático para determinar se um vencedor foi encontrado
+    public static int determinaVencedor() {
+        // Lógica para determinar o vencedor entre o dealer e os jogadores
+        return 0;
+    }
+
+    // Cálculo dos pontos da mão do participante
+    public int calcPontos(int indiceMao) {
+        return mao.get(indiceMao).calcularPontos();
+    }
+
+    // Verifica se a mão atual do participante está ativa ou está quebrada
+    public boolean checaQuebra(int indiceMao) {
+        return calcPontos(indiceMao) > 21;
+    }
+
+    // Método para adicionar uma carta na mão do participante
+    public void hit(int indiceMao) {
+        if (numMaosAtivas > 0) {
+            Carta novaCarta = dealer.comprarCarta();
+            mao.get(indiceMao).insere(novaCarta);
+            if (checaQuebra(indiceMao)) {
+                numMaosAtivas--;
+            }
+        }
+    }
+
+    // Método para ficar com a mão atual sem pegar mais cartas
+    public void stand(int indiceMao) {
+        numMaosAtivas--;
+    }
 }
