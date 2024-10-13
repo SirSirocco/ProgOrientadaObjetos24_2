@@ -9,8 +9,8 @@ class Mao {
 	List<Carta> cartas = new ArrayList<Carta>();
 
 	/**
-	 * Calcula a pontuação total da mão
-	 * @return O valor da pontuação
+	 * Calcula a pontuacao total da mao.
+	 * @return O valor da pontuacao.
 	 */
 	int calculaPontosMao() {
 		int total = 0;
@@ -19,7 +19,7 @@ class Mao {
 			String valor = carta.getValor();
 			
 			if (valor.equals("A")){
-				total += 11;
+				total += 1;
 				temAs = true;
 			}
 			else if (valor.equals("K") || valor.equals("Q") || valor.equals("J")) {
@@ -30,7 +30,7 @@ class Mao {
 			}
 		}
 		
-		if (temAs && total <= 11) {
+		if (temAs && total <= 11) { // "total <= 11" evita quebra de mao 
 			total += 10;
 		}
 		
