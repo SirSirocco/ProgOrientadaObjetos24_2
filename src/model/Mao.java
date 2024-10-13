@@ -3,9 +3,8 @@ package model;
 import java.util.*;
 
 class Mao {
-	int limiteCartas;
+	int pontos = 0;
 	List<Carta> cartas = new ArrayList<Carta>();
-	int pontos;
 
 	/**
 	 * Calcula a pontuação total da mão
