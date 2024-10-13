@@ -10,14 +10,22 @@ public class FonteCartaTeste {
 	@Test
 	public void testCompraCarta() {
 		Carta retorno = fonte.compraCarta();
-		assertEquals("Paus", retorno.GetNaipe());
-		assertEquals("A", retorno.GetValor());
+		assertEquals("Paus", retorno.getNaipe());
+		assertEquals("A", retorno.getValor());
+	}
+	
+	@Test
+	public void testCartaNoFinalDaFila() {
+		Carta retorno = fonte.compraCarta();
+		assertEquals(retorno.getNaipe(), fonte.fonte.getLast().getNaipe());
+		assertEquals(retorno.getValor(), fonte.fonte.getLast().getValor());
 	}
 
 	@Test
-	public void testEmbaralha() {
-		fonte.embaralha();
+	public void testChecaEmbaralha() {
+		fonte.contCartas = 10;
+		assertFalse(fonte.checaEmbaralha());
+		fonte.contCartas = 300;
 		assertTrue(fonte.checaEmbaralha());
 	}
-
 }

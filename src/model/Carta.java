@@ -1,6 +1,6 @@
 package model;
 
-public class Carta {
+class Carta {
 	private String naipe;
 	private String valor;
 	
@@ -9,11 +9,11 @@ public class Carta {
 		this.valor = valor;
 	}
 
-	public String GetNaipe() {
+	public String getNaipe() {
 		return naipe;
 	}
 	
-	public String GetValor() {
+	public String getValor() {
 		return valor;
 	}
 }
