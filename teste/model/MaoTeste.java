@@ -20,7 +20,7 @@ public class MaoTeste {
 		
 		teste.insere(carta1);
 		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
+		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class MaoTeste {
 		
 		teste.insere(carta1);
 		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
+		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class MaoTeste {
 		
 		teste.insere(carta1);
 		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calcPontos());
+		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MaoTeste {
 		teste.insere(carta1);
 		teste.insere(carta1);
 		teste.insere(carta2);
-		assertEquals("Carta A contabilizando um valor errado", 12, teste.calcPontos());
+		assertEquals("Carta A contabilizando um valor errado", 12, teste.calculaPontosMao());
 	}
 	
 	/**
@@ -66,6 +66,6 @@ public class MaoTeste {
 		teste.insere(carta1);
 		teste.insere(carta2);
 		teste.insere(carta5);
-		assertEquals("Carta com número não sendo devidamente contablizada", 15, teste.calcPontos());
+		assertEquals("Carta com número não sendo devidamente contablizada", 15, teste.calculaPontosMao());
 	}
 }

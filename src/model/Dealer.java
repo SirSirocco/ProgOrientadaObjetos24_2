@@ -5,5 +5,6 @@ class Dealer extends Participante {
 	
 	Dealer() {
 		super(maosMaxDealer);
+		Participante.dealer = this; // Define dealer;
 	}
 }
