@@ -17,7 +17,10 @@ public abstract class Participante {
     // CONSTRUTOR
     Participante(int numMaosMax) {
     	this.numMaosMax = numMaosMax;
+    	
     	mao = new ArrayList<Mao>();
+    	for (int i = 0; i < numMaosMax; i++)
+    		mao.add(new Mao());
     	
     	maosAtivas = new boolean[numMaosMax];
 		ativaMao(0);
