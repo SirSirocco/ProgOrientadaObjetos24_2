@@ -10,7 +10,7 @@ class Mao {
 	 * Calcula a pontuação total da mão
 	 * @return O valor da pontuação
 	 */
-	int calcPontos() {
+	int calculaPontosMao() {
 		int total = 0;
 		int ases = 0;
 

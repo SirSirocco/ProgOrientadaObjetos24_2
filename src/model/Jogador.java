@@ -1,44 +1,20 @@
 package model;
 
 class Jogador extends Participante {
+	// VARIAVEIS DE CLASSE
 	static final int maosMaxJogador = 2;
 	static final int balancoInicial = 2400;
+	
+	// VARIAVEIS DE INSTANCIA
 	int balanco = balancoInicial;
-	int[] apostaMao = { 0, 0 }; // Apostas em cada mao
-	
-	// METODOS DE CLASSE
-	/**
-	 * Indica se carta1 e carta2 possuem mesmo valor.
-	 * @return true se tiverem mesmo valor, e false do contrario. 
-	 */
-	static boolean verificaCartasMesmoValor(Carta carta1, Carta carta2) {
-		return mapeamentoAux(carta1) == mapeamentoAux(carta2);
-	}
-	
-	/**
-	 * Funcao auxiliar que mapeia os valores simbolicos das cartas
-	 * em numeros inteiros.
-	 * @return o valor numerico correspondente ao simbolo.
-	 * Ases sao representados por 1; Reis, Rainhas e Valetes, por 10. 
-	 */
-	private static int mapeamentoAux(Carta carta) {
-		String valor;
-		
-		switch((valor = carta.getValor())) {
-		case "A":
-			return 1;
-		case "J":
-		case "K":
-		case "Q":
-			return 10;
-		}
-		
-		return Integer.parseInt(valor);
-	}
+	int[] apostaMao; // Apostas em cada mao
 	
 	// CONSTRUTOR
 	Jogador() {
 		super(maosMaxJogador);
+		Participante.jogador.add(this); // Adiciona jogador atual a lista de jogadores
+		apostaMao = new int[maosMaxJogador];
+		limpaApostas();
 	}
 	
 	// METODOS DE INSTANCIA
@@ -62,6 +38,12 @@ class Jogador extends Participante {
 	 */
 	void surrender() { // OK
 		balanco += apostaMao[0] / 2; // Recupera metade da aposta
+	}
+	
+	void limpaApostas() {
+		for (int i = 0; i < maosMaxJogador; i++) {
+			apostaMao[i] = 0;
+		}
 	}
 	
 	/**
