@@ -4,6 +4,8 @@ import java.util.*;
 
 class Mao {
 	int pontos = 0;
+	int numCartas = 0;
+	boolean temAs = false;
 	List<Carta> cartas = new ArrayList<Carta>();
 
 	/**
@@ -12,14 +14,13 @@ class Mao {
 	 */
 	int calculaPontosMao() {
 		int total = 0;
-		int ases = 0;
 
 		for (Carta carta: cartas) {
 			String valor = carta.getValor();
 			
 			if (valor.equals("A")){
 				total += 11;
-				ases++;
+				temAs = true;
 			}
 			else if (valor.equals("K") || valor.equals("Q") || valor.equals("J")) {
 				total += 10;
@@ -29,19 +30,24 @@ class Mao {
 			}
 		}
 		
-		while (total > 21 && ases > 0) {
-			total -= 10;
-			ases--;
+		if (temAs && total <= 11) {
+			total += 10;
 		}
 		
 		return total;
 	}
 	
+	int getNumCartas() {
+		return numCartas;
+	}
+	
 	void insere(Carta carta) {
 		cartas.add(carta);
+		numCartas++;
 	}
 	
 	void limpaMao() {
 		cartas.clear();
+		numCartas = 0;
 	}
 }
