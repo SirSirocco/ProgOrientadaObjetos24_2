@@ -42,13 +42,8 @@ public abstract class Participante {
 
     // Método para adicionar uma carta na mão do participante
     public void hit(int indiceMao) {
-        if (numMaosAtivas > 0) {
-            Carta novaCarta = dealer.comprarCarta();
-            mao.get(indiceMao).insere(novaCarta);
-            if (checaQuebra(indiceMao)) {
-                numMaosAtivas--;
-            }
-        }
+        Carta novaCarta = dealer.comprarCarta();
+        mao.get(indiceMao).insere(novaCarta);
     }
 
     // Método para ficar com a mão atual sem pegar mais cartas
