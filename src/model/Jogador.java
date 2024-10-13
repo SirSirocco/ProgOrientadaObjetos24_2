@@ -2,51 +2,42 @@ package model;
 
 class Jogador extends Participante {
 	static final int maosMaxJogador = 2;
-	static int[] valorFichas = { 10, 20, 50 };
-
-	int[] qtdFichas;
-	int balanco;
+	static final int balancoInicial = 2400;
+	int balanco = balancoInicial;
+	int[] apostaMao = { 0, 0 }; // Apostas em cada mao
 
 	Jogador() {
 		super(maosMaxJogador);
+	}
+
+	/**
+	 * Supoe que Dealer nao possui blackjack.
+	 * Do contrario nao serah possivel fazer surrender.
+	 * Surrender soh eh valido para primeira mao.
+	 */
+	
+	boolean aposta(int valor, int indMao) {
+		boolean valido = Participante.validaAposta(Participante.apostaMin, valor)
+							&& Participante.validaAposta(balanco, valor);
 		
-		qtdFichas = new int[Jogador.valorFichas.length];
-		qtdFichas[0] = 50;
-		qtdFichas[1] = 20;
-		qtdFichas[2] = 10;
+		if (valido) {
+			balanco -= valor;
+			apostaMao[indMao] = valor;
+		}
 		
-		calcBalanco();
-	}
-
-	int calcBalanco() {
-		balanco = 0;
-
-		for (int i = 0; i < Jogador.valorFichas.length; i++)
-			balanco += qtdFichas[i] * valorFichas[i];
-
-		return balanco;
-	}
-
-	int atualizaBalanco(int[] qtd) {
-		for (int i = 0; i < Jogador.valorFichas.length; i++)
-			qtdFichas[i] += qtd[i];
-
-		return calcBalanco();
-	}
-
-	boolean verificaBalancoSuficiente() {
-		return balanco >= Participante.apostaMin;
+		return valido;
 	}
 	
-	void surrender() {
-		
-	}
-	
-	void double_() {
-		
-	}
-	
-	void split() {
-		
-	}
+//	boolean surrender() {
+//		
+//		
+//	}
+//	
+//	void double_() {
+//		
+//	}
+//	
+//	void split() {
+//		
+//	}
 }
