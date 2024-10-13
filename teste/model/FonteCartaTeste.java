@@ -1,14 +1,13 @@
 package model;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class FonteCartaTeste {
 	FonteCarta fonte = new FonteCarta();
 
 	/**
-	 * Testa se é possível comprar cartas no topo do baralho.
+	 * Testa se eh possivel comprar cartas no topo do baralho.
 	 */
 	@Test
 	public void testCompraCarta() {
@@ -18,7 +17,7 @@ public class FonteCartaTeste {
 	}
 	
 	/**
-	 * Checa se a função "checaEmbaralha" está retornando devidamente.
+	 * Checa se a funcao "checaEmbaralha" esta retornando devidamente.
 	 */
 	@Test
 	public void testChecaEmbaralha() {

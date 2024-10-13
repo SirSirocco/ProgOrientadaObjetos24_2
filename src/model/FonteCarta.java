@@ -50,5 +50,4 @@ class FonteCarta {
 		fonte.addLast(cartaRetorno);
 		return cartaRetorno;
 	}
-
 }
