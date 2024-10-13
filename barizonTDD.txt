@@ -28,7 +28,17 @@ possuiBlackjack
 
 verificaCartasIguais
 {
+    Caso 1: Cartas de valores diferentes
+    Esperado: false
 
+    Caso 2: Dois ases
+    Esperado: true
+
+    Caso 3: Dois valetes
+    Esperado: true
+
+    Caso 4: Duas cartas com simbolo numerico.
+    Esperado: true.
 }
 
 aposta

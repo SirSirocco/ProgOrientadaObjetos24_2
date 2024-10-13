@@ -4,6 +4,44 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class JogadorTeste {
+	/* verificaCartasMesmoValor */
+	/**
+	 * Caso 1: Cartas de valores diferentes.
+	 * Esperado: false.
+	 */
+	@Test
+	public void testVerificaCartasMesmoValor_Diferentes() {
+		
+	}
+	
+	/**
+	 * Caso 2: Dois ases.
+	 * Esperado: true.
+	 */
+	@Test
+	public void testVerificaCartasMesmoValor_Ases() {
+		
+	}
+	
+	/**
+	 * Caso 3: Dois valetes.
+	 * Esperado: true.
+	 */
+	@Test
+	public void testVerificaCartasMesmoValor_Js() {
+		
+	}
+	
+	/**
+	 * Caso 4: Duas cartas com simbolo numerico.
+	 * Esperado: true.
+	 */
+	@Test
+	public void testVerificaCartasMesmoValor_Nums() {
+		
+	}
+	
+	
 	/* aposta */
 	/**
 	 * APOSTA MINIMA 	= 50;
