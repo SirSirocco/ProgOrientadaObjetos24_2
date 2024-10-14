@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-public abstract class Participante {
+abstract class Participante {
 	// VARIAVEIS DE CLASSE
 	private static final int apostaMin = 50; 					// Aposta minima
 	static Dealer dealer; 										// Objeto dealer a ser criado

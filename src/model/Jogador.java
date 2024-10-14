@@ -74,6 +74,7 @@ class Jogador extends Participante {
 	boolean double_(int indMao) {
 		return aposta(apostaMao[indMao], indMao);
 	}
+
 /* A SER IMPLEMENTADO
 	void split() {		
 	}
