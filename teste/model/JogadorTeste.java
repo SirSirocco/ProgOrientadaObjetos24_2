@@ -1,48 +1,9 @@
 package model;
 
-import org.junit.*;
+import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class JogadorTeste {
-	/* verificaCartasMesmoValor */
-	/**
-	 * Caso 1: Cartas de valores diferentes.
-	 * Esperado: false.
-	 */
-	@Test
-	public void testVerificaCartasMesmoValor_Diferentes() {
-		
-	}
-	
-	/**
-	 * Caso 2: Dois ases.
-	 * Esperado: true.
-	 */
-	@Test
-	public void testVerificaCartasMesmoValor_Ases() {
-		
-	}
-	
-	/**
-	 * Caso 3: Dois valetes.
-	 * Esperado: true.
-	 */
-	@Test
-	public void testVerificaCartasMesmoValor_Js() {
-		
-	}
-	
-	/**
-	 * Caso 4: Duas cartas com simbolo numerico.
-	 * Esperado: true.
-	 */
-	@Test
-	public void testVerificaCartasMesmoValor_Nums() {
-		
-	}
-	
-	
-	/* aposta */
 	/**
 	 * APOSTA MINIMA 	= 50;
 	 * BALANCO INICIAL 	= 2400;
@@ -98,7 +59,6 @@ public class JogadorTeste {
 		assertFalse("balanco < valor2 < min", jogador.aposta(valor2, 0)); // Agora, temos balanco < valor2 < min
 	}
 	
-	/* surrender */
 	/**
 	 * Caso 1: Jogador faz surrender de 2N fichas, com N natural.
 	 * Esperado: Jogador deve recuperar N fichas.
@@ -131,9 +91,8 @@ public class JogadorTeste {
 		assertEquals(esperado, jogador.getBalanco());
 	}
 	
-	/* double */
 	/**
-	 * Decai para os casos de teste de aposta. Por isso,
+	 * double_ decai para os casos de teste de aposta. Por isso,
 	 * para simplificar, faremos apenas dois casos.
 	 */
 	
@@ -159,5 +118,26 @@ public class JogadorTeste {
 		
 		assertTrue(jogador.aposta(valor, 0));
 		assertFalse(jogador.double_(0));
+	}
+	
+	/*
+	 * Caso 1: Apostas sao limpas.
+	 */
+	@Test
+	public void testLimpaApostas() {
+		int[] apostas;
+		int aposta0 = 100, aposta1 = 200;
+		Jogador jogador = new Jogador();
+		jogador.aposta(aposta0, 0);
+		jogador.aposta(aposta1, 1);
+		
+		apostas = jogador.getApostas();
+		assertEquals(aposta0, apostas[0]);
+		assertEquals(aposta1, apostas[1]);
+		
+		jogador.limpaApostas();
+		
+		for (int i = 0; i < apostas.length; i++)
+			assertEquals(0, apostas[i]);
 	}
 }
