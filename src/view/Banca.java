@@ -15,6 +15,7 @@ public class Banca extends JFrame{
 		// Define o nome da janela
 		super("Banca");
 		setLayout(null);
+		Container c = getContentPane();
 
 		// Pega a imagem de fundo
 		try {
@@ -29,12 +30,19 @@ public class Banca extends JFrame{
 		width = i.getWidth(null) + 15;
 		heigth = i.getHeight(null) + 39;
 		x = ((int)screenSize.getWidth() - width)/2;
-		//y = ((int)screenSize.getHeight() - heigth)/2;
 		
+		// Define o botão de salvamento
+		JButton saveButton = new JButton("Salvar");
+		saveButton.setBounds(15, 530, 170, 40);
+
+		// Define o painel da imagem de fundo
 		p = new BPanel(i);
 		p.setBackground(Color.WHITE);
 		p.setBounds(0, 0, width, heigth);
-		getContentPane().add(p);
+		
+		// Adiciona os componentes ao painel
+		c.add(saveButton);
+		c.add(p);
 
 		setBounds(x, 0, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
