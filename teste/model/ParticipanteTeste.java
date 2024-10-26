@@ -41,7 +41,7 @@ public class ParticipanteTeste {
 	 */
 	@Test
 	public void testPossuiBlackjackTrue() {
-		Participante dealer = new Dealer();
+		Participante dealer = Dealer.getDealer();
 		dealer.mao.get(0).insere(new Carta("Paus", "A"));
 		dealer.mao.get(0).insere(new Carta("Paus", "10"));
 		
@@ -54,7 +54,7 @@ public class ParticipanteTeste {
 	 */
 	@Test
 	public void testPossuiBlackjackFalseCom21Pontos() {
-		Participante dealer = new Dealer();
+		Participante dealer = Dealer.getDealer();
 		dealer.mao.get(0).insere(new Carta("Paus", "A"));
 		dealer.mao.get(0).insere(new Carta("Paus", "5"));
 		dealer.mao.get(0).insere(new Carta("Copas", "5"));

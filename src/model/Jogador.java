@@ -12,7 +12,6 @@ class Jogador extends Participante {
 	// CONSTRUTOR
 	Jogador() {
 		super(maosMaxJogador);
-		Participante.jogador.add(this); // Adiciona jogador atual a lista de jogadores
 		apostaMao = new int[maosMaxJogador];
 		limpaApostas();
 	}

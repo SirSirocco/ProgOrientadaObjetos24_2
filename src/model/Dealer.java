@@ -2,9 +2,16 @@ package model;
 
 class Dealer extends Participante {
 	private static final int maosMaxDealer = 1; // Numero maximo de maos do dealer
+	static Dealer dealer = null;
 	
-	Dealer() {
+	private Dealer() {
 		super(maosMaxDealer);
-		Participante.dealer = this; // Preenche campo estatico de Participante com objeto dealer criado
+	}
+	
+	static Dealer getDealer() {
+		if (dealer == null)
+			dealer = new Dealer();
+		
+		return dealer;
 	}
 }
