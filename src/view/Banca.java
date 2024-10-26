@@ -5,7 +5,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
-public class Banca extends JFrame{
+class Banca extends JFrame{
 	int x, y, width, heigth;
 	JPanel p;
 	Image backgroundImage, fichas[] = new Image[6];
