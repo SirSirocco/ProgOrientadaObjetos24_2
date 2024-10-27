@@ -4,9 +4,7 @@ import java.util.*;
 
 abstract class Participante {
 	// VARIAVEIS DE CLASSE
-	private static final int apostaMin = 50; 					// Aposta minima
-	static Dealer dealer; 										// Objeto dealer a ser criado
-	static List<Jogador> jogador = new ArrayList<Jogador>(); 	// Lista de jogadores a serem criados
+	private static final int apostaMin = 50; // Aposta minima
 
 	// VARIAVEIS DE INSTANCIA
 	List<Mao> mao;

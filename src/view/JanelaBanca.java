@@ -5,13 +5,13 @@ import java.io.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
-class Banca extends JFrame{
+public class JanelaBanca extends JFrame{
 	int x, y, width, heigth;
 	JPanel p;
 	Image backgroundImage, fichas[] = new Image[6];
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public Banca() {
+	public JanelaBanca() {
 		// Define o nome da janela
 		super("Banca");
 		setLayout(null);

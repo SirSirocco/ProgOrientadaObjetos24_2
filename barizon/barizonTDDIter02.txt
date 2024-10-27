@@ -1,0 +1,8 @@
+Controller
+
+init
+{
+    Caso 1: OK
+    Esperado: Criar tela inicial. Quando apertar algum dos botões,
+    fechar janela inicial e abrir a da banca.
+}

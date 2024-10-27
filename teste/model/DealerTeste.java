@@ -11,7 +11,7 @@ public class DealerTeste {
 	 */
 	@Test
 	public void testConstrutor() {
-		Dealer dealer = new Dealer();
+		Dealer dealer = Dealer.getDealer();
 		assertEquals(1, dealer.numMaosAtivas);
 		assertEquals(1, dealer.numMaosMax);
 	}
