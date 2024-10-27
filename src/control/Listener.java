@@ -36,3 +36,9 @@ class JogoSalvo extends Listener implements ActionListener {
 		saiMenuEntraBanca();
 	}
 }
+
+class DealerCompraCarta extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		ctrl.dealerCompraCarta();
+	}
+}

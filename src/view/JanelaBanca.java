@@ -2,20 +2,25 @@ package view;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
 public class JanelaBanca extends JFrame{
 	int x, y, width, heigth;
-	JPanel p;
+	Container c = getContentPane();
+	BPanel p;
 	Image deck, backgroundImage, fichas[] = new Image[6];
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	private JButton saveButton = new JButton("Salvar");
+	private JButton hitButton = new JButton("Hit");
 	
 	public JanelaBanca() {
 		// Define o nome da janela
 		super("Banca");
 		setLayout(null);
-		Container c = getContentPane();
 
 		// Pega a imagem de fundo
 		backgroundImage = pegaImagem("Imagens/blackjack.png");
@@ -36,16 +41,17 @@ public class JanelaBanca extends JFrame{
 		x = ((int)screenSize.getWidth() - width)/2;
 		
 		// Define o botão de salvamento
-		JButton saveButton = new JButton("Salvar");
 		saveButton.setBounds(15, 530, 170, 40);
+		hitButton.setBounds(15, 480, 170, 40);
 
 		// Define o painel da imagem de fundo
-		p = new BPanel(backgroundImage, fichas, deck);
+		p = new BPanel(backgroundImage, fichas, deck, null);
 		p.setBackground(Color.WHITE);
 		p.setBounds(0, 0, width, heigth);
 		
 		// Adiciona os componentes ao painel
 		c.add(saveButton);
+		c.add(hitButton);
 		c.add(p);
 		
 		setBounds(x, 0, width, heigth);
@@ -106,5 +112,21 @@ public class JanelaBanca extends JFrame{
 		}
 		
 		return result;
+	}
+	
+	public void mostraCartas(ArrayList<ArrayList<String>> cs) {
+		ArrayList<Image> result = new ArrayList<>();
+		for (ArrayList<String> c: cs) {
+			result.add(pegaCarta(c.get(0), c.get(1)));
+		}
+		p.adicionaImagem(result);
+	}
+	
+	public JButton getBtnHit() {
+		return hitButton;
+	}
+
+	public JButton getBtnSave() {
+		return saveButton;
 	}
 }

@@ -18,7 +18,7 @@ public class FachadaModel {
 			jogadores.add(new Jogador());
 	}
 	
-	static FachadaModel getFachada() {
+	public static FachadaModel getFachada() {
 		if (fachada == null)
 			fachada = new FachadaModel();
 		
@@ -32,4 +32,23 @@ public class FachadaModel {
 	Jogador getJogador(int index) {
 		return jogadores.get(index);
 	}
+	
+	public void dealerCompraCarta() {
+		dealer.hit(0);
+	}
+	
+	public ArrayList<ArrayList<String>> getCartasDealer() {
+		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		List<Carta> cartas = dealer.mao.get(0).cartas;
+
+		for (int i = 0; i < cartas.size(); i++) {
+			ArrayList<String> linha = new ArrayList<>();
+			linha.add(cartas.get(i).getNaipe());
+			linha.add(cartas.get(i).getValor());
+			result.add(linha);
+		}
+		
+		return result;
+	}
+
 }
