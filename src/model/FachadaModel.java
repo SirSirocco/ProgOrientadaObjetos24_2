@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class FachadaModel {
 	static FachadaModel fachada = null;
-	static final int numJogadores = 1;
+	final int numJogadores = 1;
 	
 	Dealer dealer; 			 // Objeto dealer a ser criado
 	List<Jogador> jogadores; // Lista de jogadores a serem criados
@@ -33,6 +33,18 @@ public class FachadaModel {
 //		return jogadores.get(index);
 //	}
 	
+	public int getNumJogadores() {
+		return numJogadores;
+	}
+	
+	public int getMaosMax() {
+		return Jogador.maosMaxJogador;
+	}
+	
+	public int getHitUntil() {
+		return dealer.hitUntil;
+	}
+	
 	public boolean dealerPossuiBlackjack() {
 		return dealer.possuiBlackjack(0, false) == 1;
 	}
@@ -57,6 +69,41 @@ public class FachadaModel {
 		jogadores.get(indexJ).hit(indexMao);
 	}
 	
+	public boolean dealerQuebra() {
+		boolean quebra = dealer.checaQuebra(0);
+		
+		if (quebra && !dealer.checaQuebrada(0))
+			dealer.quebraMao(0);
+		
+		return quebra;
+	}
+	
+	public boolean jogadorQuebra(int indexJ, int indexMao) {
+		boolean quebra = jogadores.get(indexJ).checaQuebra(indexMao);
+		
+		if (quebra && !jogadores.get(indexJ).checaQuebrada(0))
+			dealer.quebraMao(indexMao);
+		
+		return quebra;
+	}
+	
+	public boolean jogadorQuebrado(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).checaQuebrada(indexMao);
+	}
+	
+	public boolean jogadorMaoAtiva(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).checaMaoAtiva(indexMao);
+	}
+	
+	public void jogadorVenceAposta(int indexJ, int indexMao) {
+		jogadores.get(indexJ).venceAposta(indexMao);
+	}
+	
+	public void limpaParticipantes() {
+		dealer.limpa();
+		for (Jogador jogador : jogadores)
+			jogador.limpa();
+   
 	public void dealerCompraCarta() {
 		dealer.hit(0);
 	}
