@@ -51,6 +51,10 @@ public class FachadaModel {
 		return result;
 	}
 	
+	public int valorCartasDealer() {
+		return dealer.calculaPontos(0);
+	}
+	
 	public void embaralhaFonte() {
 		FonteCarta.embaralha();
 	}

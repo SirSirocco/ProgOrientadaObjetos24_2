@@ -94,6 +94,7 @@ class Controller {
 	
 	void dealerCompraCarta() {
 		fm.dealerCompraCarta();
+		janelaBanca.atualizaValorCartas(fm.valorCartasDealer());
 		janelaBanca.mostraCartas(fm.getCartasDealer());
 	}
 	

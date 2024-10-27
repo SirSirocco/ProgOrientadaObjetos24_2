@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 public class JanelaBanca extends JFrame{
 	int x, y, width, heigth;
-	int valorCartas;
 	Container c = getContentPane();
 	BPanel p;
 	Image deck, backgroundImage, fichas[] = new Image[6];
@@ -58,8 +57,8 @@ public class JanelaBanca extends JFrame{
 		valor.setForeground(Color.WHITE);
 		
 		// Adiciona os componentes ao painel
-		c.add(saveButton);
 		add(valor);
+		c.add(saveButton);
 		c.add(p);
 		
 		setBounds(x, 0, width, heigth);
@@ -132,7 +131,7 @@ public class JanelaBanca extends JFrame{
 	}
 	
 	public void atualizaValorCartas(int val) {
-		valorCartas = val;
+		valor.setText(Integer.toString(val));
 	}
 
 	public JButton getBtnSave() {
