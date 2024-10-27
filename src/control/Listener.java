@@ -19,7 +19,8 @@ abstract class Listener {
 class JogoNovo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		ctrl.saiMenuEntraBanca();
-		ctrl.painelJogo();
+		// ctrl.painelJogo();
+
 	}
 }
 
@@ -30,6 +31,12 @@ class JogoSalvo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		ctrl.recuperaJogoSalvo();
 		ctrl.saiMenuEntraBanca();
-		ctrl.painelJogo();
+		// ctrl.painelJogo();
+	}
+}
+
+class SalvarJogo extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		ctrl.salvaJogo();
 	}
 }

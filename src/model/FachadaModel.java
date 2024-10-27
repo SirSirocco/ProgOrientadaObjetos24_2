@@ -103,5 +103,34 @@ public class FachadaModel {
 		dealer.limpa();
 		for (Jogador jogador : jogadores)
 			jogador.limpa();
+   
+	public void dealerCompraCarta() {
+		dealer.hit(0);
+	}
+	
+	public int balancoJogador(int ind) {
+		return jogadores.get(ind).getBalanco();
+	}
+	
+	public ArrayList<ArrayList<String>> getCartasDealer() {
+		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		List<Carta> cartas = dealer.mao.get(0).cartas;
+
+		for (int i = 0; i < cartas.size(); i++) {
+			ArrayList<String> linha = new ArrayList<>();
+			linha.add(cartas.get(i).getNaipe());
+			linha.add(cartas.get(i).getValor());
+			result.add(linha);
+		}
+		
+		return result;
+	}
+	
+	public int valorCartasDealer() {
+		return dealer.calculaPontos(0);
+	}
+	
+	public void embaralhaFonte() {
+		FonteCarta.embaralha();
 	}
 }

@@ -7,6 +7,7 @@ class Controller {
 	// SINGLETON
 	static Controller ctrl = null;
 	
+	private FachadaModel fm = FachadaModel.getFachada();
 	// JANELAS
 	private FachadaModel model;
 	
@@ -53,6 +54,9 @@ class Controller {
 	
 	JanelaBanca criaJBanca() {
 		JanelaBanca janela = new JanelaBanca();
+		
+		janela.getBtnSave().addActionListener(new SalvarJogo());
+		
 		return janela;
 	}
 	
@@ -86,6 +90,10 @@ class Controller {
 		menu = criaMenu();
 		janelaBanca = criaJBanca();
 		janelaJogador = criaJJogador();
+
+		fm.embaralhaFonte();
+		dealerCompraCarta();
+		dealerCompraCarta();
 		
 		menu.setVisible(true);
 	}
@@ -99,7 +107,7 @@ class Controller {
 		/* ITERACAO 03 */
 	}
 	
-	void painelJogo()
+	/*void painelJogo()
 	{
 		while (true)
 		{
@@ -115,6 +123,17 @@ class Controller {
 				dealerQuebra();
 				
 			default:
+          */
+
+	/*
+	void jogo() {
+		while (true) {
+			switch (estado) {
+			case DEALER:
+				if (model.dealerPossuiBlackjack() == true) {
+					estado = CHECA_VENCEDOR;
+					break;
+				}
 				
 			}
 		}
@@ -155,5 +174,25 @@ class Controller {
 					model.jogadorVenceAposta(i, j);
 			}
 		}
+	}
+}
+	*/
+	
+	void balancoJogador(int ind) {
+		janelaJogador.atualizaBalanco(fm.balancoJogador(0));
+	}
+	void retomaJogo() {
+	}
+	
+	void salvaJogo() {
+	}
+	
+	void dealerCompraCarta() {
+		fm.dealerCompraCarta();
+		janelaBanca.atualizaValorCartas(fm.valorCartasDealer());
+		janelaBanca.mostraCartas(fm.getCartasDealer());
+	}
+	
+	void cartasDealer(){
 	}
 }
