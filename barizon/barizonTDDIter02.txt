@@ -6,3 +6,8 @@ init
     Esperado: Criar tela inicial. Quando apertar algum dos botões,
     fechar janela inicial e abrir a da banca.
 }
+
+retomaJogo
+{
+    
+}
