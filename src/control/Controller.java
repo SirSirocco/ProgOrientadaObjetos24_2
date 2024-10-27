@@ -7,6 +7,7 @@ class Controller {
 	// SINGLETON
 	static Controller ctrl = null;
 	
+	private FachadaModel fm = FachadaModel.getFachada();
 	// JANELAS
 	private FachadaModel model;
 	
@@ -47,6 +48,8 @@ class Controller {
 	
 	JanelaBanca criaJBanca() {
 		JanelaBanca janela = new JanelaBanca();
+		
+		janela.getBtnHit().addActionListener(new DealerCompraCarta());
 		return janela;
 	}
 	
@@ -102,5 +105,13 @@ class Controller {
 				}
 			}
 		}
+	}
+	
+	void dealerCompraCarta() {
+		fm.dealerCompraCarta();
+		janelaBanca.mostraCartas(fm.getCartasDealer());
+	}
+	
+	void cartasDealer(){
 	}
 }
