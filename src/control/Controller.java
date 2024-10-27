@@ -99,12 +99,17 @@ class Controller {
 				if (model.dealerPossuiBlackjack() == true) {
 					estado = CHECA_VENCEDOR;
 					break;
+				}
 				
 				while (model.dealerCalculaPontos() < 17) {
 					
 				}
 			}
 		}
+	}
+	
+	void balancoJogador(int ind) {
+		janelaJogador.atualizaBalanco(fm.balancoJogador(0));
 	}
 	
 	void dealerCompraCarta() {

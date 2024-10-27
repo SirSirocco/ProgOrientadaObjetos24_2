@@ -61,6 +61,10 @@ public class FachadaModel {
 		dealer.hit(0);
 	}
 	
+	public int balancoJogador(int ind) {
+		return jogadores.get(ind).getBalanco();
+	}
+	
 	public ArrayList<ArrayList<String>> getCartasDealer() {
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
 		List<Carta> cartas = dealer.mao.get(0).cartas;

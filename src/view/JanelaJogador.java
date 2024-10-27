@@ -3,18 +3,16 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import model.Jogador;
 
 public class JanelaJogador extends JFrame {
 
-    private Jogador jogador; // Referência ao modelo do jogador
+	int balanco;
     private JLabel lblCreditos;
     private JLabel lblValorAposta;
     private JLabel lblCartas;
     private JButton btnHit, btnStand, btnDouble, btnSurrender;
 
-    public JanelaJogador(Jogador jogador) {
-        this.jogador = jogador;
+    public JanelaJogador() {
         setTitle("Janela do Jogador");
         setSize(1366, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,7 +23,7 @@ public class JanelaJogador extends JFrame {
         setLayout(null);
 
         // Créditos do jogador
-        lblCreditos = new JLabel("Créditos: $" + jogador.getBalanco());
+        lblCreditos = new JLabel("Créditos: $" + balanco);
         lblCreditos.setBounds(20, 20, 200, 30);
         add(lblCreditos);
 
@@ -52,15 +50,19 @@ public class JanelaJogador extends JFrame {
 
         btnDouble = new JButton("Double");
         btnDouble.setBounds(240, 150, 100, 30);
-        btnDouble.addActionListener(e -> realizarAcaoDouble());
+        //btnDouble.addActionListener(e -> realizarAcaoDouble());
         add(btnDouble);
 
         btnSurrender = new JButton("Surrender");
         btnSurrender.setBounds(350, 150, 100, 30);
-        btnSurrender.addActionListener(e -> realizarAcaoSurrender());
+        //btnSurrender.addActionListener(e -> realizarAcaoSurrender());
         add(btnSurrender);
     }
-
+    
+    public void atualizaBalanco(int novo_b) {
+    	balanco = novo_b;
+    }
+    
     private void realizarAcaoHit() {
         // Logica para o jogador pegar uma nova carta
         // Atualizar a interface gráfica, exibindo as cartas novas
@@ -72,6 +74,7 @@ public class JanelaJogador extends JFrame {
         JOptionPane.showMessageDialog(this, "Jogador parou.");
     }
 
+    /*
     private void realizarAcaoDouble() {
         int apostaAtual = jogador.getApostas()[0];
         if (jogador.double_(0)) {
@@ -88,10 +91,5 @@ public class JanelaJogador extends JFrame {
         lblCreditos.setText("Créditos: $" + jogador.getBalanco());
         JOptionPane.showMessageDialog(this, "Você se rendeu e perdeu metade da aposta.");
     }
-
-    public static void main(String[] args) {
-        Jogador jogador = new Jogador();
-        JanelaJogador janela = new JanelaJogador(jogador);
-        janela.setVisible(true);
-    }
+    */
 }
