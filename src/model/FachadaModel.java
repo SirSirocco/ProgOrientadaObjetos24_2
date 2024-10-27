@@ -25,12 +25,36 @@ public class FachadaModel {
 		return fachada;
 	}
 	
-	Dealer getDealer() {
-		return dealer;
+//	Dealer getDealer() {
+//		return dealer;
+//	}
+//	
+//	Jogador getJogador(int index) {
+//		return jogadores.get(index);
+//	}
+	
+	public boolean dealerPossuiBlackjack() {
+		return dealer.possuiBlackjack(0, false) == 1;
 	}
 	
-	Jogador getJogador(int index) {
-		return jogadores.get(index);
+	public boolean jogadorPossuiBlackjack(int indexJ, int indexMao, boolean asesSplitFlag) {
+		return jogadores.get(indexJ).possuiBlackjack(indexMao, asesSplitFlag) == 1;
+	}
+	
+	public int dealerCalculaPontos() {
+		return dealer.calculaPontos(0);
+	}
+	
+	public int jogadorCalculaPontos(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).calculaPontos(indexMao);
+	}
+	
+	public void dealerHit() {
+		dealer.hit(0);
+	}
+	
+	public void jogadorHit(int indexJ, int indexMao) {
+		jogadores.get(indexJ).hit(indexMao);
 	}
 	
 	public void dealerCompraCarta() {
