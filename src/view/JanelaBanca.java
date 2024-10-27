@@ -9,14 +9,15 @@ import javax.imageio.ImageIO;
 
 public class JanelaBanca extends JFrame{
 	int x, y, width, heigth;
+	int valorCartas;
 	Container c = getContentPane();
 	BPanel p;
 	Image deck, backgroundImage, fichas[] = new Image[6];
+	JLabel valor = new JLabel("0");
 	ArrayList<Image> imagens = new ArrayList<Image>();
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private JButton saveButton = new JButton("Salvar");
-	private JButton hitButton = new JButton("Hit");
 	
 	public JanelaBanca() {
 		// Define o nome da janela
@@ -43,18 +44,22 @@ public class JanelaBanca extends JFrame{
 		heigth = backgroundImage.getHeight(null) + 39;
 		x = ((int)screenSize.getWidth() - width)/2;
 		
-		// Define o botão de salvamento
-		saveButton.setBounds(15, 530, 170, 40);
-		hitButton.setBounds(15, 480, 170, 40);
-
 		// Define o painel da imagem de fundo
 		p = new BPanel(imagens);
 		p.setBackground(Color.WHITE);
 		p.setBounds(0, 0, width, heigth);
 		
+		// Define o botão de salvamento
+		saveButton.setBounds(15, 530, 170, 40);
+
+		// Define o JLabel para o valor das cartas
+		valor.setBounds(backgroundImage.getWidth(null)/2, 520, 200, 30);
+		valor.setFont(new Font("Serif", Font.PLAIN, 24));
+		valor.setForeground(Color.WHITE);
+		
 		// Adiciona os componentes ao painel
 		c.add(saveButton);
-		c.add(hitButton);
+		add(valor);
 		c.add(p);
 		
 		setBounds(x, 0, width, heigth);
@@ -126,8 +131,8 @@ public class JanelaBanca extends JFrame{
 		p.adicionaImagem(result);
 	}
 	
-	public JButton getBtnHit() {
-		return hitButton;
+	public void atualizaValorCartas(int val) {
+		valorCartas = val;
 	}
 
 	public JButton getBtnSave() {

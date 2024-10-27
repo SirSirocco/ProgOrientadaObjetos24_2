@@ -46,7 +46,8 @@ class Controller {
 	JanelaBanca criaJBanca() {
 		JanelaBanca janela = new JanelaBanca();
 		
-		janela.getBtnHit().addActionListener(new DealerCompraCarta());
+		janela.getBtnSave().addActionListener(new SalvarJogo());
+		
 		return janela;
 	}
 	
@@ -74,6 +75,10 @@ class Controller {
 		menu = criaMenu();
 		janelaBanca = criaJBanca();
 		janelaJogador = criaJJogador();
+
+		fm.embaralhaFonte();
+		dealerCompraCarta();
+		dealerCompraCarta();
 		
 		menu.setVisible(true);
 	}
@@ -82,7 +87,9 @@ class Controller {
 	}
 	
 	void retomaJogo() {
-		
+	}
+	
+	void salvaJogo() {
 	}
 	
 	void dealerCompraCarta() {

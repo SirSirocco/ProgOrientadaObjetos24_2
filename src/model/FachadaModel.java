@@ -50,5 +50,8 @@ public class FachadaModel {
 		
 		return result;
 	}
-
+	
+	public void embaralhaFonte() {
+		FonteCarta.embaralha();
+	}
 }
