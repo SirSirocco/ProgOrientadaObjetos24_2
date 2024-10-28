@@ -96,11 +96,11 @@ class Controller {
 				if (model.dealerPossuiBlackjack() == true) {
 					estado = CHECA_VENCEDOR;
 					break;
+				}
 				
-				while (model.dealerCalculaPontos() < 17) {
+				while (model.dealerCalculaPontos() < until) {
 					
 				}
-			}
 		}
 	}
 }

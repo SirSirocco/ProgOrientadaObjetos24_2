@@ -42,6 +42,7 @@ public class ParticipanteTeste {
 	@Test
 	public void testPossuiBlackjackTrue() {
 		Participante dealer = Dealer.getDealer();
+		dealer.mao.get(0).limpaMao();
 		dealer.mao.get(0).insere(new Carta("Paus", "A"));
 		dealer.mao.get(0).insere(new Carta("Paus", "10"));
 		
@@ -55,6 +56,7 @@ public class ParticipanteTeste {
 	@Test
 	public void testPossuiBlackjackFalseCom21Pontos() {
 		Participante dealer = Dealer.getDealer();
+		dealer.mao.get(0).limpaMao();
 		dealer.mao.get(0).insere(new Carta("Paus", "A"));
 		dealer.mao.get(0).insere(new Carta("Paus", "5"));
 		dealer.mao.get(0).insere(new Carta("Copas", "5"));
@@ -194,7 +196,7 @@ public class ParticipanteTeste {
     @Test
     public void testAtivaMao() {
         participante.ativaMao(1);
-        assertFalse(participante.checaMaoInativa(1));
+        assertTrue(participante.checaMaoAtiva(1));
     }
 
     /**
@@ -205,7 +207,7 @@ public class ParticipanteTeste {
     public void testChecaMaoInativa() {
         participante.ativaMao(1);
         participante.stand(1);
-        assertTrue(participante.checaMaoInativa(1));
+        assertFalse(participante.checaMaoAtiva(1));
     }
     
     /**
@@ -227,6 +229,6 @@ public class ParticipanteTeste {
     public void testStand() {
         participante.stand(0);
         assertEquals(0, participante.numMaosAtivas);
-        assertTrue(participante.checaMaoInativa(0));
+        assertFalse(participante.checaMaoAtiva(0));
     }
 }

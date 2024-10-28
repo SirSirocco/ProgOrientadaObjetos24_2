@@ -5,11 +5,13 @@ import java.util.*;
 abstract class Participante {
 	// VARIAVEIS DE CLASSE
 	private static final int apostaMin = 50; // Aposta minima
+	private static final int fatorGanhoAposta = 2; // Se jogador vence, tera de volta o dobro do que apostou
 
 	// VARIAVEIS DE INSTANCIA
 	List<Mao> mao;
 	int numMaosMax;			// Numero maximo de maos
 	boolean[] maosAtivas;	// Indica se a i-esima mao esta ativa (true) ou inativa (false)
+	boolean[] maosQuebradas;
 	int numMaosAtivas = 1; 	// Todo participante comeca com uma mao ativa
 
 	// CONSTRUTOR
@@ -21,9 +23,12 @@ abstract class Participante {
 			mao.add(new Mao());
 
 		maosAtivas = new boolean[numMaosMax];
+		maosQuebradas = new boolean[numMaosMax];
+		
+		for (int i = 0; i < numMaosMax; i++)
+			maosAtivas[i] = maosQuebradas[i] = false;
+		
 		ativaMao(0);
-		for (int i = 1; i < numMaosMax; i++)
-			maosAtivas[i] = false;
 	}
 
 	// METODOS DE CLASSE
@@ -71,18 +76,6 @@ abstract class Participante {
 	}
 	
 	/**
-	 * Indica se dada mao eh um Blackjack.
-	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
-	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
-	 * @return 1, se for Blackjack. Do contrario, 0.
-	 */
-	int possuiBlackjack(int indMao, boolean asesSplitFlag) {
-		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21 && !asesSplitFlag)
-			return 1;
-		return 0;
-	}
-	
-	/**
 	 * Indica se a mao indMao de jogador vence da mao do dealer.
 	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
 	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
@@ -96,6 +89,18 @@ abstract class Participante {
 	}
 
 	// METODOS DE INSTANCIA
+	/**
+	 * Indica se dada mao eh um Blackjack.
+	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
+	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
+	 * @return 1, se for Blackjack. Do contrario, 0.
+	 */
+	int possuiBlackjack(int indMao, boolean asesSplitFlag) {
+		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21 && !asesSplitFlag)
+			return 1;
+		return 0;
+	}
+	
 	/**
 	 * Calcula pontos da mao indMao.
 	 * @return valor de pontos.
@@ -111,13 +116,26 @@ abstract class Participante {
 	boolean checaQuebra(int indMao) {
 		return calculaPontos(indMao) > 21;
 	}
+	
+	//////////////////////////////////////////
+	boolean checaQuebrada(int indMao) {
+		return maosQuebradas[indMao] == true;
+	}
+	//////////////////////////////////////////
 
 	void ativaMao(int indMao) {
 		maosAtivas[indMao] = true;
 	}
+	
+	/////////////////////////////////
+	void quebraMao(int indMao) {
+		maosQuebradas[indMao] = true;
+		stand(indMao);
+	}
+	////////////////////////////////
 
-	boolean checaMaoInativa(int indMao) {
-		return maosAtivas[indMao] == false;
+	boolean checaMaoAtiva(int indMao) {
+		return maosAtivas[indMao] == true;
 	}
 
 	/**
@@ -135,4 +153,16 @@ abstract class Participante {
 		maosAtivas[indMao] = false;
 		numMaosAtivas--;
 	}
+	
+	/////////////////////////////////////////////
+	void limpa() {
+		for (int i = 0; i < numMaosMax; i++)
+			mao.get(i).limpaMao();
+		
+		for (int i = 0; i < numMaosMax; i++)
+			maosAtivas[i] = maosQuebradas[i] = false;
+		
+		ativaMao(0);
+	}
+	/////////////////////////////////////////////
 }
