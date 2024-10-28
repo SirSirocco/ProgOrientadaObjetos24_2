@@ -1,16 +1,23 @@
 package control;
 
+import model.FachadaModel;
 import view.*;
-import control.*;
 
 class Controller {
 	// SINGLETON
 	static Controller ctrl = null;
 	
 	// JANELAS
+	private FachadaModel model;
+	
 	private JanelaInicial menu;
 	private JanelaBanca janelaBanca;
 	private JanelaJogador janelaJogador;
+	
+	private int estado = 0; // -1 para banca e index para jogadores
+	private final int DEALER = -1;
+	private final int DEALER_QUEBRA = -2;
+	private final int CHECA_VENCEDOR = -3;
 	
 	// INSTANCIACAO
 	private Controller() {
@@ -64,6 +71,8 @@ class Controller {
 	void init() {
 		/* Necessario criar janelas aqui em vez de no construtor,
 		 * para evitar chamada recursiva de getController */
+		model = FachadaModel.getFachada();
+		
 		menu = criaMenu();
 		janelaBanca = criaJBanca();
 		janelaJogador = criaJJogador();
@@ -71,10 +80,27 @@ class Controller {
 		menu.setVisible(true);
 	}
 	
-	void recuperaJogo() {
+	void saiMenuEntraBanca() {
+		menu.setVisible(false);
+		janelaBanca.setVisible(true);
 	}
 	
-	void retomaJogo() {
-		
+	void recuperaJogoSalvo() {
+		/* ITERACAO 03 */
+	}
+	
+	void jogo() {
+		while (true) {
+			switch (estado) {
+			case DEALER:
+				if (model.dealerPossuiBlackjack() == true) {
+					estado = CHECA_VENCEDOR;
+					break;
+				
+				while (model.dealerCalculaPontos() < 17) {
+					
+				}
+			}
+		}
 	}
 }

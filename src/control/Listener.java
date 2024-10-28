@@ -11,11 +11,6 @@ abstract class Listener {
 	Listener() {
 		ctrl = Controller.getController();
 	}
-	
-	void saiMenuEntraBanca() {
-		ctrl.getMenu().setVisible(false);
-		ctrl.getJBanca().setVisible(true);
-	}
 }
 
 /**
@@ -23,7 +18,8 @@ abstract class Listener {
  */
 class JogoNovo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		saiMenuEntraBanca();
+		ctrl.saiMenuEntraBanca();
+		ctrl.jogo();
 	}
 }
 
@@ -32,7 +28,8 @@ class JogoNovo extends Listener implements ActionListener {
  */
 class JogoSalvo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		ctrl.recuperaJogo();
-		saiMenuEntraBanca();
+		ctrl.recuperaJogoSalvo();
+		ctrl.saiMenuEntraBanca();
+		ctrl.jogo();
 	}
 }
