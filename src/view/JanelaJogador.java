@@ -1,20 +1,20 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 public class JanelaJogador extends JFrame {
 
 	int balanco;
+	static int width = 490, height = 300;
     private JLabel lblCreditos;
     private JLabel lblValorAposta;
     private JLabel lblCartas;
     private JButton btnHit, btnStand, btnDouble, btnSurrender;
 
     public JanelaJogador() {
+    	int x = (ScreenSize.getWidth() - width ) / 2;
         setTitle("Janela do Jogador");
-        setSize(1366, 768);
+        setBounds(x + width, 70, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         inicializarComponentes();
     }
@@ -92,4 +92,5 @@ public class JanelaJogador extends JFrame {
         JOptionPane.showMessageDialog(this, "Você se rendeu e perdeu metade da aposta.");
     }
     */
+    
 }

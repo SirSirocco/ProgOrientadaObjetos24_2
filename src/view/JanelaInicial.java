@@ -1,7 +1,7 @@
 package view;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 public class JanelaInicial extends JFrame {
 	private static final int LARG_DFL = 400; // pixels
@@ -14,10 +14,6 @@ public class JanelaInicial extends JFrame {
 	public JanelaInicial() {
 		super("Menu inicial");
 		
-		/*** REFATORAR COM MYJFrame ***/
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Dimension screenDims = tk.getScreenSize();
-		/*** REFATORAR COM MYJFrame ***/
 		int x, y;
 		
 		painel.add(btnJogoNovo);
@@ -25,8 +21,8 @@ public class JanelaInicial extends JFrame {
 		painel.setBackground(Color.WHITE);
 		getContentPane().add(painel);
 		
-		x = screenDims.width / 2 - LARG_DFL / 2;
-		y = screenDims.height /2 - ALT_DFL / 2;
+		x = ScreenSize.getWidth() / 2 - LARG_DFL / 2;
+		y = ScreenSize.getHeight() / 2 - ALT_DFL / 2;
 		setBounds(x, y, LARG_DFL, ALT_DFL);
 		 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
