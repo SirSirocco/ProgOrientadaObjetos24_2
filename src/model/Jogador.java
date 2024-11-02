@@ -2,7 +2,7 @@ package model;
 
 class Jogador extends Participante {
 	// VARIAVEIS DE CLASSE
-	static final int maosMaxJogador = 2; // Numero maximo de maos do jogador
+	public static final int maosMaxJogador = 2; // Numero maximo de maos do jogador
 	private static final int balancoInicial = 2400;
 
 	// VARIAVEIS DE INSTANCIA

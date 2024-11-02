@@ -101,6 +101,7 @@ class Controller {
 	void saiMenuEntraBanca() {
 		menu.setVisible(false);
 		janelaBanca.setVisible(true);
+		janelaJogador.setVisible(true);
 	}
 	
 	void recuperaJogoSalvo() {

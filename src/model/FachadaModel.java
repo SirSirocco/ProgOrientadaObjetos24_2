@@ -103,6 +103,7 @@ public class FachadaModel {
 		dealer.limpa();
 		for (Jogador jogador : jogadores)
 			jogador.limpa();
+	}
    
 	public void dealerCompraCarta() {
 		dealer.hit(0);
