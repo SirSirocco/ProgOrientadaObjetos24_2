@@ -7,6 +7,7 @@ class Controller {
 	// SINGLETON
 	static Controller ctrl = null;
 	
+	private FachadaModel fm = FachadaModel.getFachada();
 	// JANELAS
 	private FachadaModel model;
 	
@@ -53,6 +54,8 @@ class Controller {
 	
 	JanelaBanca criaJBanca() {
 		JanelaBanca janela = new JanelaBanca();
+		
+		janela.getBtnHit().addActionListener(new DealerCompraCarta());
 		return janela;
 	}
 	
