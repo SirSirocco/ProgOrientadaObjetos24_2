@@ -5,16 +5,16 @@ import javax.swing.*;
 public class JanelaJogador extends JFrame {
 
 	int balanco;
-	static int width = 490, height = 300;
+	int width = 490, height = 300;
     private JLabel lblCreditos;
     private JLabel lblValorAposta;
     private JLabel lblCartas;
     private JButton btnHit, btnStand, btnDouble, btnSurrender;
 
     public JanelaJogador() {
-    	int x = (ScreenSize.getWidth() - width ) / 2;
+    	int x = ScreenSize.getWidth() / 2 + 250;
         setTitle("Janela do Jogador");
-        setBounds(x + width, 70, width, height);
+        setBounds(x , 70, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         inicializarComponentes();
     }

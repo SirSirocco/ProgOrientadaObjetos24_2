@@ -40,7 +40,7 @@ public class JanelaBanca extends JFrame{
 		// Define o tamanho e posição da janela
 		width = backgroundImage.getWidth(null) + 15;
 		heigth = backgroundImage.getHeight(null) + 39;
-		x = (ScreenSize.getWidth() - width)/2;
+		x = ScreenSize.getWidth() / 2 - width + 250;
 		
 		// Define o painel da imagem de fundo
 		p = new BPanel(imagens);
@@ -60,7 +60,7 @@ public class JanelaBanca extends JFrame{
 		c.add(saveButton);
 		c.add(p);
 		
-		setBounds(x - JanelaJogador.width, 70, width, heigth);
+		setBounds(x, 70, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
