@@ -12,10 +12,11 @@ public class JanelaBanca extends JFrame{
 	Container c = getContentPane();
 	BPanel p;
 	Image deck, backgroundImage, fichas[] = new Image[6];
+	JLabel valor = new JLabel("0");
+	ArrayList<Image> imagens = new ArrayList<Image>();
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private JButton saveButton = new JButton("Salvar");
-	private JButton hitButton = new JButton("Hit");
 	
 	public JanelaBanca() {
 		// Define o nome da janela
@@ -25,6 +26,9 @@ public class JanelaBanca extends JFrame{
 		// Pega a imagem de fundo
 		backgroundImage = pegaImagem("Imagens/blackjack.png");
 		
+		// Pega a imagem do deck de cartas
+		deck = pegaImagem("Imagens/deck1.gif");
+		
 		// Pega as imagens das fichas
 		fichas[0] = pegaImagem("Imagens/ficha 1$.png");
 		fichas[1] = pegaImagem("Imagens/ficha 5$.png");
@@ -33,25 +37,28 @@ public class JanelaBanca extends JFrame{
 		fichas[4] = pegaImagem("Imagens/ficha 50$.png");
 		fichas[5] = pegaImagem("Imagens/ficha 100$.png");
 		
-		deck = pegaImagem("Imagens/deck1.gif");
 
 		// Define o tamanho e posição da janela
 		width = backgroundImage.getWidth(null) + 15;
 		heigth = backgroundImage.getHeight(null) + 39;
 		x = ((int)screenSize.getWidth() - width)/2;
 		
-		// Define o botão de salvamento
-		saveButton.setBounds(15, 530, 170, 40);
-		hitButton.setBounds(15, 480, 170, 40);
-
 		// Define o painel da imagem de fundo
-		p = new BPanel(backgroundImage, fichas, deck, null);
+		p = new BPanel(imagens);
 		p.setBackground(Color.WHITE);
 		p.setBounds(0, 0, width, heigth);
 		
+		// Define o botão de salvamento
+		saveButton.setBounds(15, 530, 170, 40);
+
+		// Define o JLabel para o valor das cartas
+		valor.setBounds(backgroundImage.getWidth(null)/2, 520, 200, 30);
+		valor.setFont(new Font("Serif", Font.PLAIN, 24));
+		valor.setForeground(Color.WHITE);
+		
 		// Adiciona os componentes ao painel
+		add(valor);
 		c.add(saveButton);
-		c.add(hitButton);
 		c.add(p);
 		
 		setBounds(x, 0, width, heigth);
@@ -68,6 +75,7 @@ public class JanelaBanca extends JFrame{
 			System.exit(1);
 		}
 		
+		imagens.add(result);
 		return result;
 	}
 	
@@ -122,8 +130,8 @@ public class JanelaBanca extends JFrame{
 		p.adicionaImagem(result);
 	}
 	
-	public JButton getBtnHit() {
-		return hitButton;
+	public void atualizaValorCartas(int val) {
+		valor.setText(Integer.toString(val));
 	}
 
 	public JButton getBtnSave() {
