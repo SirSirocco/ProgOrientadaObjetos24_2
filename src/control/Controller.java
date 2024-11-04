@@ -7,20 +7,19 @@ class Controller {
 	// SINGLETON
 	static Controller ctrl = null;
 	
-	private FachadaModel fm = FachadaModel.getFachada();
+	private FachadaModel model = FachadaModel.getFachada();
 	// JANELAS
-	private FachadaModel model;
-	
 	private JanelaInicial menu;
 	private JanelaBanca janelaBanca;
 	private JanelaJogador janelaJogador;
 	
-	private int estado = 0; // -1 para banca e index para jogadores
+	private final int CARTAS_NOVA_RODADA = 2;
 	private final int PRIM_JOGADOR = 0;
 	private final int DEALER = -1;
 	private final int DEALER_QUEBRA = -2;
 	private final int CHECA_VENCEDOR = -3;
 	private final int NOVA_RODADA = -4;
+	private int estado; // -1 para banca e index para jogadores
 	
 	int numJogadores;
 	int maosMax;
@@ -42,6 +41,7 @@ class Controller {
 		return ctrl;
 	}
 	
+	///////////////////////////////
 	// MANIPULACAO DE JANELAS
 	JanelaInicial criaMenu() {
 		JanelaInicial janela = new JanelaInicial();
@@ -77,25 +77,24 @@ class Controller {
 		return janelaJogador;
 	}
 	
+	///////////////////////////////
 	// ROTINAS DE CONTROLE DE JOGO
 	void init() {
 		/* Necessario criar janelas aqui em vez de no construtor,
 		 * para evitar chamada recursiva de getController */
 		model = FachadaModel.getFachada();
 		
-		maosMax = model.getMaosMax();
-		numJogadores = model.getNumJogadores();
-		hitUntil = model.getHitUntil();
+		maosMax 		= model.getMaosMax();
+		numJogadores 	= model.getNumJogadores();
+		hitUntil 		= model.getHitUntil();
+		estado 			= NOVA_RODADA;
 		
-		menu = criaMenu();
-		janelaBanca = criaJBanca();
-		janelaJogador = criaJJogador();
-
-		fm.embaralhaFonte();
-		dealerCompraCarta();
-		dealerCompraCarta();
+		menu 			= criaMenu();
+		janelaBanca 	= criaJBanca();
+		janelaJogador 	= criaJJogador();
 		
 		menu.setVisible(true);
+		System.out.println("INIT");///////////////////////////
 	}
 	
 	void saiMenuEntraBanca() {
@@ -103,11 +102,14 @@ class Controller {
 		janelaBanca.setVisible(true);
 	}
 	
+	void salvaJogo() {
+	}
+	
 	void recuperaJogoSalvo() {
 		/* ITERACAO 03 */
 	}
 	
-	/*void painelJogo()
+	void painelJogo()
 	{
 		while (true)
 		{
@@ -121,26 +123,28 @@ class Controller {
 				
 			case DEALER_QUEBRA:
 				dealerQuebra();
-				
-			default:
-          */
-
-	/*
-	void jogo() {
-		while (true) {
-			switch (estado) {
-			case DEALER:
-				if (model.dealerPossuiBlackjack() == true) {
-					estado = CHECA_VENCEDOR;
-					break;
-				}
-				
 			}
 		}
 	}
 	
+	///////////////////////////////
+	// ETAPAS DO JOGO
+	
 	void novaRodada() {
 		model.limpaParticipantes();
+		model.embaralhaFonte();
+		
+		for (int i = 0; i < CARTAS_NOVA_RODADA; i++)
+			model.dealerHit();
+		/* ADICIONAR OBSERVER */
+		
+		for (int i = 0;  i < numJogadores; i++)
+		{
+			for (int j = 0; j < CARTAS_NOVA_RODADA; j++)
+				model.jogadorHit(i, 0); // Jogadores compram duas cartas na mao de indice 0
+				/* ADICIONAR OBSERVER */
+		}
+		
 		estado = PRIM_JOGADOR;
 	}
 	
@@ -175,24 +179,33 @@ class Controller {
 			}
 		}
 	}
-}
-	*/
 	
-	void balancoJogador(int ind) {
-		janelaJogador.atualizaBalanco(fm.balancoJogador(0));
-	}
-	void retomaJogo() {
-	}
-	
-	void salvaJogo() {
-	}
-	
-	void dealerCompraCarta() {
-		fm.dealerCompraCarta();
-		janelaBanca.atualizaValorCartas(fm.valorCartasDealer());
-		janelaBanca.mostraCartas(fm.getCartasDealer());
+	void dealerHit() {
+		model.dealerHit();
+		janelaBanca.atualizaValorCartas(model.dealerValorCartas());
+		janelaBanca.mostraCartas(model.getCartasDealer());
 	}
 	
 	void cartasDealer() {
 	}
+	
+	//////////////////////////////////////////////
+	// JOGADOR
+	
+	void balancoJogador(int ind) {
+		janelaJogador.atualizaBalanco(model.balancoJogador(0));
+	}
+	
+	void inicializaMecanicaJogo() {
+		Thread tarefa = new Thread(new MecanicaJogo());
+		tarefa.start();
+	}
+}
+
+class MecanicaJogo implements Runnable {
+    @Override
+    public void run() {
+    	Controller ctrl = Controller.getController();
+    	ctrl.painelJogo();
+    }
 }

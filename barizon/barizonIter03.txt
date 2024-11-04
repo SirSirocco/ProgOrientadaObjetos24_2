@@ -1,0 +1,15 @@
+novaRodada
+{
+    limpaJogadores
+    embaralhaFonte
+    
+    2x
+        Dealer faz Hit
+        Jogador faz Hit
+
+    estado = PRIM_JOGADOR
+}
+
+Teste 01: Testar se as funcoes estao sendo chamadas adequadamente
+S.: Vou colocar prints em cada um das funções no MODEL para ver se foram chamadas
+    adequadamente.

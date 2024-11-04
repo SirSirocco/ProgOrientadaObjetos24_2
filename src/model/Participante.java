@@ -144,6 +144,7 @@ abstract class Participante {
 	void hit(int indMao) {
 		Carta novaCarta = FonteCarta.compraCarta();
 		mao.get(indMao).insere(novaCarta);
+		System.out.println("HIT"); ////////////////////////
 	}
 
 	/**
@@ -163,6 +164,7 @@ abstract class Participante {
 			maosAtivas[i] = maosQuebradas[i] = false;
 		
 		ativaMao(0);
+		System.out.println("LIMPA"); ////////////////////////
 	}
 	/////////////////////////////////////////////
 }

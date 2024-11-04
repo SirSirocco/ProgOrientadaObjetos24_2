@@ -10,6 +10,8 @@ public class FachadaModel {
 	Dealer dealer; 			 // Objeto dealer a ser criado
 	List<Jogador> jogadores; // Lista de jogadores a serem criados
 	
+	///////////////////////////////
+	// FACHADA
 	private FachadaModel() {
 		dealer = Dealer.getDealer();
 		jogadores = new ArrayList<Jogador>();
@@ -25,14 +27,15 @@ public class FachadaModel {
 		return fachada;
 	}
 	
-//	Dealer getDealer() {
-//		return dealer;
-//	}
-//	
-//	Jogador getJogador(int index) {
-//		return jogadores.get(index);
-//	}
+	///////////////////////////////
+	// ELEMENTOS FACHADA
+	public Dealer getDealer() {
+		return dealer;
+	}
 	
+	public Jogador getJogador(int index) {
+		return jogadores.get(index);
+	}
 	public int getNumJogadores() {
 		return numJogadores;
 	}
@@ -45,32 +48,24 @@ public class FachadaModel {
 		return dealer.hitUntil;
 	}
 	
-	public boolean dealerPossuiBlackjack() {
-		return dealer.possuiBlackjack(0, false) == 1;
+	//////////////////////////////////
+	// METODOS GERAIS
+	
+	public void limpaParticipantes() {
+		dealer.limpa();
+		for (Jogador jogador : jogadores)
+			jogador.limpa();
 	}
 	
-	public boolean jogadorPossuiBlackjack(int indexJ, int indexMao, boolean asesSplitFlag) {
-		return jogadores.get(indexJ).possuiBlackjack(indexMao, asesSplitFlag) == 1;
+	public void embaralhaFonte() {
+		if (FonteCarta.checaEmbaralha() == true)
+			FonteCarta.embaralha();
 	}
 	
+	//////////////////////////////////
+	// DEALER
 	public int dealerCalculaPontos() {
 		return dealer.calculaPontos(0);
-	}
-	
-	public int jogadorCalculaPontos(int indexJ, int indexMao) {
-		return jogadores.get(indexJ).calculaPontos(indexMao);
-	}
-	
-	public void dealerHit() {
-		dealer.hit(0);
-	}
-	
-	public void jogadorHit(int indexJ, int indexMao) {
-		jogadores.get(indexJ).hit(indexMao);
-	}
-	
-	public void dealerCompraCarta() {
-		dealer.hit(0);
 	}
 	
 	public ArrayList<ArrayList<String>> getCartasDealer() {
@@ -86,7 +81,10 @@ public class FachadaModel {
 		
 		return result;
 	}
-
+	
+	public void dealerHit() {
+		dealer.hit(0);
+	}
 	
 	public boolean dealerQuebra() {
 		boolean quebra = dealer.checaQuebra(0);
@@ -95,6 +93,29 @@ public class FachadaModel {
 			dealer.quebraMao(0);
 		
 		return quebra;
+	}
+	
+	public int dealerValorCartas() {
+		return dealer.calculaPontos(0);
+	}
+	
+	//////////////////////////////////
+	// JOGADOR
+	
+	public boolean dealerPossuiBlackjack() {
+		return dealer.possuiBlackjack(0, false) == 1;
+	}
+	
+	public int jogadorCalculaPontos(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).calculaPontos(indexMao);
+	}
+	
+	public boolean jogadorPossuiBlackjack(int indexJ, int indexMao, boolean asesSplitFlag) {
+		return jogadores.get(indexJ).possuiBlackjack(indexMao, asesSplitFlag) == 1;
+	}
+	
+	public void jogadorHit(int indexJ, int indexMao) {
+		jogadores.get(indexJ).hit(indexMao);
 	}
 	
 	public boolean jogadorQuebra(int indexJ, int indexMao) {
@@ -118,38 +139,8 @@ public class FachadaModel {
 		jogadores.get(indexJ).venceAposta(indexMao);
 	}
 	
-	public void limpaParticipantes() {
-		dealer.limpa();
-		for (Jogador jogador : jogadores)
-			jogador.limpa();
-   
-	public void dealerCompraCarta() {
-		dealer.hit(0);
-	}
-	
 	public int balancoJogador(int ind) {
 		return jogadores.get(ind).getBalanco();
 	}
 	
-	public ArrayList<ArrayList<String>> getCartasDealer() {
-		ArrayList<ArrayList<String>> result = new ArrayList<>();
-		List<Carta> cartas = dealer.mao.get(0).cartas;
-
-		for (int i = 0; i < cartas.size(); i++) {
-			ArrayList<String> linha = new ArrayList<>();
-			linha.add(cartas.get(i).getNaipe());
-			linha.add(cartas.get(i).getValor());
-			result.add(linha);
-		}
-		
-		return result;
-	}
-	
-	public int valorCartasDealer() {
-		return dealer.calculaPontos(0);
-	}
-	
-	public void embaralhaFonte() {
-		FonteCarta.embaralha();
-	}
 }
