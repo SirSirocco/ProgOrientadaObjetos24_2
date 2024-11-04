@@ -93,4 +93,21 @@ public class JanelaJogador extends JFrame {
     }
     */
     
+    //private JButton btnHit, btnStand, btnDouble, btnSurrender;
+    public JButton getHitBtn() {
+    	return btnHit;
+    }
+    
+    public JButton getStandBtn() {
+    	return btnStand;
+    }
+    
+    public JButton getDoubleBtn() {
+    	return btnDouble;
+    }
+    
+    public JButton getSurrenderBtn() {
+    	return btnSurrender;
+    }
+    
 }

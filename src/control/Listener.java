@@ -40,3 +40,28 @@ class SalvarJogo extends Listener implements ActionListener {
 		ctrl.salvaJogo();
 	}
 }
+
+// LISTENERS PARA JANELA DO JOGADOR
+class HitJogador extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}
+
+class StandJogador extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}
+
+class DoubleJogador extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}
+
+class SurrenderJogador extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}
