@@ -115,16 +115,20 @@ class Controller {
 		{
 			switch (estado)
 			{
-			case NOVA_RODADA:
+			case NOVA_RODADA: // OK
 				novaRodada();
 				break;
 			
-			case DEALER:
+			case DEALER: // OK
 				dealerVez();
 				break;
 				
-			case DEALER_QUEBRA:
+			case DEALER_QUEBRA: // OK
 				dealerQuebra();
+				break;
+				
+			case CHECA_VENCEDOR:
+				checaVencedor();
 				break;
 			
 			case PRIM_JOGADOR:
@@ -143,7 +147,7 @@ class Controller {
 		model.embaralhaFonte();
 		
 		for (int i = 0; i < CARTAS_NOVA_RODADA; i++)
-			model.dealerHit();
+			ctrl.dealerHit();
 		/* ADICIONAR OBSERVER */
 		
 		for (int i = 0;  i < numJogadores; i++)
@@ -154,7 +158,6 @@ class Controller {
 		}
 		
 		estado = PRIM_JOGADOR;
-		estado = DEALER;
 	}
 	
 	void jogadorVez(int indexJ) {
@@ -197,6 +200,17 @@ class Controller {
 	
 	void dealerQuebra()
 	{
+		for (int i = 0; i < numJogadores; i++)
+		{
+			for (int j = 0; j < maosMax; j++)
+			{
+				if (model.jogadorQuebrado(i, j) == false)
+					model.jogadorVenceAposta(i, j);
+			}
+		}
+	}
+	
+	void checaVencedor() {
 		for (int i = 0; i < numJogadores; i++)
 		{
 			for (int j = 0; j < maosMax; j++)

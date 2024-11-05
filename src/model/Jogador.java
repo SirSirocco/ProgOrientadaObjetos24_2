@@ -8,6 +8,7 @@ class Jogador extends Participante {
 	// VARIAVEIS DE INSTANCIA
 	private int balanco = balancoInicial;
 	private int[] apostaMao; // Apostas em cada mao
+	private boolean asesSplitFlag = false;
 
 	// CONSTRUTOR
 	Jogador() {

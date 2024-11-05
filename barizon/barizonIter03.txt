@@ -56,5 +56,9 @@ jogadorVez()
 
 dealerVez
 {
-    
+
 }
+
+
+//////////////////////
+OBS.: Jogador deve sobrescrever limpa
