@@ -117,12 +117,20 @@ class Controller {
 			{
 			case NOVA_RODADA:
 				novaRodada();
+				break;
 			
 			case DEALER:
 				dealerVez();
+				break;
 				
 			case DEALER_QUEBRA:
 				dealerQuebra();
+				break;
+			
+			case PRIM_JOGADOR:
+			default:
+				jogadorVez(estado);
+				break;
 			}
 		}
 	}
@@ -146,6 +154,25 @@ class Controller {
 		}
 		
 		estado = PRIM_JOGADOR;
+		estado = DEALER;
+	}
+	
+	void jogadorVez(int indexJ) {
+//		model.limpaParticipantes();
+//		model.embaralhaFonte();
+//		
+//		for (int i = 0; i < CARTAS_NOVA_RODADA; i++)
+//			model.dealerHit();
+//		/* ADICIONAR OBSERVER */
+//		
+//		for (int i = 0;  i < numJogadores; i++)
+//		{
+//			for (int j = 0; j < CARTAS_NOVA_RODADA; j++)
+//				model.jogadorHit(i, 0); // Jogadores compram duas cartas na mao de indice 0
+//				/* ADICIONAR OBSERVER */
+//		}
+		
+		estado = DEALER;
 	}
 	
 	void dealerVez()
