@@ -28,8 +28,7 @@ class Jogador extends Participante {
 	void limpa() {
 		super.limpa();
 		
-		for (int i = 0; i < maosMaxJogador; i++)
-			apostaMao[i] = 0;
+		limpaApostas();
 	
 		asesSplitFlag = false;
 	}

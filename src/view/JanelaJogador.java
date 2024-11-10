@@ -12,6 +12,9 @@ public class JanelaJogador extends JFrame {
     private JLabel lblCreditos;
     private JLabel lblValorAposta;
     private JLabel lblCartas;
+    private final int width = 1366;
+    private final int height = 766;
+    
     private JButton btnHit, btnStand, btnDouble, btnSurrender;
     
     private Controller ctrl = Controller.getController();
@@ -20,7 +23,7 @@ public class JanelaJogador extends JFrame {
         this.indexJ = indexJ;
         this.indexMao = indexMao;
         setTitle("Janela do Jogador");
-        setBounds(x , 70, width, height);
+        setBounds(0 , 70, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         inicializarComponentes();
     }
