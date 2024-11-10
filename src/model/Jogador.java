@@ -1,29 +1,62 @@
 package model;
 
 class Jogador extends Participante {
+	////////////////////////////////////
 	// VARIAVEIS DE CLASSE
 	static final int maosMaxJogador = 2; // Numero maximo de maos do jogador
 	private static final int balancoInicial = 2400;
-
+	
+	////////////////////////////////////
 	// VARIAVEIS DE INSTANCIA
 	private int balanco = balancoInicial;
 	private int[] apostaMao; // Apostas em cada mao
 	private boolean asesSplitFlag = false;
-
+	
+	////////////////////////////////////
 	// CONSTRUTOR
 	Jogador() {
 		super(maosMaxJogador);
 		apostaMao = new int[maosMaxJogador];
 		limpaApostas();
 	}
-
+	
+	////////////////////////////////////
 	// METODOS DE INSTANCIA
+	
+	/* Limpeza */
+	@Override
+	void limpa() {
+		super.limpa();
+		
+		for (int i = 0; i < maosMaxJogador; i++)
+			apostaMao[i] = 0;
+	
+		asesSplitFlag = false;
+	}
+	
+	/* Gets */
 	int getBalanco() {
 		return balanco;
 	}
 	
 	int[] getApostas() {
 		return apostaMao;
+	}
+	
+	/* Validacoes */
+	@Override
+	int possuiBlackjack(int indMao) {
+		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21 && !asesSplitFlag)
+			return 1;
+		return 0;
+	}
+	
+	boolean validaApostaInicial() {
+		return Participante.validaAposta(apostaMao[0]);
+	}
+	
+	boolean verificaBalancoMinimo() {
+		return Participante.validaAposta(balanco);
 	}
 
 	/**
@@ -50,7 +83,17 @@ class Jogador extends Participante {
 			apostaMao[i] = 0;
 		}
 	}
-
+	
+	/* Acoes */
+	
+	/**
+	 * Dobra aposta da mao indMao.
+	 * @return Se aposta valida, retorna true. Do contrario, false.
+	 */
+	boolean double_(int indMao) {
+		return aposta(apostaMao[indMao], indMao);
+	}
+	
 	/**
 	 * Incrementa aposta da mao indMao com valor.
 	 * 
@@ -71,16 +114,8 @@ class Jogador extends Participante {
 		balanco += 2 * apostaMao[indMao];
 	}
 
-	/**
-	 * Dobra aposta da mao indMao.
-	 * @return Se aposta valida, retorna true. Do contrario, false.
-	 */
-	boolean double_(int indMao) {
-		return aposta(apostaMao[indMao], indMao);
-	}
-
-/* A SER IMPLEMENTADO
-	void split() {		
-	}
-*/
+	/* A SER IMPLEMENTADO
+		void split() {		
+		}
+	*/
 }

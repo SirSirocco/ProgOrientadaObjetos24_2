@@ -5,14 +5,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class JanelaJogador extends JFrame {
-
+	
+	int idxMao;
+	
 	int balanco;
     private JLabel lblCreditos;
     private JLabel lblValorAposta;
     private JLabel lblCartas;
     private JButton btnHit, btnStand, btnDouble, btnSurrender;
 
-    public JanelaJogador() {
+    public JanelaJogador(int idxMao) {
+    	
+    	this.idxMao = idxMao;
+    	
         setTitle("Janela do Jogador");
         setSize(1366, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
