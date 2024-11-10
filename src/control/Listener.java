@@ -43,3 +43,15 @@ class DealerCompraCarta extends Listener implements ActionListener {
 		ctrl.dealerHit();
 	}
 }
+
+/**
+ * Listener para o split do jogador.
+ */
+class SplitListener extends Listener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
+    }
+}
+
+

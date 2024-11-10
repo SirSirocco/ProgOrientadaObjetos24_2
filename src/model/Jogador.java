@@ -114,8 +114,26 @@ class Jogador extends Participante {
 		balanco += 2 * apostaMao[indMao];
 	}
 
-	/* A SER IMPLEMENTADO
-		void split() {		
-		}
-	*/
+	/**
+     * Realiza o split da mão, caso as duas primeiras cartas tenham o mesmo valor.
+     */
+    public void split() {
+    	int flagMesmoValor = Participante.verificaCartasMesmoValor(mao.get(0).cartas.get(0), mao.get(0).cartas.get(1));
+    	
+        if (mao.get(0).getNumCartas() == 2 && flagMesmoValor != -1) {
+            Carta carta1 = mao.get(0).cartas.get(0);
+            Carta carta2 = mao.get(0).cartas.get(1);
+
+            mao.get(0).cartas.clear(); // Limpar mão original
+            mao.get(0).insere(carta1);
+            mao.get(1).insere(carta2);
+            ativaMao(1); // Ativar segunda mão
+
+            // Caso sejam dois Ases, não é possível mais fazer BlackJack
+            if (flagMesmoValor == 1) {
+                // Marcar que o blackjack não é possível
+            	asesSplitFlag = true;
+            }
+        }
+    }
 }

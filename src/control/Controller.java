@@ -12,7 +12,7 @@ class MecanicaJogo implements Runnable {
 	}
 }
 
-class Controller implements Observable {
+public class Controller implements Observable {
 	// SINGLETON
 	static Controller ctrl = null;
 
@@ -64,7 +64,7 @@ class Controller implements Observable {
 	 * 
 	 * @return
 	 */
-	static Controller getController() {
+	public static Controller getController() {
 		if (ctrl == null)
 			ctrl = new Controller();
 
@@ -130,7 +130,7 @@ class Controller implements Observable {
 	}
 
 	JanelaJogador criaJJogador(int idxMao) {
-		JanelaJogador janela = new JanelaJogador(idxMao);
+		JanelaJogador janela = new JanelaJogador(0, idxMao);
 		return janela;
 	}
 
@@ -303,7 +303,7 @@ class Controller implements Observable {
 
 	//////////////////////////////////////////////
 	// DEALER
-
+	
 	void mudancaDealerMao() {
 		estadoObservable = MUD_DEALER_MAO;
 		notificaEventoBanca();
@@ -316,6 +316,11 @@ class Controller implements Observable {
 
 	//////////////////////////////////////////////
 	// JOGADOR
+	
+	/* GET */
+	public int getJogadorBalanco(int indexJ) {
+		return model.jogadorBalanco(indexJ);
+	}
 
 	/* MUDANCA */
 	void mudancaJogadorBalanco() {
@@ -403,6 +408,23 @@ class Controller implements Observable {
 		}
 		
 		return status;
+	}
+	
+	/* SPLIT */
+	void jogadorSplitCond() {
+		
+	}
+	
+	
+	void jogadorSplit() {
+		model.jogadorSplit(0);
+		mudancaJogadorBalanco();
+		for (int i = 0; i < maosMax; i++) {
+			mudancaJogadorMao(i);
+			mudancaJogadorAposta(i);
+		}
+		
+		janelaJogador.get(1).setVisible(true);
 	}
 
 	/* APOSTA */

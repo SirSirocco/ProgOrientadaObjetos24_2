@@ -190,4 +190,8 @@ public class FachadaModel {
 	public void jogadorStand(int indexJ, int indexMao) {
 		jogadores.get(indexJ).stand(indexMao);
 	}
+	
+	public void jogadorSplit(int indexJ) {
+		jogadores.get(indexJ).split();
+	}
 }
