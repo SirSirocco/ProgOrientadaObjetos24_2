@@ -1,20 +1,23 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
-public class JanelaBanca extends JFrame{
+import observer.*;
+
+public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	int x, y, width, heigth;
 	Container c = getContentPane();
 	BPanel p;
 	Image deck, backgroundImage, fichas[] = new Image[6];
 	JLabel valor = new JLabel("0");
 	ArrayList<Image> imagens = new ArrayList<Image>();
-	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private JButton saveButton = new JButton("Salvar");
 	
@@ -41,7 +44,7 @@ public class JanelaBanca extends JFrame{
 		// Define o tamanho e posição da janela
 		width = backgroundImage.getWidth(null) + 15;
 		heigth = backgroundImage.getHeight(null) + 39;
-		x = ((int)screenSize.getWidth() - width)/2;
+		x = ScreenSize.getWidth() / 2 - width + 250;
 		
 		// Define o painel da imagem de fundo
 		p = new BPanel(imagens);
@@ -61,7 +64,7 @@ public class JanelaBanca extends JFrame{
 		c.add(saveButton);
 		c.add(p);
 		
-		setBounds(x, 0, width, heigth);
+		setBounds(x, 70, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
@@ -133,8 +136,29 @@ public class JanelaBanca extends JFrame{
 	public void atualizaValorCartas(int val) {
 		valor.setText(Integer.toString(val));
 	}
+	
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX(), y = e.getY();
+		System.out.printf("x: %d y: %d", x, y);
+	}
+	
+	public void notify(Observable o) {
+		
+	}
 
 	public JButton getBtnSave() {
 		return saveButton;
 	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

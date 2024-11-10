@@ -20,7 +20,7 @@ public class JanelaJogador extends JFrame {
         this.indexJ = indexJ;
         this.indexMao = indexMao;
         setTitle("Janela do Jogador");
-        setSize(1366, 768);
+        setBounds(x , 70, width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         inicializarComponentes();
     }

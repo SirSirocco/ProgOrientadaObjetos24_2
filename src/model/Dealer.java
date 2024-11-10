@@ -3,7 +3,7 @@ package model;
 class Dealer extends Participante {
 	private static final int maosMaxDealer = 1; // Numero maximo de maos do dealer
 	static Dealer dealer = null;
-	final int hitUntil = 17;
+	public final int hitUntil = 17;
 	
 	private Dealer() {
 		super(maosMaxDealer);
