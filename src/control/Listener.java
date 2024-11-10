@@ -41,7 +41,7 @@ class SalvarJogo extends Listener implements ActionListener {
 	}
 }
 
-// LISTENERS PARA JANELA DO JOGADOR
+// LISTENERS PARA CONTROLE DO JOGADOR
 class HitJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
@@ -61,6 +61,12 @@ class DoubleJogador extends Listener implements ActionListener {
 }
 
 class SurrenderJogador extends Listener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}
+
+class SplitJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 	}

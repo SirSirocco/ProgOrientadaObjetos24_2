@@ -1,13 +1,17 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
-public class JanelaBanca extends JFrame{
+import observer.*;
+
+public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	int x, y, width, heigth;
 	Container c = getContentPane();
 	BPanel p;
@@ -132,8 +136,29 @@ public class JanelaBanca extends JFrame{
 	public void atualizaValorCartas(int val) {
 		valor.setText(Integer.toString(val));
 	}
+	
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX(), y = e.getY();
+		System.out.printf("x: %d y: %d", x, y);
+	}
+	
+	public void notify(Observable o) {
+		
+	}
 
 	public JButton getBtnSave() {
 		return saveButton;
 	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }
