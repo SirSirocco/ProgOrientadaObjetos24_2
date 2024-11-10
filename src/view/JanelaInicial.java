@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class JanelaInicial extends JFrame {
-	private static final int LARG_DFL = 400; // pixels
-	private static final int ALT_DFL = 300;  // pixels
+	private static final int LARG_DFL = 1366; // pixels
+	private static final int ALT_DFL = 768;  // pixels
 	
 	private JButton btnJogoNovo = new JButton("Começar novo jogo");
 	private JButton btnJogoSalvo = new JButton("Retomar jogo salvo");

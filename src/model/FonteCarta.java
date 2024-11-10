@@ -29,6 +29,7 @@ class FonteCarta {
 	 * @return True caso preciso embaralhar, falso caso contrário.
 	 */
 	static boolean checaEmbaralha() {
+		System.out.println("EMBARALHA"); ////////////////////////
 		return contCartas >= numBaralhos * 52 * limiteEmbaralha;
 	}
 
@@ -37,8 +38,9 @@ class FonteCarta {
 	 */
 	static void embaralha() {
 		Collections.shuffle(fonte);
+		contCartas = 0; // Reinicia contador de cartas
 	}
-
+	
 	/**
 	 * Retira uma carta do início da fila e coloca no final.
 	 * 

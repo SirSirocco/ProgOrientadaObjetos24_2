@@ -82,8 +82,8 @@ abstract class Participante {
 	 * @return 0, se houver empate; um inteiro maior que zero, caso o jogador venca;
 	 * um inteiro menor que zero, caso o dealer venca.
 	 */
-	static int verificaVencedor(Jogador jogador, int indMao, boolean asesSplitFlag, int pontosDealer) {
-		int pontosJogador = jogador.possuiBlackjack(indMao, asesSplitFlag) + jogador.mao.get(indMao).calculaPontosMao();
+	static int verificaVencedor(Jogador jogador, int indMao, int pontosDealer) {
+		int pontosJogador = jogador.possuiBlackjack(indMao) + jogador.mao.get(indMao).calculaPontosMao();
 
 		return pontosJogador - pontosDealer;
 	}
@@ -95,8 +95,8 @@ abstract class Participante {
 	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
 	 * @return 1, se for Blackjack. Do contrario, 0.
 	 */
-	int possuiBlackjack(int indMao, boolean asesSplitFlag) {
-		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21 && !asesSplitFlag)
+	int possuiBlackjack(int indMao) {
+		if (mao.get(indMao).getNumCartas() == 2 && mao.get(indMao).calculaPontosMao() == 21)
 			return 1;
 		return 0;
 	}
@@ -125,6 +125,7 @@ abstract class Participante {
 
 	void ativaMao(int indMao) {
 		maosAtivas[indMao] = true;
+		maosQuebradas[indMao] = false;
 	}
 	
 	/////////////////////////////////
@@ -144,6 +145,7 @@ abstract class Participante {
 	void hit(int indMao) {
 		Carta novaCarta = FonteCarta.compraCarta();
 		mao.get(indMao).insere(novaCarta);
+		System.out.println("HIT"); ////////////////////////
 	}
 
 	/**
@@ -159,10 +161,13 @@ abstract class Participante {
 		for (int i = 0; i < numMaosMax; i++)
 			mao.get(i).limpaMao();
 		
-		for (int i = 0; i < numMaosMax; i++)
-			maosAtivas[i] = maosQuebradas[i] = false;
+		for (int i = 0; i < numMaosMax; i++) {
+			maosAtivas[i] = false;
+			maosQuebradas[i] = true;
+		}
 		
 		ativaMao(0);
+		System.out.println("LIMPA"); ////////////////////////
 	}
 	/////////////////////////////////////////////
 }

@@ -18,9 +18,7 @@ abstract class Listener {
  */
 class JogoNovo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		ctrl.saiMenuEntraBanca();
-		// ctrl.painelJogo();
-
+		ctrl.jogoNovo();
 	}
 }
 
@@ -29,9 +27,7 @@ class JogoNovo extends Listener implements ActionListener {
  */
 class JogoSalvo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		ctrl.recuperaJogoSalvo();
-		ctrl.saiMenuEntraBanca();
-		// ctrl.painelJogo();
+		ctrl.recuperaJogo();
 	}
 }
 
@@ -40,6 +36,17 @@ class SalvarJogo extends Listener implements ActionListener {
 		ctrl.salvaJogo();
 	}
 }
+
+/**
+ * Listener para o split do jogador.
+ */
+class SplitListener extends Listener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
+    }
+}
+
 
 // LISTENERS PARA CONTROLE DO JOGADOR
 class HitJogador extends Listener implements ActionListener {
@@ -66,8 +73,13 @@ class SurrenderJogador extends Listener implements ActionListener {
 	}
 }
 
+/**
+ * Listener para o split do jogador.
+ */
 class SplitJogador extends Listener implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
-		
-	}
+	@Override
+    public void actionPerformed(ActionEvent e) {
+        ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
+    }
 }
+

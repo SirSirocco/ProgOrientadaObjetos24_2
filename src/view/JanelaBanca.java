@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 
-import observer.*;
+import control.Observer;
+import control.Observable;
 
 public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	int x, y, width, heigth;
