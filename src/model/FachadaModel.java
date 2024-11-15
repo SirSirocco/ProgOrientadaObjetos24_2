@@ -127,6 +127,17 @@ public class FachadaModel {
 		return jogadores.get(indexJ).calculaPontos(indexMao);
 	}
 	
+	public int jogadorNumMaosAtivas(int indexJ) {
+		return jogadores.get(indexJ).getNumMaosAtivas();
+	}
+	
+	public int jogadorNumMaosFinalizadas(int indexJ) {
+		return jogadores.get(indexJ).getNumMaosFinalizadas();
+	}
+	
+	public int jogadorGetNumCartas(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).getNumCartas(indexMao);
+	}
 	
 	/* Verificacoes */
 	
@@ -146,8 +157,12 @@ public class FachadaModel {
 		return jogadores.get(indexJ).checaMaoAtiva(indexMao);
 	}
 	
-	public boolean jogadorQuebrado(int indexJ, int indexMao) {
+	public boolean jogadorMaoQuebrada(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).checaQuebrada(indexMao);
+	}
+	
+	public boolean jogadorMaoFinalizada(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).checaFinalizada(indexMao);
 	}
 	
 	public int jogadorVerificaVitoria(int indexJ, int indexMao) {
@@ -157,6 +172,13 @@ public class FachadaModel {
 		return Participante.verificaVencedor(jogadores.get(indexJ), indexMao, dealer.calculaPontos(0));
 	}
 	
+	public boolean jogadorSaldoSuficienteDobra(int indexJ) {
+		return jogadores.get(indexJ).validaDobraAposta();
+	}
+	
+	public boolean jogadorPrimCartasMesmoValor(int indexJ) {
+		return jogadores.get(indexJ).verificaPrimDuasCartasMesmoValor();
+	}
 	
 	/* Acoes */
 	public void jogadorHit(int indexJ, int indexMao) {
@@ -167,7 +189,7 @@ public class FachadaModel {
 		boolean quebra = jogadores.get(indexJ).checaQuebra(indexMao);
 
 		if (quebra && !jogadores.get(indexJ).checaQuebrada(0))
-			dealer.quebraMao(indexMao);
+			jogadores.get(indexJ).quebraMao(indexMao);
 
 		return quebra;
 	}
@@ -187,8 +209,16 @@ public class FachadaModel {
 		jogadores.get(indexJ).venceAposta(indexMao);
 	}
 	
+	public void jogadorSurrender(int indexJ) {
+		jogadores.get(indexJ).surrender();
+	}
+	
 	public void jogadorStand(int indexJ, int indexMao) {
 		jogadores.get(indexJ).stand(indexMao);
+	}
+	
+	public void jogadorDouble(int indexJ) {
+		jogadores.get(indexJ).double_(0);
 	}
 	
 	public void jogadorSplit(int indexJ) {

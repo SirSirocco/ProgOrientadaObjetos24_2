@@ -37,39 +37,28 @@ class SalvarJogo extends Listener implements ActionListener {
 	}
 }
 
-/**
- * Listener para o split do jogador.
- */
-class SplitListener extends Listener implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
-    }
-}
-
-
 // LISTENERS PARA CONTROLE DO JOGADOR
 class HitJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		
+		ctrl.jogadorHitCond();
 	}
 }
 
 class StandJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		
+		ctrl.jogadorStandCond();
 	}
 }
 
 class DoubleJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		
+		ctrl.jogadorDoubleCond();
 	}
 }
 
 class SurrenderJogador extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		
+		ctrl.jogadorSurrenderCond();
 	}
 }
 
@@ -82,4 +71,3 @@ class SplitJogador extends Listener implements ActionListener {
         ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
     }
 }
-
