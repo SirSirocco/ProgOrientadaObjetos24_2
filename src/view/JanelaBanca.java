@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.imageio.ImageIO;
 
 import control.Observer;
+import control.Controller;
 import control.Observable;
 
 public class JanelaBanca extends JFrame implements Observer, MouseListener {
@@ -19,6 +20,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	Image deck, backgroundImage, fichas[] = new Image[6];
 	JLabel valor = new JLabel("0");
 	ArrayList<Image> imagens = new ArrayList<Image>();
+	Controller ctrl = Controller.getController();
 	
 	private JButton saveButton = new JButton("Salvar");
 	
@@ -49,7 +51,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		
 		// Define o painel da imagem de fundo
 		p = new BPanel(imagens);
-		p.setBackground(Color.WHITE);
+		p.setBackground(Color.BLACK);
 		p.setBounds(0, 0, width, heigth);
 		
 		// Define o botão de salvamento
@@ -69,6 +71,30 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
+	///////////////////////////////////////
+	// Padrao Observer
+	public void notify(Observable o) {
+		int estado = o.get();
+		update(estado);
+	}
+	
+	private void update(int estado) {
+		switch (estado) {
+		case MUD_DEALER_MAO:
+			atualizaCartas();
+			break;
+		}
+	}
+	
+	///////////////////////////////////////
+	// Gets
+	
+	public JButton getBtnSave() {
+		return saveButton;
+	}
+	
+	///////////////////////////////////////
+	// Manipulacao de imagens
 	Image pegaImagem(String caminho) {
 		Image result = null;
 		try {
@@ -95,6 +121,9 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		} catch (NumberFormatException e) {
 			valor = valor.toLowerCase();
 		}
+		
+		if (valor == "10")
+			valor = "t";
 
 		switch (naipe) {
 		case "Paus":
@@ -126,31 +155,37 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		return result;
 	}
 	
-	public void mostraCartas(ArrayList<ArrayList<String>> cs) {
-		ArrayList<Image> result = new ArrayList<>();
-		for (ArrayList<String> c: cs) {
-			result.add(pegaCarta(c.get(0), c.get(1)));
-		}
-		p.adicionaImagem(result);
+	private void atualizaCartas() {
+		atualizaImagemCartas();
+		atualizaValorCartas();
 	}
 	
-	public void atualizaValorCartas(int val) {
-		valor.setText(Integer.toString(val));
+//	private void atualizaImagemCartas() {
+//		ArrayList<ArrayList<String>> cs = ctrl.getDealerCartas();
+//		ArrayList<Image> result = new ArrayList<>();
+//		for (ArrayList<String> c: cs) {
+//			result.add(pegaCarta(c.get(0), c.get(1)));
+//		}
+//		p.adicionaImagem(result);
+//	}
+	
+	private void atualizaImagemCartas() {
+		ArrayList<ArrayList<String>> cs = ctrl.getDealerCartas();
+		ProcessadorImagem.atualizaImagemCartas(p, cs);
 	}
 	
+	private void atualizaValorCartas() {
+		valor.setText(Integer.toString(ctrl.getDealerPontos()));
+	}
+	
+	///////////////////////////////////////
+	// MouseListener
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		int x = e.getX(), y = e.getY();
 		System.out.printf("x: %d y: %d", x, y);
 	}
 	
-	public void notify(Observable o) {
-		
-	}
-
-	public JButton getBtnSave() {
-		return saveButton;
-	}
-
 	@Override
 	public void mousePressed(MouseEvent e) {}
 

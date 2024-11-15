@@ -1,5 +1,5 @@
 package control;
 
-public interface Observer {
+public interface Observer extends TabelaCodigo {
 	void notify(Observable o);
 }

@@ -38,8 +38,8 @@ class Jogador extends Participante {
 		return balanco;
 	}
 	
-	int[] getApostas() {
-		return apostaMao;
+	int getApostas(int indexMao) {
+		return apostaMao[indexMao];
 	}
 	
 	/* Validacoes */

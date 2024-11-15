@@ -1,6 +1,7 @@
 package control;
 
 import java.util.*;
+
 import model.FachadaModel;
 import view.*;
 
@@ -40,10 +41,10 @@ public class Controller implements Observable {
 	// Tabela de estados do observable
 	private int estadoObservable;
 
-	private final int MUD_DEALER_MAO = -1;
-	private final int MUD_JOGADOR_MAO = 100;
-	private final int MUD_JOGADOR_APOSTA = 200;
-	private final int MUD_JOGADOR_BALANCO = 300;
+	public final int MUD_DEALER_MAO = -1;
+	public final int MUD_JOGADOR_MAO = 100;
+	public final int MUD_JOGADOR_APOSTA = 200;
+	public final int MUD_JOGADOR_BALANCO = 300;
 
 	// VARIAVEIS DE CONTROLE
 	private int maoCorrente;
@@ -100,8 +101,8 @@ public class Controller implements Observable {
 		}
 	}
 
-	public Object get() {
-		return estadoObservable; // VERIFICAR DEPOIS
+	public int get() {
+		return estadoObservable;
 	}
 
 	public void notificaEventoBanca() {
@@ -158,9 +159,13 @@ public class Controller implements Observable {
 
 		menu = criaMenu();
 		janelaBanca = criaJBanca();
+		this.addObserver(janelaBanca,  'B');
 
 		for (int i = 0; i < maosMax; i++)
+		{
 			janelaJogador.add(criaJJogador(i));
+			this.addObserver(janelaJogador.get(i), 'J');
+		}	
 
 		menu.setVisible(true);
 		System.out.println("INIT");///////////////////////////
@@ -247,8 +252,10 @@ public class Controller implements Observable {
 		}
 			
 		jogadorAtivo = 0;
-		janelaJogador.get(1).setVisible(true);
+		janelaJogador.get(1).setVisible(false);
 		
+		
+		mudancaNovaRodada();
 		estadoJogo = JOGADOR;
 	}
 
@@ -321,6 +328,16 @@ public class Controller implements Observable {
 	//////////////////////////////////////////////
 	// DEALER
 	
+	/* Gets */
+	
+	public int getDealerPontos() {
+		return model.dealerCalculaPontos();
+	}
+	
+	public ArrayList<ArrayList<String>> getDealerCartas() {
+		return model.getCartasDealer();
+	}
+	
 	void mudancaDealerMao() {
 		estadoObservable = MUD_DEALER_MAO;
 		notificaEventoBanca();
@@ -334,9 +351,21 @@ public class Controller implements Observable {
 	//////////////////////////////////////////////
 	// JOGADOR
 	
-	/* GET */
+	/* Gets */
+	public int getJogadorAposta(int indexJ, int indexMao) {
+		return model.jogadorAposta(indexJ, indexMao);
+	}
+	
 	public int getJogadorBalanco(int indexJ) {
 		return model.jogadorBalanco(indexJ);
+	}
+	
+	public ArrayList<ArrayList<String>> getJogadorCartas(int indexJ, int indexMao) {
+		return model.getCartasJogador(indexJ, indexMao);
+	}
+	
+	public int getJogadorPontos(int indexJ, int indexMao) {
+		return model.jogadorCalculaPontos(indexJ, indexMao);
 	}
 
 	/* MUDANCA */

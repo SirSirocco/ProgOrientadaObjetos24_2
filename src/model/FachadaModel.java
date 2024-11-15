@@ -119,12 +119,30 @@ public class FachadaModel {
 	// JOGADOR
 	
 	/* Gets */
-	public int jogadorBalanco(int ind) {
-		return jogadores.get(ind).getBalanco();
+	public int jogadorAposta(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).getApostas(indexMao);
+	}
+	
+	public int jogadorBalanco(int indexJ) {
+		return jogadores.get(indexJ).getBalanco();
 	}
 
 	public int jogadorCalculaPontos(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).calculaPontos(indexMao);
+	}
+	
+	public ArrayList<ArrayList<String>> getCartasJogador(int indexJ, int indexMao) {
+		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		List<Carta> cartas = jogadores.get(indexJ).mao.get(indexMao).cartas;
+
+		for (int i = 0; i < cartas.size(); i++) {
+			ArrayList<String> linha = new ArrayList<>();
+			linha.add(cartas.get(i).getNaipe());
+			linha.add(cartas.get(i).getValor());
+			result.add(linha);
+		}
+
+		return result;
 	}
 	
 	public int jogadorNumMaosAtivas(int indexJ) {
