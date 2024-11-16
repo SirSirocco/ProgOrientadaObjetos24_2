@@ -186,13 +186,22 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		final int buttonHeight = 50, buttonWidth = 142, buttonY = 730;
 		final int buttonOffset = 151;
+		
+		final int chipNum = 6;
+		final int chipSide = 60, chipOffset = 70, chipX0 = 939;
+		int chipPos[] = new int[chipNum];
+		
 		int x = e.getX(), y = e.getY();
 		
 		final int firstButton = 218;
 		final int secondButton = 218 + buttonOffset;
 		final int thirdButton = 218 + buttonOffset*2;
 		final int fourthButton = 218 + buttonOffset*3;
-
+		
+		for (int i = 0; i < chipPos.length; i++) {
+			chipPos[i] = 165 + i * chipOffset;
+		}
+		
 		System.out.printf("x: %d y: %d\n", x, y);
 		if ((x >= firstButton && x <= firstButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
 			doubleButton();
@@ -202,6 +211,15 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 			clearButton();
 		if ((x >= fourthButton && x <= fourthButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
 			dealButton();
+		
+		if (x >= chipX0 && x <= chipX0 + chipSide) {
+			if (y >= chipPos[0] && y <= chipPos[chipNum - 1] + chipSide) {
+				y = y - chipPos[0];
+				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum) + 1;
+				System.out.printf("ficha: %d\n", indexY);
+				
+			}
+		}
 	}
 	
 	void doubleButton() {
