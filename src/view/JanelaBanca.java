@@ -202,6 +202,8 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 			chipPos[i] = 165 + i * chipOffset;
 		}
 		
+		final int hitButtonX = 853, hitButtonY = 615, hitButtonWidth = 140;
+		
 		System.out.printf("x: %d y: %d\n", x, y);
 		if ((x >= firstButton && x <= firstButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
 			doubleButton();
@@ -216,10 +218,17 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 			if (y >= chipPos[0] && y <= chipPos[chipNum - 1] + chipSide) {
 				y = y - chipPos[0];
 				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum) + 1;
-				System.out.printf("ficha: %d\n", indexY);
-				
+				chipPressed(indexY);
 			}
 		}
+	}
+	
+	void chipPressed(int index) {
+		int valores[] = {1, 5, 10, 20, 50, 100};
+		if (index >=0 && index <= valores.length - 1) {
+			ctrl.jogadorIncrementaApostaInicial(valores[index]);
+		}
+		
 	}
 	
 	void doubleButton() {
@@ -237,6 +246,9 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 
 	void dealButton() {
 		System.out.println("apertou o botão de deal");
+	}
+	
+	void hitButton() {
 	}
 
 	@Override

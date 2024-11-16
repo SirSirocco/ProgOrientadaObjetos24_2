@@ -386,7 +386,7 @@ public class Controller implements Observable {
 	}
 	
 	/* APOSTA */
-	void jogadorIncrementaApostaInicial(int valor) {
+	public void jogadorIncrementaApostaInicial(int valor) {
 		int status = 0;
 		
 		if (model.jogadorIncrementaAposta(jogadorAtivo, 0, valor) == false)
