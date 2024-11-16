@@ -217,7 +217,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		if (x >= chipX0 && x <= chipX0 + chipSide) {
 			if (y >= chipPos[0] && y <= chipPos[chipNum - 1] + chipSide) {
 				y = y - chipPos[0];
-				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum) + 1;
+				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum);
 				chipPressed(indexY);
 			}
 		}

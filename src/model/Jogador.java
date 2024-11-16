@@ -103,7 +103,7 @@ class Jogador extends Participante {
 	 * @return Se aposta valida, retorna true. Do contrario, false.
 	 */
 	boolean aposta(int valor, int indMao) {
-		boolean valido = Participante.validaAposta(valor) && validaBalanco(valor);
+		boolean valido = /* Participante.validaAposta(valor) && */ validaBalanco(valor);
 
 		if (valido) {
 			balanco -= valor;
