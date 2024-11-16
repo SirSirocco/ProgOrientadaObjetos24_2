@@ -575,7 +575,7 @@ public class Controller implements Observable {
 		jogadorHit(indexJ, 0);
 	}
 	
-	void jogadorDoubleCond() {
+	public void jogadorDoubleCond() {
 		int status = 0;
 		
 		if (apostaOK == false)

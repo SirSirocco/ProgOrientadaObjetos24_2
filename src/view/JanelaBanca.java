@@ -67,6 +67,8 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		c.add(saveButton);
 		c.add(p);
 		
+		addMouseListener(this);
+		
 		setBounds(x, 70, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -182,10 +184,43 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	// MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		final int buttonHeight = 50, buttonWidth = 142, buttonY = 730;
+		final int buttonOffset = 151;
 		int x = e.getX(), y = e.getY();
-		System.out.printf("x: %d y: %d", x, y);
+		
+		final int firstButton = 218;
+		final int secondButton = 218 + buttonOffset;
+		final int thirdButton = 218 + buttonOffset*2;
+		final int fourthButton = 218 + buttonOffset*3;
+
+		System.out.printf("x: %d y: %d\n", x, y);
+		if ((x >= firstButton && x <= firstButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			doubleButton();
+		if ((x >= secondButton && x <= secondButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			splitButton();
+		if ((x >= thirdButton && x <= thirdButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			clearButton();
+		if ((x >= fourthButton && x <= fourthButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			dealButton();
 	}
 	
+	void doubleButton() {
+		System.out.println("apertou o botão de double");
+		ctrl.jogadorDoubleCond();
+	}
+	
+	void splitButton() {
+		System.out.println("apertou o botão de split");
+	}
+
+	void clearButton() {
+		System.out.println("apertou o botão de clear");
+	}
+
+	void dealButton() {
+		System.out.println("apertou o botão de deal");
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {}
 
