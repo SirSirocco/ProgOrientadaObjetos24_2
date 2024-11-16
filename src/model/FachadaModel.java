@@ -119,14 +119,43 @@ public class FachadaModel {
 	// JOGADOR
 	
 	/* Gets */
-	public int jogadorBalanco(int ind) {
-		return jogadores.get(ind).getBalanco();
+	public int jogadorAposta(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).getApostas(indexMao);
+	}
+	
+	public int jogadorBalanco(int indexJ) {
+		return jogadores.get(indexJ).getBalanco();
 	}
 
 	public int jogadorCalculaPontos(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).calculaPontos(indexMao);
 	}
 	
+	public ArrayList<ArrayList<String>> getCartasJogador(int indexJ, int indexMao) {
+		ArrayList<ArrayList<String>> result = new ArrayList<>();
+		List<Carta> cartas = jogadores.get(indexJ).mao.get(indexMao).cartas;
+
+		for (int i = 0; i < cartas.size(); i++) {
+			ArrayList<String> linha = new ArrayList<>();
+			linha.add(cartas.get(i).getNaipe());
+			linha.add(cartas.get(i).getValor());
+			result.add(linha);
+		}
+
+		return result;
+	}
+	
+	public int jogadorNumMaosAtivas(int indexJ) {
+		return jogadores.get(indexJ).getNumMaosAtivas();
+	}
+	
+	public int jogadorNumMaosFinalizadas(int indexJ) {
+		return jogadores.get(indexJ).getNumMaosFinalizadas();
+	}
+	
+	public int jogadorGetNumCartas(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).getNumCartas(indexMao);
+	}
 	
 	/* Verificacoes */
 	
@@ -146,8 +175,12 @@ public class FachadaModel {
 		return jogadores.get(indexJ).checaMaoAtiva(indexMao);
 	}
 	
-	public boolean jogadorQuebrado(int indexJ, int indexMao) {
+	public boolean jogadorMaoQuebrada(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).checaQuebrada(indexMao);
+	}
+	
+	public boolean jogadorMaoFinalizada(int indexJ, int indexMao) {
+		return jogadores.get(indexJ).checaFinalizada(indexMao);
 	}
 	
 	public int jogadorVerificaVitoria(int indexJ, int indexMao) {
@@ -157,6 +190,13 @@ public class FachadaModel {
 		return Participante.verificaVencedor(jogadores.get(indexJ), indexMao, dealer.calculaPontos(0));
 	}
 	
+	public boolean jogadorSaldoSuficienteDobra(int indexJ) {
+		return jogadores.get(indexJ).validaDobraAposta();
+	}
+	
+	public boolean jogadorPrimCartasMesmoValor(int indexJ) {
+		return jogadores.get(indexJ).verificaPrimDuasCartasMesmoValor();
+	}
 	
 	/* Acoes */
 	public void jogadorHit(int indexJ, int indexMao) {
@@ -167,7 +207,7 @@ public class FachadaModel {
 		boolean quebra = jogadores.get(indexJ).checaQuebra(indexMao);
 
 		if (quebra && !jogadores.get(indexJ).checaQuebrada(0))
-			dealer.quebraMao(indexMao);
+			jogadores.get(indexJ).quebraMao(indexMao);
 
 		return quebra;
 	}
@@ -187,8 +227,16 @@ public class FachadaModel {
 		jogadores.get(indexJ).venceAposta(indexMao);
 	}
 	
+	public void jogadorSurrender(int indexJ) {
+		jogadores.get(indexJ).surrender();
+	}
+	
 	public void jogadorStand(int indexJ, int indexMao) {
 		jogadores.get(indexJ).stand(indexMao);
+	}
+	
+	public void jogadorDouble(int indexJ) {
+		jogadores.get(indexJ).double_(0);
 	}
 	
 	public void jogadorSplit(int indexJ) {

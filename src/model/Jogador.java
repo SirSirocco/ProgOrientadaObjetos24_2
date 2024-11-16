@@ -38,8 +38,8 @@ class Jogador extends Participante {
 		return balanco;
 	}
 	
-	int[] getApostas() {
-		return apostaMao;
+	int getApostas(int indexMao) {
+		return apostaMao[indexMao];
 	}
 	
 	/* Validacoes */
@@ -56,6 +56,10 @@ class Jogador extends Participante {
 	
 	boolean verificaBalancoMinimo() {
 		return Participante.validaAposta(balanco);
+	}
+	
+	boolean validaDobraAposta() {
+		return validaBalanco(apostaMao[0]);
 	}
 
 	/**
@@ -116,7 +120,8 @@ class Jogador extends Participante {
 	/**
      * Realiza o split da mão, caso as duas primeiras cartas tenham o mesmo valor.
      */
-    public void split() {
+	
+    void split() {
     	int flagMesmoValor = Participante.verificaCartasMesmoValor(mao.get(0).cartas.get(0), mao.get(0).cartas.get(1));
     	
         if (mao.get(0).getNumCartas() == 2 && flagMesmoValor != -1) {

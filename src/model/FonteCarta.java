@@ -20,7 +20,7 @@ class FonteCarta {
 				}
 			}
 		}
-
+		embaralha();
 	}
 
 	/**

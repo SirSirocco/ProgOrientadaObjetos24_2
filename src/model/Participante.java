@@ -11,8 +11,10 @@ abstract class Participante {
 	List<Mao> mao;
 	int numMaosMax;			// Numero maximo de maos
 	boolean[] maosAtivas;	// Indica se a i-esima mao esta ativa (true) ou inativa (false)
+	boolean[] maosFinalizadas;
 	boolean[] maosQuebradas;
-	int numMaosAtivas = 1; 	// Todo participante comeca com uma mao ativa
+	int numMaosAtivas = 0;
+	int numMaosFinalizadas = 0;
 
 	// CONSTRUTOR
 	Participante(int numMaosMax) {
@@ -24,9 +26,10 @@ abstract class Participante {
 
 		maosAtivas = new boolean[numMaosMax];
 		maosQuebradas = new boolean[numMaosMax];
+		maosFinalizadas = new boolean[numMaosMax];
 		
 		for (int i = 0; i < numMaosMax; i++)
-			maosAtivas[i] = maosQuebradas[i] = false;
+			maosAtivas[i] = maosQuebradas[i] = maosFinalizadas[i] = false;
 		
 		ativaMao(0);
 	}
@@ -89,6 +92,19 @@ abstract class Participante {
 	}
 
 	// METODOS DE INSTANCIA
+	
+	int getNumMaosAtivas() {
+		return numMaosAtivas;
+	}
+	
+	int getNumMaosFinalizadas() {
+		return numMaosFinalizadas;
+	}
+	
+	int getNumCartas(int indexMao) {
+		return mao.get(indexMao).getNumCartas();
+	}
+	
 	/**
 	 * Indica se dada mao eh um Blackjack.
 	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
@@ -119,13 +135,18 @@ abstract class Participante {
 	
 	//////////////////////////////////////////
 	boolean checaQuebrada(int indMao) {
-		return maosQuebradas[indMao] == true;
+		return maosQuebradas[indMao];
+	}
+	
+	
+	boolean checaFinalizada(int indMao) {
+		return maosFinalizadas[indMao];
 	}
 	//////////////////////////////////////////
 
 	void ativaMao(int indMao) {
 		maosAtivas[indMao] = true;
-		maosQuebradas[indMao] = false;
+		numMaosAtivas++;
 	}
 	
 	/////////////////////////////////
@@ -152,8 +173,8 @@ abstract class Participante {
 	 * Inativa mao indMao.
 	 */
 	void stand(int indMao) {
-		maosAtivas[indMao] = false;
-		numMaosAtivas--;
+		maosFinalizadas[indMao] = true;
+		numMaosFinalizadas++;
 	}
 	
 	/////////////////////////////////////////////
@@ -161,13 +182,17 @@ abstract class Participante {
 		for (int i = 0; i < numMaosMax; i++)
 			mao.get(i).limpaMao();
 		
-		for (int i = 0; i < numMaosMax; i++) {
-			maosAtivas[i] = false;
-			maosQuebradas[i] = true;
-		}
+		for (int i = 0; i < numMaosMax; i++)
+			maosAtivas[i] = maosFinalizadas[i] = maosQuebradas[i] = false;
+		
+		numMaosAtivas = numMaosFinalizadas = 0;
 		
 		ativaMao(0);
 		System.out.println("LIMPA"); ////////////////////////
 	}
 	/////////////////////////////////////////////
+	
+	boolean verificaPrimDuasCartasMesmoValor() {
+		return Participante.verificaCartasMesmoValor(mao.get(0).cartas.get(0), mao.get(0).cartas.get(1)) != -1;
+	}
 }

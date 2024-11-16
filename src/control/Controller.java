@@ -1,6 +1,7 @@
 package control;
 
 import java.util.*;
+
 import model.FachadaModel;
 import view.*;
 
@@ -40,10 +41,10 @@ public class Controller implements Observable {
 	// Tabela de estados do observable
 	private int estadoObservable;
 
-	private final int MUD_DEALER_MAO = -1;
-	private final int MUD_JOGADOR_MAO = 100;
-	private final int MUD_JOGADOR_APOSTA = 200;
-	private final int MUD_JOGADOR_BALANCO = 300;
+	public final int MUD_DEALER_MAO = -1;
+	public final int MUD_JOGADOR_MAO = 100;
+	public final int MUD_JOGADOR_APOSTA = 200;
+	public final int MUD_JOGADOR_BALANCO = 300;
 
 	// VARIAVEIS DE CONTROLE
 	private int maoCorrente;
@@ -51,7 +52,11 @@ public class Controller implements Observable {
 	private int maosMax;
 	private int hitUntil;
 	private int cartasNovaRodada;
+	
+	
+	private int jogadorAtivo = 0;
 	private boolean apostaOK = false;
+	private boolean dealerBlackjack = false;
 	private boolean buttonsSwitch = false;
 
 	// INSTANCIACAO
@@ -96,8 +101,8 @@ public class Controller implements Observable {
 		}
 	}
 
-	public Object get() {
-		return estadoObservable; // VERIFICAR DEPOIS
+	public int get() {
+		return estadoObservable;
 	}
 
 	public void notificaEventoBanca() {
@@ -150,12 +155,17 @@ public class Controller implements Observable {
 		maoCorrente = 0;
 
 		estadoJogo = NOVA_RODADA;
+		apostaOK = false;
 
 		menu = criaMenu();
 		janelaBanca = criaJBanca();
+		this.addObserver(janelaBanca,  'B');
 
 		for (int i = 0; i < maosMax; i++)
+		{
 			janelaJogador.add(criaJJogador(i));
+			this.addObserver(janelaJogador.get(i), 'J');
+		}	
 
 		menu.setVisible(true);
 		System.out.println("INIT");///////////////////////////
@@ -181,7 +191,7 @@ public class Controller implements Observable {
 	void recuperaJogo() {
 		// RECUPERA JOGO
 		initJanelas();
-		ctrl.inicializaMecanicaJogo();
+		inicializaMecanicaJogo();
 	}
 
 	void salvaJogo() {
@@ -233,23 +243,35 @@ public class Controller implements Observable {
 
 		for (int i = 0; i < cartasNovaRodada; i++)
 			dealerHit();
+		
+		dealerBlackjack = model.dealerPossuiBlackjack();
 
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < cartasNovaRodada; j++)
 				jogadorHit(i, 0); // Jogadores compram duas cartas na mao de indice 0
 		}
-
+			
+		jogadorAtivo = 0;
+		janelaJogador.get(1).setVisible(false);
+		
+		
+		mudancaNovaRodada();
 		estadoJogo = JOGADOR;
 	}
 
 	void jogadorVez(int indexJ) {
-
-		estadoJogo = DEALER;
+		buttonsSwitch = true;
+		
+		for (jogadorAtivo = 0; jogadorAtivo < numJogadores; jogadorAtivo++) {
+			while (model.jogadorNumMaosAtivas(indexJ) > model.jogadorNumMaosFinalizadas(indexJ));
+		}
+		
+		buttonsSwitch = false;
 	}
 
 	void dealerVez() // OK
 	{
-		if (model.dealerPossuiBlackjack() == true) {
+		if (dealerBlackjack) {
 			estadoJogo = CHECA_VENCEDOR;
 			return;
 		}
@@ -262,13 +284,15 @@ public class Controller implements Observable {
 				return;
 			}
 		}
+		
+		estadoJogo = CHECA_VENCEDOR;
 	}
 
 	void dealerQuebra() // OK
 	{
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorQuebrado(i, j) == false)
+				if (model.jogadorMaoAtiva(i, j) == true && model.jogadorMaoQuebrada(i, j) == false)
 					jogadorVenceAposta(i, j);
 			}
 		}
@@ -277,7 +301,7 @@ public class Controller implements Observable {
 	void checaVencedor() { // OK
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorVerificaVitoria(i, j) > 0)
+				if (model.jogadorMaoAtiva(i, j) == true && model.jogadorVerificaVitoria(i, j) > 0)
 					jogadorVenceAposta(i, j);
 			}
 		}
@@ -304,6 +328,16 @@ public class Controller implements Observable {
 	//////////////////////////////////////////////
 	// DEALER
 	
+	/* Gets */
+	
+	public int getDealerPontos() {
+		return model.dealerCalculaPontos();
+	}
+	
+	public ArrayList<ArrayList<String>> getDealerCartas() {
+		return model.getCartasDealer();
+	}
+	
 	void mudancaDealerMao() {
 		estadoObservable = MUD_DEALER_MAO;
 		notificaEventoBanca();
@@ -317,9 +351,21 @@ public class Controller implements Observable {
 	//////////////////////////////////////////////
 	// JOGADOR
 	
-	/* GET */
+	/* Gets */
+	public int getJogadorAposta(int indexJ, int indexMao) {
+		return model.jogadorAposta(indexJ, indexMao);
+	}
+	
 	public int getJogadorBalanco(int indexJ) {
 		return model.jogadorBalanco(indexJ);
+	}
+	
+	public ArrayList<ArrayList<String>> getJogadorCartas(int indexJ, int indexMao) {
+		return model.getCartasJogador(indexJ, indexMao);
+	}
+	
+	public int getJogadorPontos(int indexJ, int indexMao) {
+		return model.jogadorCalculaPontos(indexJ, indexMao);
 	}
 
 	/* MUDANCA */
@@ -338,86 +384,239 @@ public class Controller implements Observable {
 		estadoObservable = MUD_JOGADOR_MAO + indexMao;
 		notificaEventoJogador();
 	}
-
-	/* HIT */ // OK
-	int jogadorHitCond(int indexJ, int indexMao) {
+	
+	/* APOSTA */
+	void jogadorIncrementaApostaInicial(int valor) {
 		int status = 0;
 		
-		if (!apostaOK)
+		if (model.jogadorIncrementaAposta(jogadorAtivo, 0, valor) == false)
 			status = 1;
 		
-		else if (!model.jogadorQuebrado(indexJ, indexMao))
+		else if (apostaOK)
 			status = 2;
-		
-		else if (!model.jogadorMaoAtiva(indexJ, indexMao))
-			status = 3;
-		
+
 		switch (status) {
 		case 0:
-			jogadorHit(indexJ, indexMao);
+			mudancaJogadorBalanco();
+			mudancaJogadorAposta(0);
+			System.out.println("Aposta inicial incrementada.");
 			break;
 		
 		case 1:
-			System.out.println("Você ainda não realizou sua aposta. Não é possível fazer hit.");
+			System.out.println("Saldo insuficiente.");
 			break;
 			
 		case 2:
-			System.out.println("Você não pode fazer hit depois de uma quebra.");
-			break;
-			
-		case 3:
-			System.out.println("Você não pode fazer hit depois de um stand.");
+			System.out.println("Aposta já realizada.");
 			break;
 		}
-		
-		return status;
 	}
 
+	/**
+	 * Deal eh sempre feito na mao de indice 0.
+	 * 
+	 * @param indexJ
+	 */
+	void jogadorDealCond() {
+		int status = 0;
+		
+		if (model.jogadorValidaApostaInicial(jogadorAtivo) == false)
+			status = 1;
+		
+		else if (apostaOK)
+			status = 2;
+		
+		switch (status) {
+		case 0:
+			apostaOK = true;
+			System.out.println("Aposta realizada com sucesso.");
+			break;
+			
+		case 1:
+			System.out.println("Valor abaixo da aposta minima."); // Depois gerar uma tela com a mensagem
+			break;
+			
+		case 2:
+			System.out.println("Aposta já realizada."); // Depois gerar uma tela com a mensagem
+			break;
+		}
+	}
+
+	void jogadorVenceAposta(int indexJ, int indexMao) {
+		model.jogadorVenceAposta(indexJ, indexMao);
+		mudancaJogadorBalanco();
+	}
+	
+	/* SURRENDER */
+	void jogadorSurrender(int indexJ) {
+		model.jogadorSurrender(indexJ);
+		mudancaJogadorBalanco();
+	}
+	
+	
+	void jogadorSurrenderCond() {
+		int status = 0;
+		
+		if (apostaOK == false)
+			status = 1;
+		
+		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+			status = 2;
+		
+		else if (model.jogadorGetNumCartas(jogadorAtivo, 0) > 2)
+			status = 3;
+		
+		else if (dealerBlackjack)
+			status = 4;
+		
+		switch (status) {
+		case 0:
+			jogadorSurrender(jogadorAtivo);
+			estadoJogo = NOVA_RODADA;
+			System.out.println("Surrender realizado com sucesso.");
+			break;
+			
+		case 1:
+			System.out.println("Surrender permitido depois da aposta inicial."); // Depois gerar uma tela com a mensagem
+			break;
+			
+		case 2:
+		case 3:
+			System.out.println("Surrender permitido apenas na mão inicial."); // Depois gerar uma tela com a mensagem
+			break;
+			
+		case 4:
+			System.out.println("Surrender não permitido, porque Dealer tem Blackjack.");
+			break;
+		}
+	}
+
+	/* HIT */
 	void jogadorHit(int indexJ, int indexMao) {
 		model.jogadorHit(indexJ, indexMao);
 		mudancaJogadorMao(indexMao);
+		
+		if (model.jogadorQuebra(indexJ, indexMao) == true)
+			System.out.printf("Mao %d quebrou.", indexMao);
 	}
 	
-	/* STAND */ // OK
-	int jogadorStandCond(int indexJ, int indexMao) {
+	void jogadorHitCond() {
 		int status = 0;
 		
-		if (!apostaOK)
+		if (apostaOK == false)
 			status = 1;
 		
-		else if (!model.jogadorQuebrado(indexJ, indexMao))
+		else if (model.jogadorMaoQuebrada(jogadorAtivo, maoCorrente) == true)
 			status = 2;
 		
-		else if (!model.jogadorMaoAtiva(indexJ, indexMao))
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, maoCorrente) == true)
 			status = 3;
 		
 		switch (status) {
 		case 0:
-			jogadorHit(indexJ, indexMao);
+			jogadorHit(jogadorAtivo, maoCorrente);
+			System.out.printf("Hit na mao %d realizado com sucesso.\n", maoCorrente + 1);
 			break;
 		
 		case 1:
-			System.out.println("Você ainda não realizou sua aposta. Não é possível fazer stand.");
+			System.out.println("Hit permitido depois da aposta inicial.");
 			break;
 			
 		case 2:
+			System.out.println("Hit não permitido para uma mão quebrada.");
 			break;
 			
 		case 3:
+			System.out.println("Hit não permitido depois do fim do turno.");
 			break;
 		}
+	}
+	
+	/* STAND */
+	void jogadorStand(int indexJ, int indexMao) {
+		model.jogadorStand(indexJ, indexMao);
+	}
+	
+	void jogadorStandCond() {
+		int status = 0;
 		
-		return status;
+		if (apostaOK == false)
+			status = 1;
+		
+		else if (model.jogadorMaoQuebrada(jogadorAtivo, maoCorrente) == true)
+			status = 2;
+		
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, maoCorrente) == true)
+			status = 3;
+		
+		switch (status) {
+		case 0:
+			jogadorStand(jogadorAtivo, maoCorrente);
+			estadoJogo = DEALER;
+			System.out.printf("Stand na mao %d realizado com sucesso.\n", maoCorrente + 1);
+			break;
+		
+		case 1:
+			System.out.println("Stand permitido depois da aposta inicial.");
+			break;
+			
+		case 2:
+		case 3:
+			System.out.println("Mão atual já finalizou o turno.");
+			break;
+		}
+	}
+	
+	/* DOUBLE */
+	void jogadorDouble(int indexJ) {
+		model.jogadorDouble(indexJ);
+		mudancaJogadorBalanco();
+		mudancaJogadorAposta(0);
+		jogadorHit(indexJ, 0);
+	}
+	
+	void jogadorDoubleCond() {
+		int status = 0;
+		
+		if (apostaOK == false)
+			status = 1;
+		
+		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+			status = 2;
+		
+		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
+			status = 2;
+		
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
+			status = 3;
+		
+		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == true)
+			status = 4;
+		
+		switch (status) {
+		case 0:
+			jogadorDouble(jogadorAtivo);
+			System.out.println("Double realizado com sucesso.");
+			break;
+		
+		case 1:
+			System.out.println("Double permitido depois da aposta inicial.");
+			break;
+			
+		case 2:
+		case 3:
+			System.out.println("Mão atual já finalizou o turno.");
+			break;
+			
+		case 4:
+			System.out.println("Saldo insuficiente.");
+			break;
+		}
 	}
 	
 	/* SPLIT */
-	void jogadorSplitCond() {
-		
-	}
-	
-	
-	void jogadorSplit() {
-		model.jogadorSplit(0);
+	void jogadorSplit(int indexJ) {
+		model.jogadorSplit(indexJ);
 		mudancaJogadorBalanco();
 		for (int i = 0; i < maosMax; i++) {
 			mudancaJogadorMao(i);
@@ -426,35 +625,50 @@ public class Controller implements Observable {
 		
 		janelaJogador.get(1).setVisible(true);
 	}
-
-	/* APOSTA */
-	void jogadorIncrementaApostaInicial(int indexJ, int valor) {
-		boolean status = model.jogadorIncrementaAposta(indexJ, 0, valor);
-
-		if (status) {
-			mudancaJogadorBalanco();
-			mudancaJogadorAposta(0);
-		} else
-			System.out.println("Saldo insuficiente."); // Depois gerar uma tela com a mensagem
-	}
-
-	/**
-	 * Deal eh sempre feito na mao de indice 0.
-	 * 
-	 * @param indexJ
-	 */
-	void jogadorDealCond(int indexJ) {
-		boolean status = model.jogadorValidaApostaInicial(indexJ);
+	
+	void jogadorSplitCond() {
+int status = 0;
 		
-		if (status)
-			apostaOK = true;
+		if (apostaOK == false)
+			status = 1;
 		
-		else
-			System.out.println("Valor abaixo da aposta minima."); // Depois gerar uma tela com a mensagem
-	}
-
-	void jogadorVenceAposta(int indexJ, int indexMao) {
-		model.jogadorVenceAposta(indexJ, indexMao);
-		mudancaJogadorBalanco();
+		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+			status = 2;
+		
+		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
+			status = 2;
+		
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
+			status = 3;
+		
+		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == true)
+			status = 4;
+		
+		else if (model.jogadorPrimCartasMesmoValor(jogadorAtivo) == false)
+			status = 5;
+		
+		switch (status) {
+		case 0:
+			jogadorSplit(jogadorAtivo);
+			System.out.println("Split realizado com sucesso.");
+			break;
+		
+		case 1:
+			System.out.println("Split permitido depois da aposta inicial.");
+			break;
+			
+		case 2:
+		case 3:
+			System.out.println("Mão atual já finalizou o turno.");
+			break;
+			
+		case 4:
+			System.out.println("Saldo insuficiente.");
+			break;
+		
+		case 5:
+			System.out.println("Cartas precisam ter mesmo valor para realizar Split");
+			break;
+		}
 	}
 }

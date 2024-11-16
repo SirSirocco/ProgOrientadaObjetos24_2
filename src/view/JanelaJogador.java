@@ -1,109 +1,139 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.util.ArrayList;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import control.Controller;
+import control.Observer;
+import control.Observable;
 
-public class JanelaJogador extends JFrame {
 
-    private int indexJ; // Referência ao modelo do jogador
-    private int indexMao;
-    private JLabel lblCreditos;
-    private JLabel lblValorAposta;
-    private JLabel lblCartas;
-    private final int width = 1366;
-    private final int height = 766;
+/**
+ * Janela responsavel pela exibicao da mao de indice indexMao
+ * do jogador indexJ.
+ * Implementa o padrao Observer.
+ * Conecta-se ao pacote control via chamadas ao Controller.
+ */
+public class JanelaJogador extends JFrame implements Observer {
+	// Identificador serial da classe
+	private static final long	serialVersionUID = 1L;
+	
+	// Constantes auxiliares
+	private final int	LARG_DFL = 768,
+					  	ALT_DFL = 546;
+	
+	private final String	msgCreditos = "Créditos: $",
+							msgAposta = "Aposta: $",
+							msgPontos = "Pontos: ";
+	
+	// Interface com o Controller
+	private int	indexJ,		// Indice do jogador respectivo a janela
+				indexMao; 	// Indice da mao
+	
+	private Controller ctrl = Controller.getController();
+	
+	// Elementos de tela
+    private JLabel 	lblCreditos,
+    				lblValorAposta,
+    				lblPontos;
     
-    private JButton btnHit, btnStand, btnDouble, btnSurrender;
-    
-    private Controller ctrl = Controller.getController();
-
+    private JJPanel painel;
+    Container c = getContentPane();
+	
+    ///////////////////////////////////////
+    // Construtor
     public JanelaJogador(int indexJ, int indexMao) {
-        this.indexJ = indexJ;
+        super("Janela do Jogador");
+        int x, y;
+        
+    	this.indexJ = indexJ;
         this.indexMao = indexMao;
-        setTitle("Janela do Jogador");
-        setBounds(0 , 70, width, height);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Centraliza janela
+        x = ScreenSize.getWidth() / 2 - LARG_DFL / 2;
+		y = ScreenSize.getHeight() / 2 - ALT_DFL / 2;
+		setBounds(x, y, LARG_DFL, ALT_DFL);
+		
+		// Define o painel da imagem de fundo
+		painel = new JJPanel();
+		painel.setBackground(Color.WHITE);
+		painel.setBounds(0, 0, LARG_DFL, ALT_DFL);
+		
+		// Adiciona os componentes ao painel
+		c.add(painel);
+        
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
         inicializarComponentes();
     }
-
+    
+    ///////////////////////////////////////
+    // Metodos de instancia
     private void inicializarComponentes() {
         setLayout(null);
 
         // Créditos do jogador
-        lblCreditos = new JLabel("Créditos: $" + ctrl.getJogadorBalanco(indexJ));
+        lblCreditos = new JLabel(msgCreditos + ctrl.getJogadorBalanco(indexJ));
         lblCreditos.setBounds(20, 20, 200, 30);
-        add(lblCreditos);
+        painel.add(lblCreditos);
 
         // Valor da Aposta
         lblValorAposta = new JLabel("Aposta: $0");
         lblValorAposta.setBounds(20, 60, 200, 30);
-        add(lblValorAposta);
-
-        // Cartas do Jogador
-        lblCartas = new JLabel("Cartas: Nenhuma");
-        lblCartas.setBounds(20, 100, 400, 30);
-        add(lblCartas);
-
-        // Botões de Ação
-//        btnHit = new JButton("Hit");
-//        btnHit.setBounds(20, 150, 100, 30);
-//        btnHit.addActionListener(e -> realizarAcaoHit());
-//        add(btnHit);
-//
-//        btnStand = new JButton("Stand");
-//        btnStand.setBounds(130, 150, 100, 30);
-//        btnStand.addActionListener(e -> realizarAcaoStand());
-//        add(btnStand);
-//
-//        btnDouble = new JButton("Double");
-//        btnDouble.setBounds(240, 150, 100, 30);
-//        btnDouble.addActionListener(e -> realizarAcaoDouble());
-//        add(btnDouble);
-//
-//        btnSurrender = new JButton("Surrender");
-//        btnSurrender.setBounds(350, 150, 100, 30);
-//        btnSurrender.addActionListener(e -> realizarAcaoSurrender());
-//        add(btnSurrender);
+        painel.add(lblValorAposta);
+        
+        // Pontos do jogador
+        lblPontos = new JLabel(msgPontos + ctrl.getJogadorPontos(indexJ, indexMao));
+        lblPontos.setBounds(20, 100, 200, 30);
+        painel.add(lblPontos);
+        
+        // Completar com exibicao das cartas
     }
-
-//    private void realizarAcaoHit() {
-//        // Logica para o jogador pegar uma nova carta
-//        // Atualizar a interface gráfica, exibindo as cartas novas
-//        lblCartas.setText("Cartas: Atualizado (simulando nova carta)");
-//    }
-//
-//    private void realizarAcaoStand() {
-//        // Logica para o jogador "parar"
-//        JOptionPane.showMessageDialog(this, "Jogador parou.");
-//    }
-//
-//    private void realizarAcaoDouble() {
-//        int apostaAtual = jogador.getApostas()[0];
-//        if (jogador.double_(0)) {
-//            lblValorAposta.setText("Aposta: $" + (apostaAtual * 2));
-//            lblCreditos.setText("Créditos: $" + jogador.getBalanco());
-//            JOptionPane.showMessageDialog(this, "Aposta dobrada!");
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Saldo insuficiente para dobrar a aposta.");
-//        }
-//    }
-//
-//    private void realizarAcaoSurrender() {
-//        jogador.surrender();
-//        lblCreditos.setText("Créditos: $" + jogador.getBalanco());
-//        JOptionPane.showMessageDialog(this, "Você se rendeu e perdeu metade da aposta.");
-//    }
-//
-//    public void update() {
-//        lblCreditos.setText("Créditos: $" + jogador.getBalanco());
-//        lblCartas.setText("Cartas: " + jogador.getMao(0).getNumCartas() + " cartas");
-//    }
-//
-//    public static void main(String[] args) {
-//        Jogador jogador = new Jogador();
-//        JanelaJogador janela = new JanelaJogador(jogador);
-//        janela.setVisible(true);
-//    }
+    
+    public void notify(Observable o) {
+    	int estado = o.get();
+    	update(estado);
+    }
+    
+    private void update(int estado) {
+    	if (estado % 10 != indexMao)
+    		return;
+    	
+    	estado -= indexMao;
+    	
+    	switch (estado) {
+    	case MUD_JOGADOR_APOSTA:
+    		atualizaAposta();
+    		break;
+    	
+    	case MUD_JOGADOR_BALANCO:
+    		atualizaBalanco();
+    		break;
+    		
+    	case MUD_JOGADOR_MAO:
+    		atualizaCartas();
+    		break;
+    	}
+    }
+    
+    private void atualizaAposta() {
+    	lblValorAposta.setText(msgAposta + ctrl.getJogadorAposta(indexJ, indexMao));
+    }
+    
+    private void atualizaBalanco() {
+    	lblValorAposta.setText(msgAposta + ctrl.getJogadorBalanco(indexJ));
+    }
+    
+    private void atualizaCartas() {
+    	lblPontos.setText(msgPontos + ctrl.getJogadorPontos(indexJ, indexMao));
+    	atualizaImagemCartas();
+    	// Completar com exibicao das cartas
+    }
+    
+    private void atualizaImagemCartas() {
+		ArrayList<ArrayList<String>> jogadorCartas = ctrl.getJogadorCartas(indexJ, indexMao);
+		ProcessadorImagem.atualizaImagemCartas(painel, jogadorCartas);
+	}
 }
