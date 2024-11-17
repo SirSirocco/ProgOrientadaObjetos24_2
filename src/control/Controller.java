@@ -627,7 +627,7 @@ public class Controller implements Observable {
 	}
 	
 	void jogadorSplitCond() {
-int status = 0;
+		int status = 0;
 		
 		if (apostaOK == false)
 			status = 1;

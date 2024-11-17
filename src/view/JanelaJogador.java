@@ -45,7 +45,7 @@ public class JanelaJogador extends JFrame implements Observer {
     ///////////////////////////////////////
     // Construtor
     public JanelaJogador(int indexJ, int indexMao) {
-        super("Janela do Jogador");
+        super("Janela do Jogador - Mâo " + (indexMao + 1));
         int x, y;
         
     	this.indexJ = indexJ;
