@@ -242,4 +242,8 @@ public class FachadaModel {
 	public void jogadorSplit(int indexJ) {
 		jogadores.get(indexJ).split();
 	}
+	
+	public void jogadorClear(int indexJ) {
+		jogadores.get(indexJ).clear();
+	}
 }

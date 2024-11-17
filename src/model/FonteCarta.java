@@ -12,7 +12,14 @@ class FonteCarta {
 		fonte = new ArrayList<>();
 		String[] naipes = { "Paus", "Ouros", "Espadas", "Copas" };
 		String[] valores = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-
+		
+		// Teste Blackjack Dealer
+		fonte.add(new Carta("Paus", "A"));
+		fonte.add(new Carta("Paus", "J"));
+		
+		fonte.add(new Carta("Paus", "A"));
+		fonte.add(new Carta("Paus", "A"));
+		
 		for (int i = 0; i < numBaralhos; i++) {
 			for (String naipe : naipes) {
 				for (String valor : valores) {
@@ -20,7 +27,7 @@ class FonteCarta {
 				}
 			}
 		}
-		embaralha();
+		// embaralha();
 	}
 
 	/**

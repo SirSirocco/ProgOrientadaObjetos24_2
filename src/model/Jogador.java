@@ -76,6 +76,7 @@ class Jogador extends Participante {
 	 */
 	void surrender() {
 		balanco += apostaMao[0] / 2;
+		numMaosFinalizadas = numMaosAtivas;
 	}
 
 	/**
@@ -94,7 +95,12 @@ class Jogador extends Participante {
 	 * @return Se aposta valida, retorna true. Do contrario, false.
 	 */
 	boolean double_(int indMao) {
-		return aposta(apostaMao[indMao], indMao);
+		boolean status = aposta(apostaMao[indMao], indMao);
+		
+		if (status)
+			hit(indMao);
+		
+		return status;
 	}
 	
 	/**
@@ -116,7 +122,12 @@ class Jogador extends Participante {
 	void venceAposta(int indMao) {
 		balanco += 2 * apostaMao[indMao];
 	}
-
+	
+	void clear() {
+		balanco += apostaMao[0];
+		apostaMao[0] = 0;
+	}
+	
 	/**
      * Realiza o split da mão, caso as duas primeiras cartas tenham o mesmo valor.
      */
@@ -132,6 +143,10 @@ class Jogador extends Participante {
             mao.get(0).insere(carta1);
             mao.get(1).insere(carta2);
             ativaMao(1); // Ativar segunda mão
+            
+            hit(0);
+            hit(1);
+            aposta(apostaMao[0], 1);
 
             // Caso sejam dois Ases, não é possível mais fazer BlackJack
             if (flagMesmoValor == 1) {

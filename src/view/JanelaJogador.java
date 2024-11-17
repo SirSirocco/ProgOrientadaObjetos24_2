@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -16,13 +18,13 @@ import control.Observable;
  * Implementa o padrao Observer.
  * Conecta-se ao pacote control via chamadas ao Controller.
  */
-public class JanelaJogador extends JFrame implements Observer {
+public class JanelaJogador extends JFrame implements Observer, MouseListener {
 	// Identificador serial da classe
 	private static final long	serialVersionUID = 1L;
 	
 	// Constantes auxiliares
-	private final int	LARG_DFL = 768,
-					  	ALT_DFL = 546;
+	private final int	LARG_DFL = 700,
+					  	ALT_DFL = 600;
 	
 	private final String	msgCreditos = "Créditos: $",
 							msgAposta = "Aposta: $",
@@ -64,6 +66,8 @@ public class JanelaJogador extends JFrame implements Observer {
 		// Adiciona os componentes ao painel
 		c.add(painel);
         
+		addMouseListener(this);
+		
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         inicializarComponentes();
@@ -123,7 +127,7 @@ public class JanelaJogador extends JFrame implements Observer {
     }
     
     private void atualizaBalanco() {
-    	lblValorAposta.setText(msgAposta + ctrl.getJogadorBalanco(indexJ));
+    	lblCreditos.setText(msgCreditos + ctrl.getJogadorBalanco(indexJ));
     }
     
     private void atualizaCartas() {
@@ -136,4 +140,24 @@ public class JanelaJogador extends JFrame implements Observer {
 		ArrayList<ArrayList<String>> jogadorCartas = ctrl.getJogadorCartas(indexJ, indexMao);
 		ProcessadorImagem.atualizaImagemCartas(painel, jogadorCartas);
 	}
+    
+	///////////////////////////////////////
+	// MouseListener
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		ctrl.defineMaoCorrente(indexMao);
+	}
+    
+    @Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+   
 }

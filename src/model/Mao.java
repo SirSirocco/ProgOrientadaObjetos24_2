@@ -49,5 +49,6 @@ class Mao {
 	void limpaMao() {
 		cartas.clear();
 		numCartas = 0;
+		temAs = false;
 	}
 }

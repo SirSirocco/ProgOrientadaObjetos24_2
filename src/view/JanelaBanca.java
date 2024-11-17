@@ -67,6 +67,8 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		c.add(saveButton);
 		c.add(p);
 		
+		addMouseListener(this);
+		
 		setBounds(x, 70, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -182,10 +184,118 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	// MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		final int buttonHeight = 50, buttonWidth = 142, buttonY = 730;
+		final int buttonOffset = 151;
+		
+		final int chipNum = 6;
+		final int chipSide = 60, chipOffset = 70, chipX0 = 939;
+		int chipPos[] = new int[chipNum];
+		
 		int x = e.getX(), y = e.getY();
-		System.out.printf("x: %d y: %d", x, y);
+		
+		final int firstButton = 218;
+		final int secondButton = 218 + buttonOffset;
+		final int thirdButton = 218 + buttonOffset*2;
+		final int fourthButton = 218 + buttonOffset*3;
+		
+		for (int i = 0; i < chipPos.length; i++) {
+			chipPos[i] = 165 + i * chipOffset;
+		}
+		
+		final int hitButtonX = 853, hitButtonY = 615, hitButtonWidth = 140, hitButtonHeigth = 43, offset = 60;
+		final int exitButtonX = 10, exitButtonY = 608, exitButtonHeight = 68, exitButtonWidth = 190;
+		
+		System.out.printf("x: %d y: %d\n", x, y);
+		if ((x >= firstButton && x <= firstButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			doubleButton();
+		if ((x >= secondButton && x <= secondButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			splitButton();
+		if ((x >= thirdButton && x <= thirdButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			clearButton();
+		if ((x >= fourthButton && x <= fourthButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
+			dealButton();
+		
+		if (x >= chipX0 && x <= chipX0 + chipSide) {
+			if (y >= chipPos[0] && y <= chipPos[chipNum - 1] + chipSide) {
+				y = y - chipPos[0];
+				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum);
+				chipPressed(indexY);
+			}
+		}
+		
+		if (x >= hitButtonX && x <= hitButtonX + hitButtonWidth)
+		{
+			if (y >= hitButtonY && y <= hitButtonY + hitButtonHeigth)
+			{
+				hitButton();
+			}
+			
+			if (y >= hitButtonY + offset && y <= hitButtonY + hitButtonHeigth + offset)
+			{
+				standButton();
+			}
+			
+			if (y >= hitButtonY + 2 * offset && y <= hitButtonY + hitButtonHeigth + 2 * offset)
+			{
+				surrenderButton();
+			}
+		}
+		
+		if (x >= exitButtonX && x <= exitButtonX + exitButtonWidth  && y >= exitButtonY && y <= exitButtonY + exitButtonY + exitButtonWidth)
+		{
+			exitButton();
+		}
+		
 	}
 	
+	void chipPressed(int index) {
+		int valores[] = {1, 5, 10, 20, 50, 100};
+		if (index >=0 && index <= valores.length - 1) {
+			ctrl.jogadorIncrementaApostaInicial(valores[index]);
+		}
+		
+	}
+	
+	void doubleButton() {
+		System.out.println("apertou o botão de double");
+		ctrl.jogadorDoubleCond();
+	}
+	
+	void splitButton() {
+		System.out.println("apertou o botão de split");
+		ctrl.jogadorSplitCond();
+	}
+
+	void clearButton() {
+		System.out.println("apertou o botão de clear");
+		ctrl.jogadorClearCond();
+	}
+
+	void dealButton() {
+		System.out.println("apertou o botão de deal");
+		ctrl.jogadorDealCond();
+	}
+	
+	void hitButton() {
+		System.out.println("apertou o botão de hit");
+		ctrl.jogadorHitCond();
+	}
+	
+	void standButton() {
+		System.out.println("apertou o botão de stand");
+		ctrl.jogadorStandCond();
+	}
+	
+	void surrenderButton() {
+		System.out.println("apertou o botão de surrender");
+		ctrl.jogadorSurrenderCond();
+	}
+	
+	void exitButton() {
+		System.out.println("apertou o botão de exit");
+	}
+
+
 	@Override
 	public void mousePressed(MouseEvent e) {}
 
