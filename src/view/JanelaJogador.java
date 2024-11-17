@@ -102,7 +102,11 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
     }
     
     private void update(int estado) {
-    	if (estado % 10 != indexMao)
+    	if (estado == MUD_JOGADOR_BALANCO) {
+    		atualizaBalanco();
+    	}
+    	
+    	else if (estado % 10 != indexMao)
     		return;
     	
     	estado -= indexMao;
@@ -110,10 +114,6 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
     	switch (estado) {
     	case MUD_JOGADOR_APOSTA:
     		atualizaAposta();
-    		break;
-    	
-    	case MUD_JOGADOR_BALANCO:
-    		atualizaBalanco();
     		break;
     		
     	case MUD_JOGADOR_MAO:
@@ -160,4 +160,12 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {}
    
+	public void toggleJanelaCor(int maoCorrente) {
+		if (maoCorrente == indexMao)
+			painel.setBackground(Color.WHITE);
+		else
+			painel.setBackground(Color.GRAY);
+			
+	}
+	
 }

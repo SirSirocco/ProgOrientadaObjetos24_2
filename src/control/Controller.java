@@ -141,6 +141,10 @@ public class Controller implements Observable {
 	public void defineMaoCorrente(int indexMao) {
 		maoCorrente = indexMao;
 		System.out.println("MAO COORENTE " + maoCorrente);
+		
+		for (JanelaJogador j : janelaJogador) {
+			j.toggleJanelaCor(maoCorrente);
+		}
 	}
 
 	///////////////////////////////
@@ -681,7 +685,8 @@ public class Controller implements Observable {
 			mudancaJogadorMao(i);
 			mudancaJogadorAposta(i);
 		}
-
+		
+		defineMaoCorrente(0);
 		janelaJogador.get(1).setVisible(true);
 	}
 
