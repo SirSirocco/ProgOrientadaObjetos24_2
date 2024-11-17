@@ -19,8 +19,8 @@ class FonteCarta {
 		
 		fonte.add(new Carta("Paus", "A"));
 		fonte.add(new Carta("Paus", "A"));
-		for (int i = 0; i < 10; i++)
-			fonte.add(new Carta("Paus", "A"));
+//		for (int i = 0; i < 10; i++)
+//			fonte.add(new Carta("Paus", "A"));
 		
 		for (int i = 0; i < numBaralhos; i++) {
 			for (String naipe : naipes) {
@@ -29,7 +29,7 @@ class FonteCarta {
 				}
 			}
 		}
-		// embaralha();
+		embaralha();
 	}
 
 	/**

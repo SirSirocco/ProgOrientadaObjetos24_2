@@ -557,7 +557,14 @@ public class Controller implements Observable {
 		mudancaJogadorMao(indexMao);
 
 		if (model.jogadorQuebra(indexJ, indexMao) == true)
+		{
 			System.out.printf("Mao %d quebrou.", indexMao);
+			
+			// TODO extrair funcao
+			if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+				buttonsSwitch = false;
+				estadoJogo = DEALER;
+		}
 	}
 
 	public void jogadorHitCond() {
@@ -597,7 +604,10 @@ public class Controller implements Observable {
 		model.jogadorStand(indexJ, indexMao);
 		
 		if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+		{
 			buttonsSwitch = false;
+			estadoJogo = DEALER;
+		}
 	}
 
 	public void jogadorStandCond() {
@@ -635,7 +645,7 @@ public class Controller implements Observable {
 		model.jogadorDouble(indexJ);
 		mudancaJogadorBalanco();
 		mudancaJogadorAposta(0);
-		jogadorHit(indexJ, 0);
+		mudancaJogadorMao(0);
 	}
 
 	public void jogadorDoubleCond() {
@@ -648,13 +658,13 @@ public class Controller implements Observable {
 			status = 2;
 
 		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
-			status = 2;
-
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 3;
 
-		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == true)
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 4;
+
+		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == false)
+			status = 5;
 
 		switch (status) {
 		case 0:
@@ -665,13 +675,17 @@ public class Controller implements Observable {
 		case 1:
 			System.out.println("Double permitido depois da aposta inicial.");
 			break;
-
+			
 		case 2:
+			System.out.println("Double permitido apenas com uma mao.");
+			break;
+
 		case 3:
+		case 4:
 			System.out.println("Mão atual já finalizou o turno.");
 			break;
 
-		case 4:
+		case 5:
 			System.out.println("Saldo insuficiente.");
 			break;
 		}
@@ -700,16 +714,16 @@ public class Controller implements Observable {
 			status = 2;
 
 		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
-			status = 2;
-
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 3;
 
-		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == false)
+		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 4;
 
-		else if (model.jogadorPrimCartasMesmoValor(jogadorAtivo) == false)
+		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == false)
 			status = 5;
+
+		else if (model.jogadorPrimCartasMesmoValor(jogadorAtivo) == false)
+			status = 6;
 
 		switch (status) {
 		case 0:
@@ -720,17 +734,22 @@ public class Controller implements Observable {
 		case 1:
 			System.out.println("Split permitido depois da aposta inicial.");
 			break;
-
+		
 		case 2:
+			System.out.println("Split permitido apenas com uma mao.");
+			break;
+
+
 		case 3:
+		case 4:
 			System.out.println("Mão atual já finalizou o turno.");
 			break;
 
-		case 4:
+		case 5:
 			System.out.println("Saldo insuficiente.");
 			break;
 
-		case 5:
+		case 6:
 			System.out.println("Cartas precisam ter mesmo valor para realizar Split");
 			break;
 		}
