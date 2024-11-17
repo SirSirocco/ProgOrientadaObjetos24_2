@@ -293,6 +293,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	
 	void exitButton() {
 		System.out.println("apertou o botão de exit");
+		ctrl.exit();
 	}
 
 

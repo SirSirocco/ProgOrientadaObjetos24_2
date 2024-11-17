@@ -237,7 +237,14 @@ public class Controller implements Observable {
 		if (model.jogadorVerificaBalancoMinimo(0) == false) // Se houver mais participantes, faca um for
 		{
 			System.out.println("Fim do Jogo");
-			// EXIT
+			System.out.println("Encerrando em dez segundos");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.exit(0);
 		}
 
 		limpaParticipantes();
@@ -722,5 +729,10 @@ public class Controller implements Observable {
 			System.out.println("Cartas precisam ter mesmo valor para realizar Split");
 			break;
 		}
+	}
+	
+	public void exit()
+	{
+		System.exit(0);
 	}
 }
