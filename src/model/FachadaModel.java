@@ -220,7 +220,7 @@ public class FachadaModel {
 	 * @return True, se incremento for menor que o balanco. False, do contrario.
 	 */
 	public boolean jogadorIncrementaAposta(int indexJ, int indexMao, int valor) {
-		return jogadores.get(indexJ).aposta(indexMao, valor);
+		return jogadores.get(indexJ).aposta(valor, indexMao);
 	}
 	
 	public void jogadorVenceAposta(int indexJ, int indexMao) {
