@@ -2,6 +2,8 @@ package control;
 
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import model.FachadaModel;
 import view.*;
 
@@ -241,14 +243,14 @@ public class Controller implements Observable {
 		System.out.println("NOVA RODADA EXECUTADA");
 		if (model.jogadorVerificaBalancoMinimo(0) == false) // Se houver mais participantes, faca um for
 		{
-			System.out.println("Fim do Jogo");
-			System.out.println("Encerrando em dez segundos");
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			JOptionPane.showMessageDialog(null, "Saldo insuficiente. Fim do Jogo");
+//			System.out.println("Encerrando em dez segundos");
+//			try {
+//				Thread.sleep(10000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			System.exit(0);
 		}
 
@@ -323,7 +325,7 @@ public class Controller implements Observable {
 			
 			if (model.dealerQuebra() == true) {
 				estadoJogo = DEALER_QUEBRA;
-				System.out.println("DEALER QUEBROU!!!"); // TODO JOptionPane
+				JOptionPane.showMessageDialog(null, "DEALER QUEBROU!!!"); // TODO JOptionPane
 				return;
 			}
 		}
@@ -334,14 +336,23 @@ public class Controller implements Observable {
 
 	void dealerQuebra() // OK
 	{
+		String msg;
 		System.out.println("DEALER QUEBRA EXECUTADO");
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
 				if (model.jogadorMaoAtiva(i, j) == true) {
-					if (model.jogadorMaoQuebrada(i, j))
+					msg = String.format("Jogador %d | Mão %d: " , i + 1, j + 1);
+					
+					if (model.jogadorMaoQuebrada(i, j)) {
 						jogadorRecuperaAposta(i, j);
-					else
+						msg += "EMPATE\n";
+					}
+					else {
 						jogadorVenceAposta(i, j);
+						msg += "JOGADOR VENCE\n";
+					}
+					
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		}
@@ -351,6 +362,7 @@ public class Controller implements Observable {
 	}
 
 	void checaVencedor() { // OK
+		String msg;
 		int jogadorVencedorFlag;
 		/* 
 		 * maior que 0	-> Jogador vence
@@ -361,19 +373,22 @@ public class Controller implements Observable {
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
 				if (model.jogadorMaoAtiva(i, j) == true) {
+					msg = String.format("Jogador %d | Mão %d: " , i + 1, j + 1);
+					
 					if ((jogadorVencedorFlag = model.jogadorVerificaVitoria(i, j)) > 0) {
 						jogadorVenceAposta(i, j);
-						System.out.printf("Jogador %d | Mão %d: JOGADOR VENCE\n", i + 1, j + 1);
+						msg += "JOGADOR VENCE\n";
 					}
 						
 					else if (jogadorVencedorFlag == 0) {
 						jogadorRecuperaAposta(i, j);
-						System.out.printf("Jogador %d | Mão %d: EMPATE\n", i + 1, j + 1);
+						msg += "EMPATE\n";
 					}
 					
 					else {
-						System.out.printf("Jogador %d | Mão %d: BANCA VENCE\n", i + 1, j + 1);
+						msg += "BANCA VENCE\n";
 					}
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		}
@@ -466,7 +481,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		int status = 0;
@@ -485,11 +500,11 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Saldo insuficiente.");
+			JOptionPane.showMessageDialog(null, "Saldo insuficiente.");
 			break;
 
 		case 2:
-			System.out.println("Aposta já realizada.");
+			JOptionPane.showMessageDialog(null, "Aposta já realizada.");
 			break;
 		}
 	}
@@ -527,11 +542,11 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Valor abaixo da aposta minima."); // Depois gerar uma tela com a mensagem
+			JOptionPane.showMessageDialog(null, "Valor abaixo da aposta minima."); // Depois gerar uma tela com a mensagem
 			break;
 
 		case 2:
-			System.out.println("Aposta já realizada."); // Depois gerar uma tela com a mensagem
+			JOptionPane.showMessageDialog(null, "Aposta já realizada."); // Depois gerar uma tela com a mensagem
 			break;
 		}
 	}
@@ -546,7 +561,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		int status = 0;
@@ -561,7 +576,7 @@ public class Controller implements Observable {
 			break;
 			
 		case 1:
-			System.out.println("Clear não permitido depois de aposta já realizada.");
+			JOptionPane.showMessageDialog(null, "Clear não permitido depois de aposta já realizada.");
 			break;
 		}
 	}
@@ -586,7 +601,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		
@@ -613,30 +628,32 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Surrender permitido depois da aposta inicial."); // Depois gerar uma tela com a mensagem
+			JOptionPane.showMessageDialog(null, "Surrender permitido depois da aposta inicial."); // Depois gerar uma tela com a mensagem
 			break;
 
 		case 2:
-			System.out.println("Surrender permitido apenas com uma mão."); // Depois gerar uma tela com a mensagem
+			JOptionPane.showMessageDialog(null, "Surrender permitido apenas com uma mão."); // Depois gerar uma tela com a mensagem
 			break;
 		case 3:
-			System.out.println("Surrender permitido apenas na mão inicial."); // Depois gerar uma tela com a mensagem
+			JOptionPane.showMessageDialog(null, "Surrender permitido apenas na mão inicial."); // Depois gerar uma tela com a mensagem
 			break;
 
 		case 4:
-			System.out.println("Surrender não permitido, porque Dealer tem Blackjack.");
+			JOptionPane.showMessageDialog(null, "Surrender não permitido, porque Dealer tem Blackjack.");
 			break;
 		}
 	}
 
 	/* HIT */
 	void jogadorHit(int indexJ, int indexMao) {
+		String msg;
 		model.jogadorHit(indexJ, indexMao);
 		mudancaJogadorMao(indexMao);
 
 		if (model.jogadorQuebra(indexJ, indexMao) == true)
 		{
-			System.out.printf("Mao %d quebrou.", indexMao);
+			msg = "Mao " + (indexMao + 1) + " quebrou";
+			JOptionPane.showMessageDialog(null, msg);
 			
 			// TODO extrair funcao
 			if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
@@ -649,7 +666,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		
@@ -672,15 +689,15 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Hit permitido depois da aposta inicial.");
+			JOptionPane.showMessageDialog(null, "Hit permitido depois da aposta inicial.");
 			break;
 
 		case 2:
-			System.out.println("Hit não permitido para uma mão quebrada.");
+			JOptionPane.showMessageDialog(null, "Hit não permitido para uma mão quebrada.");
 			break;
 
 		case 3:
-			System.out.println("Hit não permitido depois do fim do turno.");
+			JOptionPane.showMessageDialog(null, "Hit não permitido depois do fim do turno.");
 			break;
 		}
 	}
@@ -700,11 +717,12 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
+		String msg;
 		int status = 0;
-
+		
 		if (apostaOK == false)
 			status = 1;
 
@@ -716,18 +734,18 @@ public class Controller implements Observable {
 
 		switch (status) {
 		case 0:
+			msg = "Stand na mao " + (maoCorrente + 1) + " realizado com sucesso.\n";
+			JOptionPane.showMessageDialog(null,  msg);
 			jogadorStand(jogadorAtivo, maoCorrente);
-			estadoJogo = DEALER;
-			System.out.printf("Stand na mao %d realizado com sucesso.\n", maoCorrente + 1);
 			break;
 
 		case 1:
-			System.out.println("Stand permitido depois da aposta inicial.");
+			JOptionPane.showMessageDialog(null, "Stand permitido depois da aposta inicial.");
 			break;
 
 		case 2:
 		case 3:
-			System.out.println("Mão atual já finalizou o turno.");
+			JOptionPane.showMessageDialog(null, "Mão atual já finalizou o turno.");
 			break;
 		}
 	}
@@ -750,7 +768,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		int status = 0;
@@ -777,20 +795,20 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Double permitido depois da aposta inicial.");
+			JOptionPane.showMessageDialog(null, "Double permitido depois da aposta inicial.");
 			break;
 			
 		case 2:
-			System.out.println("Double permitido apenas com uma mao.");
+			JOptionPane.showMessageDialog(null, "Double permitido apenas com uma mao.");
 			break;
 
 		case 3:
 		case 4:
-			System.out.println("Mão atual já finalizou o turno.");
+			JOptionPane.showMessageDialog(null, "Mão atual já finalizou o turno.");
 			break;
 
 		case 5:
-			System.out.println("Saldo insuficiente.");
+			JOptionPane.showMessageDialog(null, "Saldo insuficiente.");
 			break;
 		}
 	}
@@ -812,7 +830,7 @@ public class Controller implements Observable {
 		if (buttonsSwitch == false)
 		{
 			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		int status = 0;
@@ -842,25 +860,25 @@ public class Controller implements Observable {
 			break;
 
 		case 1:
-			System.out.println("Split permitido depois da aposta inicial.");
+			JOptionPane.showMessageDialog(null, "Split permitido depois da aposta inicial.");
 			break;
 		
 		case 2:
-			System.out.println("Split permitido apenas com uma mao.");
+			JOptionPane.showMessageDialog(null, "Split permitido apenas com uma mao.");
 			break;
 
 
 		case 3:
 		case 4:
-			System.out.println("Mão atual já finalizou o turno.");
+			JOptionPane.showMessageDialog(null, "Mão atual já finalizou o turno.");
 			break;
 
 		case 5:
-			System.out.println("Saldo insuficiente.");
+			JOptionPane.showMessageDialog(null, "Saldo insuficiente.");
 			break;
 
 		case 6:
-			System.out.println("Cartas precisam ter mesmo valor para realizar Split");
+			JOptionPane.showMessageDialog(null, "Cartas precisam ter mesmo valor para realizar Split");
 			break;
 		}
 	}

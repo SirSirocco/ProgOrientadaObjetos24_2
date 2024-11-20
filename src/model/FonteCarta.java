@@ -14,15 +14,15 @@ class FonteCarta {
 		String[] valores = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 		
 		// Teste Blackjack Dealer
-		fonte.add(new Carta("Ouros", "A"));
-		fonte.add(new Carta("Paus", "5"));
-		
-		fonte.add(new Carta("Ouros", "A"));
-		fonte.add(new Carta("Paus", "A"));
-		fonte.add(new Carta("Paus", "J"));
-		fonte.add(new Carta("Paus", "J"));
-		fonte.add(new Carta("Paus", "5"));
-	
+//		fonte.add(new Carta("Ouros", "A"));
+//		fonte.add(new Carta("Paus", "5"));
+//		
+//		fonte.add(new Carta("Ouros", "A"));
+//		fonte.add(new Carta("Paus", "A"));
+//		fonte.add(new Carta("Paus", "J"));
+//		fonte.add(new Carta("Paus", "J"));
+//		fonte.add(new Carta("Paus", "5"));
+//	
 //		for (int i = 0; i < 10; i++)
 //			fonte.add(new Carta("Paus", "A"));
 		
@@ -33,7 +33,7 @@ class FonteCarta {
 				}
 			}
 		}
-		// embaralha();
+		embaralha();
 	}
 
 	/**
