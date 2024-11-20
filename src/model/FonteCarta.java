@@ -17,13 +17,7 @@ class FonteCarta {
 //		fonte.add(new Carta("Ouros", "A"));
 //		fonte.add(new Carta("Paus", "5"));
 //		
-//		fonte.add(new Carta("Ouros", "A"));
-//		fonte.add(new Carta("Paus", "A"));
-//		fonte.add(new Carta("Paus", "J"));
-//		fonte.add(new Carta("Paus", "J"));
-//		fonte.add(new Carta("Paus", "5"));
-//	
-//		for (int i = 0; i < 10; i++)
+//		for (int i = 0; i < 22; i++)
 //			fonte.add(new Carta("Paus", "A"));
 		
 		for (int i = 0; i < numBaralhos; i++) {

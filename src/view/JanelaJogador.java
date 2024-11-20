@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -22,9 +23,14 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
 	// Identificador serial da classe
 	private static final long	serialVersionUID = 1L;
 	
+	
+	 Image backgroundImage = ProcessadorImagem.pegaImagem("Imagens/blackjack.png");
+     int width = backgroundImage.getWidth(null);
+     int height = backgroundImage.getHeight(null);
+	
 	// Constantes auxiliares
-	private final int	LARG_DFL = 700,
-					  	ALT_DFL = 600;
+	private final int	LARG_DFL = ScreenSize.getWidth() - width,
+					  	ALT_DFL = height + 39;
 	
 	private final String	msgCreditos = "Créditos: $",
 							msgAposta = "Aposta: $",
@@ -54,8 +60,8 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
         this.indexMao = indexMao;
         
         // Centraliza janela
-        x = ScreenSize.getWidth() / 2 - LARG_DFL / 2;
-		y = ScreenSize.getHeight() / 2 - ALT_DFL / 2;
+        x = width;//ScreenSize.getWidth() / 2 - LARG_DFL / 2;
+		y = 0; // ScreenSize.getHeight() / 2 - ALT_DFL / 2;
 		setBounds(x, y, LARG_DFL, ALT_DFL);
 		
 		// Define o painel da imagem de fundo
