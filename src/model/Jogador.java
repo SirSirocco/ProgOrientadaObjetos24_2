@@ -97,8 +97,10 @@ class Jogador extends Participante {
 	boolean double_(int indMao) {
 		boolean status = aposta(apostaMao[indMao], indMao);
 		
-		if (status)
+		if (status) {
 			hit(indMao);
+			stand(indMao);
+		}
 		
 		return status;
 	}
@@ -121,6 +123,10 @@ class Jogador extends Participante {
 	
 	void venceAposta(int indMao) {
 		balanco += 2 * apostaMao[indMao];
+	}
+	
+	void recuperaAposta(int indMao) {
+		balanco += apostaMao[indMao];
 	}
 	
 	void clear() {

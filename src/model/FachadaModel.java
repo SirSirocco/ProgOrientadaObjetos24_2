@@ -62,8 +62,7 @@ public class FachadaModel {
 		if (FonteCarta.checaEmbaralha() == true)
 			FonteCarta.embaralha();
 	}
-	
-	
+
 	/* Jogadores e dealer */
 	public void limpaParticipantes() {
 		dealer.limpa();
@@ -73,7 +72,7 @@ public class FachadaModel {
 
 	//////////////////////////////////
 	// DEALER
-	
+
 	/* Gets */
 	public ArrayList<ArrayList<String>> getCartasDealer() {
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
@@ -88,19 +87,17 @@ public class FachadaModel {
 
 		return result;
 	}
-	
+
 	public int dealerCalculaPontos() {
 		return dealer.calculaPontos(0);
 	}
-	
-	
-	/* Verificacoes*/
-	
+
+	/* Verificacoes */
+
 	public boolean dealerPossuiBlackjack() {
 		return dealer.possuiBlackjack(0) == 1;
 	}
-	
-	
+
 	/* Acoes */
 	public void dealerHit() {
 		dealer.hit(0);
@@ -114,15 +111,15 @@ public class FachadaModel {
 
 		return quebra;
 	}
-	
+
 	//////////////////////////////////
 	// JOGADOR
-	
+
 	/* Gets */
 	public int jogadorAposta(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).getApostas(indexMao);
 	}
-	
+
 	public int jogadorBalanco(int indexJ) {
 		return jogadores.get(indexJ).getBalanco();
 	}
@@ -130,7 +127,7 @@ public class FachadaModel {
 	public int jogadorCalculaPontos(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).calculaPontos(indexMao);
 	}
-	
+
 	public ArrayList<ArrayList<String>> getCartasJogador(int indexJ, int indexMao) {
 		ArrayList<ArrayList<String>> result = new ArrayList<>();
 		List<Carta> cartas = jogadores.get(indexJ).mao.get(indexMao).cartas;
@@ -144,60 +141,61 @@ public class FachadaModel {
 
 		return result;
 	}
-	
+
 	public int jogadorNumMaosAtivas(int indexJ) {
 		return jogadores.get(indexJ).getNumMaosAtivas();
 	}
-	
+
 	public int jogadorNumMaosFinalizadas(int indexJ) {
 		return jogadores.get(indexJ).getNumMaosFinalizadas();
 	}
-	
+
 	public int jogadorGetNumCartas(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).getNumCartas(indexMao);
 	}
-	
+
 	/* Verificacoes */
-	
+
 	public boolean jogadorVerificaBalancoMinimo(int indexJ) {
 		return jogadores.get(indexJ).verificaBalancoMinimo();
 	}
-	
+
 	public boolean jogadorValidaApostaInicial(int indexJ) {
 		return jogadores.get(indexJ).validaApostaInicial();
 	}
-	
+
 	public boolean jogadorPossuiBlackjack(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).possuiBlackjack(indexMao) == 1;
 	}
-	
+
 	public boolean jogadorMaoAtiva(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).checaMaoAtiva(indexMao);
 	}
-	
+
 	public boolean jogadorMaoQuebrada(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).checaQuebrada(indexMao);
 	}
-	
+
 	public boolean jogadorMaoFinalizada(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).checaFinalizada(indexMao);
 	}
-	
+
 	public int jogadorVerificaVitoria(int indexJ, int indexMao) {
 		if (jogadores.get(indexJ).checaQuebra(indexMao) == true)
 			return -1;
 
-		return Participante.verificaVencedor(jogadores.get(indexJ), indexMao, dealer.calculaPontos(0));
+		return Participante.verificaVencedor(jogadores.get(indexJ), indexMao,
+				dealer.calculaPontos(0) + dealer.possuiBlackjack(0));
 	}
-	
+
 	public boolean jogadorSaldoSuficienteDobra(int indexJ) {
 		return jogadores.get(indexJ).validaDobraAposta();
 	}
-	
+
 	public boolean jogadorPrimCartasMesmoValor(int indexJ) {
 		return jogadores.get(indexJ).verificaPrimDuasCartasMesmoValor();
 	}
-	
+
 	/* Acoes */
 	public void jogadorHit(int indexJ, int indexMao) {
 		jogadores.get(indexJ).hit(indexMao);
@@ -211,7 +209,7 @@ public class FachadaModel {
 
 		return quebra;
 	}
-	
+
 	/**
 	 * 
 	 * @param indexJ
@@ -222,28 +220,32 @@ public class FachadaModel {
 	public boolean jogadorIncrementaAposta(int indexJ, int indexMao, int valor) {
 		return jogadores.get(indexJ).aposta(valor, indexMao);
 	}
-	
+
 	public void jogadorVenceAposta(int indexJ, int indexMao) {
 		jogadores.get(indexJ).venceAposta(indexMao);
 	}
-	
+
 	public void jogadorSurrender(int indexJ) {
 		jogadores.get(indexJ).surrender();
 	}
-	
+
 	public void jogadorStand(int indexJ, int indexMao) {
 		jogadores.get(indexJ).stand(indexMao);
 	}
-	
+
 	public void jogadorDouble(int indexJ) {
 		jogadores.get(indexJ).double_(0);
 	}
-	
+
 	public void jogadorSplit(int indexJ) {
 		jogadores.get(indexJ).split();
 	}
-	
+
 	public void jogadorClear(int indexJ) {
 		jogadores.get(indexJ).clear();
+	}
+
+	public void jogadorRecuperaAposta(int indexJ, int indexMao) {
+		jogadores.get(indexJ).recuperaAposta(indexMao);
 	}
 }

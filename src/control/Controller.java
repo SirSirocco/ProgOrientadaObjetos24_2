@@ -238,6 +238,7 @@ public class Controller implements Observable {
 	// ETAPAS DO JOGO
 
 	void novaRodada() { // OK
+		System.out.println("NOVA RODADA EXECUTADA");
 		if (model.jogadorVerificaBalancoMinimo(0) == false) // Se houver mais participantes, faca um for
 		{
 			System.out.println("Fim do Jogo");
@@ -260,6 +261,7 @@ public class Controller implements Observable {
 
 		mudancaNovaRodada();
 		estadoJogo = JOGADOR;
+		System.out.println("FIM DE NOVA RODADA");
 	}
 
 	void compraInicialCartas() {
@@ -278,7 +280,7 @@ public class Controller implements Observable {
 		buttonsSwitch = true;
 		System.out.println("JOGADOR VEZ EXECUTADO");
 		while (buttonsSwitch);
-		System.out.println("JOGADOR VEZ TERMINADA");
+		System.out.println("FIM DE JOGADOR VEZ");
 	}
 
 	void dealerVez() // OK
@@ -286,11 +288,30 @@ public class Controller implements Observable {
 		System.out.println("DEALER VEZ EXECUTADO");
 		if (dealerBlackjack) {
 			estadoJogo = CHECA_VENCEDOR;
-			System.out.println("DEALER BLACKJACK RETURN");
+			
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			System.out.println("DEALER BLACKJACK RETURN"); // TODO JOptionPane
 			return;
+		}
+		
+		else if (model.dealerCalculaPontos() >= hitUntil) {
+			System.out.println("BANCA NAO FARÁ HIT"); // TODO JOptionPane
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		while (model.dealerCalculaPontos() < hitUntil) {
+			System.out.println("BANCA FEZ HIT"); // TODO JOptionPane
 			dealerHit();
 			
 			try {
@@ -302,36 +323,63 @@ public class Controller implements Observable {
 			
 			if (model.dealerQuebra() == true) {
 				estadoJogo = DEALER_QUEBRA;
+				System.out.println("DEALER QUEBROU!!!"); // TODO JOptionPane
 				return;
 			}
 		}
 		
-		System.out.println("DEALER VEZ TERMINADA");
 		estadoJogo = CHECA_VENCEDOR;
+		System.out.println("FIM DE DEALER VEZ");
 	}
 
 	void dealerQuebra() // OK
 	{
+		System.out.println("DEALER QUEBRA EXECUTADO");
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorMaoAtiva(i, j) == true && model.jogadorMaoQuebrada(i, j) == false)
-					jogadorVenceAposta(i, j);
+				if (model.jogadorMaoAtiva(i, j) == true) {
+					if (model.jogadorMaoQuebrada(i, j))
+						jogadorRecuperaAposta(i, j);
+					else
+						jogadorVenceAposta(i, j);
+				}
 			}
 		}
 		
 		estadoJogo = NOVA_RODADA;
+		System.out.println("FIM DE DEALER QUEBRA");
 	}
 
 	void checaVencedor() { // OK
+		int jogadorVencedorFlag;
+		/* 
+		 * maior que 0	-> Jogador vence
+		 * igual a 0 	-> Empate
+		 * menor que 0 	-> Dealer vence
+		 */
 		System.out.println("CHECA VENCEDOR EXECUTADO");
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorMaoAtiva(i, j) == true && model.jogadorVerificaVitoria(i, j) > 0)
-					jogadorVenceAposta(i, j);
+				if (model.jogadorMaoAtiva(i, j) == true) {
+					if ((jogadorVencedorFlag = model.jogadorVerificaVitoria(i, j)) > 0) {
+						jogadorVenceAposta(i, j);
+						System.out.printf("Jogador %d | Mão %d: JOGADOR VENCE\n", i + 1, j + 1);
+					}
+						
+					else if (jogadorVencedorFlag == 0) {
+						jogadorRecuperaAposta(i, j);
+						System.out.printf("Jogador %d | Mão %d: EMPATE\n", i + 1, j + 1);
+					}
+					
+					else {
+						System.out.printf("Jogador %d | Mão %d: BANCA VENCE\n", i + 1, j + 1);
+					}
+				}
 			}
 		}
 		
 		estadoJogo = NOVA_RODADA;
+		System.out.println("FIM DE CHECA VENCEDOR");
 	}
 
 	/////////////////////////////////////////////
@@ -415,6 +463,12 @@ public class Controller implements Observable {
 
 	/* APOSTA */
 	public void jogadorIncrementaApostaInicial(int valor) { // OK
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 
 		if (model.jogadorIncrementaAposta(jogadorAtivo, 0, valor) == false)
@@ -452,6 +506,12 @@ public class Controller implements Observable {
 	 * @param indexJ
 	 */
 	public void jogadorDealCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 
 		if (model.jogadorValidaApostaInicial(jogadorAtivo) == false)
@@ -483,6 +543,12 @@ public class Controller implements Observable {
 	}
 
 	public void jogadorClearCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 		
 		if (apostaOK)
@@ -500,8 +566,13 @@ public class Controller implements Observable {
 		}
 	}
 
-			void jogadorVenceAposta(int indexJ, int indexMao) {
+	void jogadorVenceAposta(int indexJ, int indexMao) {
 		model.jogadorVenceAposta(indexJ, indexMao);
+		mudancaJogadorBalanco();
+	}
+			
+	void jogadorRecuperaAposta(int indexJ, int indexMao) {
+		model.jogadorRecuperaAposta(indexJ, indexMao);
 		mudancaJogadorBalanco();
 	}
 
@@ -512,6 +583,13 @@ public class Controller implements Observable {
 	}
 
 	public void jogadorSurrenderCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
+		
 		int status = 0;
 
 		if (apostaOK == false)
@@ -568,6 +646,14 @@ public class Controller implements Observable {
 	}
 
 	public void jogadorHitCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
+		
+		
 		int status = 0;
 
 		if (apostaOK == false)
@@ -611,6 +697,12 @@ public class Controller implements Observable {
 	}
 
 	public void jogadorStandCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 
 		if (apostaOK == false)
@@ -646,9 +738,21 @@ public class Controller implements Observable {
 		mudancaJogadorBalanco();
 		mudancaJogadorAposta(0);
 		mudancaJogadorMao(0);
+		
+		if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+		{
+			buttonsSwitch = false;
+			estadoJogo = DEALER;
+		}
 	}
 
 	public void jogadorDoubleCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 
 		if (apostaOK == false)
@@ -705,6 +809,12 @@ public class Controller implements Observable {
 	}
 
 	public void jogadorSplitCond() {
+		if (buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		int status = 0;
 
 		if (apostaOK == false)

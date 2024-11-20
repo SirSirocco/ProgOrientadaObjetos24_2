@@ -63,9 +63,10 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		valor.setForeground(Color.WHITE);
 		
 		// Adiciona os componentes ao painel
-		add(valor);
+		c.add(valor);
 		c.add(saveButton);
 		c.add(p);
+		
 		
 		addMouseListener(this);
 		
@@ -178,6 +179,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	
 	private void atualizaValorCartas() {
 		valor.setText(Integer.toString(ctrl.getDealerPontos()));
+		c.repaint(); // Necessario para a correta exibição da label na tela.
 	}
 	
 	///////////////////////////////////////
