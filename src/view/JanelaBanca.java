@@ -70,7 +70,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		
 		addMouseListener(this);
 		
-		setBounds(x, 70, width, heigth);
+		setBounds(x, 0, width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	

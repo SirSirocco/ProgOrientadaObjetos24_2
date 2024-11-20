@@ -27,7 +27,7 @@ class JogoNovo extends Listener implements ActionListener {
  */
 class JogoSalvo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-		ctrl.recuperaJogo();
+		ctrl.jogoSalvoRecupera();
 	}
 }
 

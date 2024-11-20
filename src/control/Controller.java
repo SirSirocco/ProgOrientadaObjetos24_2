@@ -1,11 +1,11 @@
 package control;
 
-import java.util.*;
-
-import javax.swing.JOptionPane;
-
 import model.FachadaModel;
 import view.*;
+import java.util.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 class MecanicaJogo implements Runnable {
 	@Override
@@ -16,6 +16,11 @@ class MecanicaJogo implements Runnable {
 }
 
 public class Controller implements Observable {
+	// DEFINICOES AUXILIARES
+	private final int SUCESSO = 0;
+	private final int FALHA = 1;
+	
+	
 	// SINGLETON
 	static Controller ctrl = null;
 
@@ -30,7 +35,12 @@ public class Controller implements Observable {
 	private JanelaInicial menu;
 	private JanelaBanca janelaBanca;
 	private List<JanelaJogador> janelaJogador = new ArrayList<JanelaJogador>(); // Adicionar indice de janela
-
+	
+	// SALVAMENTO
+	private final String 	pastaSalvamento = "salvamento",
+							nomeFiltro = "Arquivos de Salvamento",
+							extensaoSalvamento = "txt";
+	
 	// Tabela de estados do fluxo de jogo
 	private int estadoJogo; // -1 para banca e index para jogadores
 
@@ -179,11 +189,18 @@ public class Controller implements Observable {
 		menu.setVisible(true);
 		System.out.println("INIT");///////////////////////////
 	}
-
-	void initJanelas() {
+	
+	/**
+	 * Inicializa as janelas da aplicacao.
+	 * @param numMaosAtivas Numero de maos ativas do jogador corrente. Define o numero
+	 * de janelas do jogador a serem abertas.
+	 */
+	void initJanelas(int numMaosAtivas) {
 		menu.setVisible(false);
 		janelaBanca.setVisible(true);
-		janelaJogador.get(0).setVisible(true);
+		
+		for (int i = 0; i < numMaosAtivas; i++)
+			janelaJogador.get(0).setVisible(true);
 	}
 
 	void inicializaMecanicaJogo() {
@@ -193,13 +210,107 @@ public class Controller implements Observable {
 
 	void jogoNovo() {
 		estadoJogo = NOVA_RODADA;
-		initJanelas();
+		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
 		inicializaMecanicaJogo();
 	}
+	
+	/**
+	 * Le arquivo de salvamento e restaura o contexto do jogo.
+	 * @param arquivoSalvamento Arquivo vindo de {@code jogoSalvoRecupera}.
+	 */
+	int jogoSalvoRestauraContexto(File arquivoSalvamento) {
+		int status = SUCESSO;
+		String linha;
+		BufferedReader leitor;
+		
+		try {
+			leitor  = new BufferedReader(new FileReader(arquivoSalvamento));
+		
+			while ((linha = leitor.readLine()) != null) {
+				System.out.println(linha);
+			}
+			
+		} catch(IOException e) {
+			System.out.println(e.getMessage());
+			status = FALHA;
+		}
+		
+		return status;
+	}
+	
+	int verificaDiretorioVazio(File diretorio, String extensao) {
+		int status = 0;
+		FilenameFilter filtro;
+		
+        // Verificar se o diretório existe e eh realmente um diretorio
+        if (diretorio.exists() && diretorio.isDirectory()) {
+            // Filtro para arquivos com extensao desejada
+            filtro = (dir, nome) -> nome.endsWith(extensao);
 
-	void recuperaJogo() {
-		// RECUPERA JOGO
-		initJanelas();
+            // Lista de arquivos que correspondem ao filtro
+            String[] arquivosFiltrados = diretorio.list(filtro);
+
+            if (arquivosFiltrados != null && arquivosFiltrados.length > 0) {
+                System.out.println("O diretório contém arquivos com a extensão ." + extensao + ".");
+            } else {
+                System.out.println("O diretório está vazio para a extensão especificada (." + extensao + ").");
+                status = 1;
+            }
+        } else {
+            System.out.println("O caminho especificado não é um diretório ou não existe.");
+            status = 2;
+        }
+        
+        return status;
+	}
+	
+	/**
+	 * Permite ao usuario escolher o arquivo de salvamento usado na recuperacao
+	 * do jogo. Se falha na escolha, inicia novo jogo sem salvamento.
+	 * Faz uso do JFileChooser e de outras classes Swing.
+	 */
+	void jogoSalvoRecupera() {
+		int resultado;
+		JFileChooser seletorArquivo = new JFileChooser();
+		FileNameExtensionFilter filtro = new FileNameExtensionFilter(nomeFiltro, extensaoSalvamento);
+		
+		// Obtem diretorio de salvamento de forma portavel
+		File 	diretorioSalvamento = new File(System.getProperty("user.dir"), pastaSalvamento),
+				arquivoEscolhido;
+		
+		// Exibe diretorio obtido na console, para fins de depuracao
+		System.out.println(diretorioSalvamento.getAbsolutePath());
+		
+		// Verificacao Diretorio Vazio
+		resultado = verificaDiretorioVazio(diretorioSalvamento, extensaoSalvamento);
+		
+		if (resultado == 0) {
+			// Configuracao do seletor de arquivos
+			seletorArquivo.setCurrentDirectory(diretorioSalvamento);
+			seletorArquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			seletorArquivo.setFileFilter(filtro);
+			seletorArquivo.setApproveButtonText("Abrir");
+			
+			// Interacao com usuario
+			resultado = seletorArquivo.showOpenDialog(null); // Abre dialogo de abertura de arquivo
+			
+			switch (resultado) {
+			case JFileChooser.APPROVE_OPTION:
+				arquivoEscolhido = seletorArquivo.getSelectedFile();
+				if (jogoSalvoRestauraContexto(arquivoEscolhido) == SUCESSO)
+					break;
+				
+			case JFileChooser.CANCEL_OPTION:
+			case JFileChooser.ERROR_OPTION:
+				JOptionPane.showMessageDialog(null, "Houve um erro na escolha do arquivo de salvamento. Novo jogo iniciado sem salvamento.");
+				break;
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamenot. Novo jogo iniciado sem salvamento.");
+		}
+		
+		// Inicializa mecanica do jogo
+		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
 		inicializaMecanicaJogo();
 	}
 
