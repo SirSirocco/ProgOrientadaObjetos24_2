@@ -125,7 +125,10 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 			valor = valor.toLowerCase();
 		}
 		
-		if (valor == "10")
+		System.out.println("< " + naipe + " >");
+		System.out.println("< " + valor + " >");
+		
+		if (valor.contentEquals("10"))
 			valor = "t";
 
 		switch (naipe) {
@@ -151,6 +154,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		try {
 			result = ImageIO.read(new File(caminho));
 		} catch (IOException e) {
+			System.out.println("perror: pegaCarta");
 			System.out.println(e);
 			System.exit(1);
 		}
@@ -162,16 +166,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 		atualizaImagemCartas();
 		atualizaValorCartas();
 	}
-	
-//	private void atualizaImagemCartas() {
-//		ArrayList<ArrayList<String>> cs = ctrl.getDealerCartas();
-//		ArrayList<Image> result = new ArrayList<>();
-//		for (ArrayList<String> c: cs) {
-//			result.add(pegaCarta(c.get(0), c.get(1)));
-//		}
-//		p.adicionaImagem(result);
-//	}
-	
+
 	private void atualizaImagemCartas() {
 		ArrayList<ArrayList<String>> cs = ctrl.getDealerCartas();
 		ProcessadorImagem.atualizaImagemCartas(p, cs);

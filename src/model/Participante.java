@@ -145,8 +145,10 @@ abstract class Participante {
 	//////////////////////////////////////////
 
 	void ativaMao(int indMao) {
-		maosAtivas[indMao] = true;
-		numMaosAtivas++;
+		if (maosAtivas[indMao] == false) {
+			maosAtivas[indMao] = true;
+			numMaosAtivas++;	
+		}
 	}
 	
 	/////////////////////////////////

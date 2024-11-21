@@ -1,0 +1,10 @@
+DEALER
+$$
+JOGADOR
+false
+2600
+1
+**
+100
+T
+0

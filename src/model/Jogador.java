@@ -38,8 +38,20 @@ class Jogador extends Participante {
 		return balanco;
 	}
 	
+	void setBalanco(int valor) {
+		balanco = valor;
+	}
+	
 	int getApostas(int indexMao) {
 		return apostaMao[indexMao];
+	}
+	
+	void setApostaMao(int indexMao, int valor) {
+		apostaMao[indexMao] = valor;
+	}
+	
+	void setSplitAses(boolean flag) {
+		asesSplitFlag = flag;
 	}
 	
 	/* Validacoes */
@@ -60,6 +72,13 @@ class Jogador extends Participante {
 	
 	boolean validaDobraAposta() {
 		return validaBalanco(apostaMao[0]);
+	}
+	
+	boolean fezSplitAses() {
+		if (numMaosAtivas < 2)
+			return false;
+		
+		return mao.get(0).cartas.get(0).getValor().contentEquals("A") && mao.get(1).cartas.get(0).getValor().contentEquals("A");
 	}
 
 	/**

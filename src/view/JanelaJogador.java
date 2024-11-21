@@ -166,7 +166,7 @@ public class JanelaJogador extends JFrame implements Observer, MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {}
    
-	public void toggleJanelaCor(int maoCorrente) {
+	public void mudaJanelaCor(int maoCorrente) {
 		if (maoCorrente == indexMao)
 			painel.setBackground(Color.WHITE);
 		else

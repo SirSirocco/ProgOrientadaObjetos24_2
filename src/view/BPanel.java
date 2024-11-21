@@ -10,8 +10,21 @@ class BPanel extends JPanel{
 	ArrayList<Image> fichas = new ArrayList<>();
 	ArrayList<Image> cartas = new ArrayList<>();
 	
+	Image backgroundImage = ProcessadorImagem.pegaImagem("Imagens/blackjack.png");
+    int width = backgroundImage.getWidth(null);
+    int height = backgroundImage.getHeight(null);
+	
 	final int offset = 135;
 	final int padding = 10;
+	
+	private final int 	altCarta = 100,
+			largCarta = 70,
+			cartasPorLinha = 6,
+			largTotalJB = width,
+			largTotalCartas = (cartasPorLinha - 1) * padding + largCarta * cartasPorLinha,
+			offsetVerticalIni = 400,
+			offsetLateral = (largTotalJB - largTotalCartas) / 2;
+
 	
 	public BPanel(ArrayList<Image> imagens) {
 		img = imagens.get(0);
@@ -33,7 +46,7 @@ class BPanel extends JPanel{
 		
 		if (cartas != null) {
 			for (int i = 0; i < cartas.size(); i++) {
-				g.drawImage(cartas.get(i), 300 + 80*i, 400, null);
+				g.drawImage(cartas.get(i), offsetLateral + (largCarta + padding) * (i % cartasPorLinha), offsetVerticalIni - (altCarta + padding) * (i / cartasPorLinha), null);
 			}
 		}
 	}

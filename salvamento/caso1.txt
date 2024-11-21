@@ -1,0 +1,14 @@
+DEALER
+Ouros A
+Copas K
+$$
+JOGADOR
+true
+2600
+1
+**
+100
+T
+2
+Ouros J
+Paus J

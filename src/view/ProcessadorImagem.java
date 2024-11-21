@@ -38,7 +38,10 @@ class ProcessadorImagem {
 			valor = valor.toLowerCase();
 		}
 		
-		if (valor == "10")
+		System.out.println("< " + naipe + " >");
+		System.out.println("<" + valor + ">");
+		
+		if (valor.contentEquals("10"))
 			valor = "t";
 
 		switch (naipe) {
@@ -64,6 +67,7 @@ class ProcessadorImagem {
 	try {
 		result = ImageIO.read(new File(caminho));
 	} catch (IOException e) {
+		System.out.println("ProcessadorImagem");
 		System.out.println(e);
 		System.exit(1);
 	}

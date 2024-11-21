@@ -16,10 +16,11 @@ class MecanicaJogo implements Runnable {
 }
 
 public class Controller implements Observable {
-	// DEFINICOES AUXILIARES
-	private final int SUCESSO = 0;
-	private final int FALHA = 1;
-	
+	// DEFINICOES AUXILIARES SALVAMENTO
+	private final int 	FALHA = -1,
+						SUCESSO = 0,
+						ARQS_INEXIST = 1,
+						DIRETORIO_INEXIST = 2;
 	
 	// SINGLETON
 	static Controller ctrl = null;
@@ -155,8 +156,385 @@ public class Controller implements Observable {
 		System.out.println("MAO COORENTE " + maoCorrente);
 		
 		for (JanelaJogador j : janelaJogador) {
-			j.toggleJanelaCor(maoCorrente);
+			j.mudaJanelaCor(maoCorrente);
 		}
+	}
+	
+	///////////////////////////////
+	// RECUPERACAO DE JOGO SALVO
+	
+	/*** Sets (Ponte entre Control e Model) ***/
+	
+	/** Dealer **/
+	/**
+	 * Define mao do dealer com base nas cartas passadas como argumento.
+	 * Notifica observadores de Eventos da Banca.
+	 * 
+	 * @param cartas Lista de listas com dois elementos da forma (naipe, valor).
+	 */
+	void setDealerMao(ArrayList<ArrayList<String>> cartas) {
+		model.setDealerMao(cartas);
+		mudancaDealerMao();
+		
+		// Se dealer tiver blackjack, atualiza flag correspondente do ctrl
+		dealerBlackjack = model.dealerPossuiBlackjack();
+	}
+	
+	/** Jogador **/
+	/**
+	 * Define a aposta da mao indiceMao do jogador como o valor passado como argumento.
+	 * Notifica observadores de Eventos do Jogador.
+	 * 
+	 * @param indiceMao Indice da mao respectiva a aposta.
+	 * @param valor Valor da aposta.
+	 */
+	void setJogadorApostaMao(int indiceMao, int valor) {
+		model.setApostaMaoJogador(jogadorAtivo, indiceMao, valor);
+		mudancaJogadorAposta(indiceMao);
+	}
+	
+	/**
+	 * Define o balanco do jogador como o valor passado como argumento.
+	 * Notifica observadores de Eventos do Jogador.
+	 * 
+	 * @param valor Valor do balanco.
+	 */
+	void setJogadorBalanco(int valor) {
+		model.setBalancoJogador(jogadorAtivo, valor);
+		mudancaJogadorBalanco();
+	}
+	
+	/**
+	 * Define mao indiceMao do jogador com base nas cartas passadas como argumento.
+	 * Notifica observadores de Eventos do Jogador.
+	 * 
+	 * @param indiceMao Indice da mao a receber as cartas.
+	 * @param cartas Lista de listas com dois elementos da forma (naipe, valor).
+	 */
+	void setJogadorMao(int indiceMao, ArrayList<ArrayList<String>> cartas) {
+		model.setMaoJogador(jogadorAtivo, indiceMao, cartas);
+		mudancaJogadorMao(indiceMao);
+	}
+	
+	/**
+	 * Define numero de maos ativas do jogador como numMaos.
+	 */
+	void setJogadorNumMaosAtivas(int numMaos) {
+		model.setJogadorNumMaosAtivas(jogadorAtivo, numMaos);
+	}
+	
+	/**
+	 * Define como quebrada a mao indiceMao do jogador. Isso tambem finaliza
+	 * o turno dessa mao (estado finalizada == true).
+	 * 
+	 * @param indiceMao Indice da mao a receber o estado de quebrada.
+	 */
+	void setJogadorQuebraMao(int indiceMao) {
+		model.jogadorQuebra(jogadorAtivo, indiceMao);
+	}
+	
+	/*** Atualizacoes ***/
+	
+	/** Dealer **/
+	/**
+	 * Extrai informacoes de infoSalva e atualiza a mao do dealer no model.
+	 * Faz uso das funcoes set, definidas acima.
+	 * Indiretamente, notifica observadores de Eventos da Banca.
+	 * 
+	 * @param scannerSecao Scanner obtido de {@code atualizaSecao} com informacoes sobre
+	 * o dealer.
+	 */
+	void atualizaDealer(Scanner scannerSecao) {
+		ArrayList<ArrayList<String>> cartas = new ArrayList<>();
+		ArrayList<String> carta;
+		
+		// Logging para depuracao
+		System.out.println("ATUALIZA DEALER");
+		
+		// Enquanto houver cartas a serem lidas, adiciona nova carta
+		while (scannerSecao.hasNext()) {
+			carta = new ArrayList<String>();
+			carta.add(scannerSecao.next().trim()); // Adiciona naipe
+			carta.add(scannerSecao.next().trim()); // Adiciona valor (A, J, K, Q, 1, 2, ...)
+			cartas.add(carta);
+		}
+		
+		// Atualiza cartas da mao no model
+		setDealerMao(cartas);
+		
+		// Nao devemos fechar scannerSecao aqui, porque sera usado em outras funcoes
+	}
+	
+	/** Jogador **/
+	/**
+	 * Extrai informacoes de infoSalva e atualiza o jogador no model.
+	 * Faz uso das funcoes set, definidas acima.
+	 * Indiretamente, notifica observadores de Eventos do Jogador.
+	 * 
+	 * @param scannerSecao Scanner obtido de {@code atualizaSecao} com informacoes sobre
+	 * o jogador.
+	 */
+	void atualizaJogador(Scanner scannerSecao) {
+		String 	infoSalva;
+		Scanner scannerAux; // Scanner auxiliar usado para processar a secao em subsecoes
+		int 	numMaosAtivas;
+		
+		// Logging para depuracao
+		System.out.println("ATUALIZA JOGADOR");
+		
+		/* Define delimitador a ser usado (**).
+		 * As barras indicam que * deve aparecer duas vezes e de forma consecutiva.
+		 */
+		scannerSecao.useDelimiter("\\*\\*");
+		
+		// Obtem secao pertinente de informacao
+		infoSalva = scannerSecao.next();
+		
+		// Processa secao de informacao
+		scannerAux = new Scanner(infoSalva);
+		
+		// Define se jogador ja realizou a aposta
+		apostaOK = scannerAux.nextBoolean();
+		
+		// Atualiza balanco do jogador
+		setJogadorBalanco(scannerAux.nextInt());
+		
+		// Atualiza numero de maos ativas
+		numMaosAtivas = scannerAux.nextInt();
+		setJogadorNumMaosAtivas(numMaosAtivas);
+		
+		for (int i = 0; i < numMaosAtivas; i++) {
+			atualizaMaoJogador(i, scannerSecao.next());
+			janelaJogador.get(i).setVisible(true);
+			janelaJogador.get(i).mudaJanelaCor(maoCorrente);
+		}
+		
+		// Se jogador tiver feito split de ases, model ativa flag correspondente
+		model.jogadorFezSplitAses(jogadorAtivo);
+		
+		scannerAux.close();
+		// Nao devemos fechar scannerSecao aqui, porque sera usado em outras funcoes
+	}
+	
+	/**
+	 * Extrai informacoes de infoSalva e atualiza a mao indiceMao no model.
+	 * Faz uso das funcoes set, definidas acima.
+	 * Indiretamente, notifica observadores de Eventos do Jogador.
+	 * 
+	 * @param indiceMao Indice da mao a ser atualizada.
+	 * @param infoSalva String que contem informacoes a respeito da mao do jogador. Extraida
+	 * da funcao atualizaJogador.
+	 */
+	void atualizaMaoJogador(int indiceMao, String infoSalva) {
+		ArrayList<ArrayList<String>> 	cartas = new ArrayList<ArrayList<String>>();
+		ArrayList<String> 				carta;
+		String 							estadoMao;
+		Scanner 						scanner;
+		int								numCartas;
+		
+		// Define fonte de informacoes 
+		scanner = new Scanner(infoSalva);
+		
+		// Recupera valor da aposta
+		setJogadorApostaMao(indiceMao, scanner.nextInt());
+		
+		// Recupera estado da mao (ativa, quebrada ou finalizada)
+		estadoMao = scanner.next().trim(); // Fazemos trim por precaucao
+		
+		// Recupera numero de cartas da mao
+		numCartas = scanner.nextInt();
+		
+		// Recupera cartas da mao
+		for (int i = 0; i < numCartas; i++) {
+			carta = new ArrayList<String>();
+			carta.add(scanner.next().trim()); // Adiciona naipe
+			carta.add(scanner.next().trim()); // Adiciona valor (A, J, K, Q, 1, 2, ...)
+			cartas.add(carta);
+		}
+		
+		// Atualiza cartas da mao no model
+		setJogadorMao(indiceMao, cartas);
+		
+		// Atualiza estado da mao no model
+		switch(estadoMao) {
+		case "T": // Mao ainda em turno
+			break;
+		
+		case "Q": // Mao quebrada
+			setJogadorQuebraMao(indiceMao);
+			break;
+			
+		case "F": // Mao com turno finalizado
+			jogadorStand(jogadorAtivo, indiceMao);
+			break;
+		}
+		
+		// Libera recursos
+		scanner.close();
+	}
+	
+	/** Geral **/
+	
+	/**
+	 * Identifica qual o tipo da secao e chama a funcao de atualizacao
+	 * correspondente.
+	 * 
+	 * @param secaoInfo Secao extraida do arquivo vindo de {@code jogoSalvoRestauraContexto}.
+	 */
+	void atualizaSecao(String secaoInfo) {
+		Scanner scannerSecao = new Scanner(secaoInfo);
+		String tipoSecao = scannerSecao.next().trim();
+		
+		// Logging para depuracao
+		System.out.println(tipoSecao);
+		
+		switch(tipoSecao) {
+		case "DEALER":
+			atualizaDealer(scannerSecao);
+			break;
+		case "JOGADOR":
+			atualizaJogador(scannerSecao);
+			break;
+		case "JOGO":
+		}
+		
+		// Libera recursos
+		scannerSecao.close();
+	}
+	
+	/**
+	 * Le arquivo de salvamento e restaura o contexto do jogo.
+	 * @param arquivoSalvamento Arquivo vindo de {@code jogoSalvoRecupera}.
+	 */
+	int jogoSalvoRestauraContexto(File arquivoSalvamento) {
+		String 	secaoInfo;
+		Scanner scannerArquivo;
+		int 	status = SUCESSO;
+		
+		// Logging para depuracao
+		System.out.println("JogoSalvoRestauraContexto EXECUTADO");
+		
+		try {
+			// Configura Scanner
+			scannerArquivo  = new Scanner(arquivoSalvamento);
+			scannerArquivo.useDelimiter("\\$\\$"); // Usa $$ como delimitador
+			
+			// Enquanto houver secoes
+			while (scannerArquivo.hasNext())
+			{
+				// Extrai e atualiza secao
+				secaoInfo = scannerArquivo.next().trim();
+				atualizaSecao(secaoInfo);
+			}
+			
+			// Libera recursos
+			scannerArquivo.close();
+		}
+		catch(IOException e) { // Falha na abertura do scanner ou na leitura do arquivo
+			System.out.println(e.getMessage());
+			status = FALHA;
+		}
+		
+		return status;
+	}
+	
+	/**
+	 * Verifica se diretorio possui arquivos com a extensao recebida.
+	 * Usada como funcao auxiliar {@code jogoSalvoRecupera}, para impedir
+	 * que o usuario acesse a pasta de salvamento, se esta estiver vazia.
+	 * 
+	 * @implNote
+	 * status: <br>
+	 * SUCESSO				= OK <br>
+	 * ARQS_INEXIST			= Diretorio existe, mas arquivos com extensao inexistem <br>
+	 * DIRETORIO_INEXIST 	= Diretorio nao existe <br>
+	 * 
+	 * @param diretorio Diretorio no qual se deseja procurar os arquivos.
+	 * @param extensao Extensao com que devem terminar os arquivos. Escreva sem
+	 * o ".". Por exemplo, escreva "txt" e nao ".txt".
+	 */
+	int validaDiretorioNaoVazio(File diretorio, String extensao) {
+		String[] arquivosFiltrados;
+		FilenameFilter filtro;
+		int status = 0;
+		
+        // Verifica se o diretorio existe e eh realmente um diretorio
+        if (diretorio.exists() && diretorio.isDirectory()) {
+            // Filtro para arquivos com extensao desejada
+            filtro = (dir, nome) -> nome.endsWith(extensao);
+
+            // Lista de arquivos que correspondem ao filtro
+            arquivosFiltrados = diretorio.list(filtro);
+
+            if (arquivosFiltrados != null && arquivosFiltrados.length > 0)
+                System.out.println(String.format("O diretório contém arquivos com a extensão .%s.", extensao));
+            
+            else {
+                System.out.println(String.format("O diretório está vazio para a extensão especificada (.%s).", extensao));
+                status = ARQS_INEXIST;
+            }
+        }
+        
+        else {
+	        System.out.println("O caminho especificado não é um diretório ou não existe.");
+	        status = DIRETORIO_INEXIST;
+        }
+        
+        return status;
+	}
+	
+	/**
+	 * Permite ao usuario escolher o arquivo de salvamento usado na recuperacao
+	 * do jogo. Se falha na escolha, inicia novo jogo sem salvamento.
+	 * Faz uso do JFileChooser e de outras classes Swing.
+	 */
+	void jogoSalvoRecupera() {
+		JFileChooser seletorArquivo = new JFileChooser();
+		File diretorioSalvamento, arquivoEscolhido;
+		FileNameExtensionFilter filtro = new FileNameExtensionFilter(nomeFiltro, extensaoSalvamento);
+		int resultado;
+		
+		// Obtem diretorio de salvamento de forma portavel
+		diretorioSalvamento = new File(System.getProperty("user.dir"), pastaSalvamento);
+		
+		// Logging para depuracao
+		System.out.println(diretorioSalvamento.getAbsolutePath());
+		
+		// Verificacao Diretorio Vazio
+		resultado = validaDiretorioNaoVazio(diretorioSalvamento, extensaoSalvamento);
+		
+		if (resultado == SUCESSO) {
+			// Configuracao do seletor de arquivos
+			seletorArquivo.setCurrentDirectory(diretorioSalvamento);
+			seletorArquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			seletorArquivo.setFileFilter(filtro);
+			seletorArquivo.setApproveButtonText("Abrir");
+			
+			// Interacao com usuario
+			resultado = seletorArquivo.showOpenDialog(null); // Exibe dialogo de abertura de arquivo
+			
+			switch (resultado) {
+			case JFileChooser.APPROVE_OPTION:
+				// Escolha de arquivo
+				arquivoEscolhido = seletorArquivo.getSelectedFile();
+				if (jogoSalvoRestauraContexto(arquivoEscolhido) == SUCESSO) // Escolha bem-sucedida
+					break;
+			
+			// Escolha mal-sucedida
+			case JFileChooser.CANCEL_OPTION:
+			case JFileChooser.ERROR_OPTION:
+				JOptionPane.showMessageDialog(null, "Houve um erro na escolha do arquivo de salvamento. Novo jogo iniciado sem salvamento.");
+				break;
+			}
+		}
+		
+		else
+			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamenot. Novo jogo iniciado sem salvamento.");
+		
+		// Inicializa mecanica do jogo
+		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
+		estadoJogo = JOGADOR;
+		inicializaMecanicaJogo();
 	}
 
 	///////////////////////////////
@@ -173,7 +551,7 @@ public class Controller implements Observable {
 		hitUntil = model.getHitUntil();
 		cartasNovaRodada = model.getCartasNovaRodada();
 		maoCorrente = 0;
-
+		
 		estadoJogo = NOVA_RODADA;
 		apostaOK = false;
 
@@ -210,106 +588,6 @@ public class Controller implements Observable {
 
 	void jogoNovo() {
 		estadoJogo = NOVA_RODADA;
-		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
-		inicializaMecanicaJogo();
-	}
-	
-	/**
-	 * Le arquivo de salvamento e restaura o contexto do jogo.
-	 * @param arquivoSalvamento Arquivo vindo de {@code jogoSalvoRecupera}.
-	 */
-	int jogoSalvoRestauraContexto(File arquivoSalvamento) {
-		int status = SUCESSO;
-		String linha;
-		BufferedReader leitor;
-		
-		try {
-			leitor  = new BufferedReader(new FileReader(arquivoSalvamento));
-		
-			while ((linha = leitor.readLine()) != null) {
-				System.out.println(linha);
-			}
-			
-		} catch(IOException e) {
-			System.out.println(e.getMessage());
-			status = FALHA;
-		}
-		
-		return status;
-	}
-	
-	int verificaDiretorioVazio(File diretorio, String extensao) {
-		int status = 0;
-		FilenameFilter filtro;
-		
-        // Verificar se o diretório existe e eh realmente um diretorio
-        if (diretorio.exists() && diretorio.isDirectory()) {
-            // Filtro para arquivos com extensao desejada
-            filtro = (dir, nome) -> nome.endsWith(extensao);
-
-            // Lista de arquivos que correspondem ao filtro
-            String[] arquivosFiltrados = diretorio.list(filtro);
-
-            if (arquivosFiltrados != null && arquivosFiltrados.length > 0) {
-                System.out.println("O diretório contém arquivos com a extensão ." + extensao + ".");
-            } else {
-                System.out.println("O diretório está vazio para a extensão especificada (." + extensao + ").");
-                status = 1;
-            }
-        } else {
-            System.out.println("O caminho especificado não é um diretório ou não existe.");
-            status = 2;
-        }
-        
-        return status;
-	}
-	
-	/**
-	 * Permite ao usuario escolher o arquivo de salvamento usado na recuperacao
-	 * do jogo. Se falha na escolha, inicia novo jogo sem salvamento.
-	 * Faz uso do JFileChooser e de outras classes Swing.
-	 */
-	void jogoSalvoRecupera() {
-		int resultado;
-		JFileChooser seletorArquivo = new JFileChooser();
-		FileNameExtensionFilter filtro = new FileNameExtensionFilter(nomeFiltro, extensaoSalvamento);
-		
-		// Obtem diretorio de salvamento de forma portavel
-		File 	diretorioSalvamento = new File(System.getProperty("user.dir"), pastaSalvamento),
-				arquivoEscolhido;
-		
-		// Exibe diretorio obtido na console, para fins de depuracao
-		System.out.println(diretorioSalvamento.getAbsolutePath());
-		
-		// Verificacao Diretorio Vazio
-		resultado = verificaDiretorioVazio(diretorioSalvamento, extensaoSalvamento);
-		
-		if (resultado == 0) {
-			// Configuracao do seletor de arquivos
-			seletorArquivo.setCurrentDirectory(diretorioSalvamento);
-			seletorArquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			seletorArquivo.setFileFilter(filtro);
-			seletorArquivo.setApproveButtonText("Abrir");
-			
-			// Interacao com usuario
-			resultado = seletorArquivo.showOpenDialog(null); // Abre dialogo de abertura de arquivo
-			
-			switch (resultado) {
-			case JFileChooser.APPROVE_OPTION:
-				arquivoEscolhido = seletorArquivo.getSelectedFile();
-				if (jogoSalvoRestauraContexto(arquivoEscolhido) == SUCESSO)
-					break;
-				
-			case JFileChooser.CANCEL_OPTION:
-			case JFileChooser.ERROR_OPTION:
-				JOptionPane.showMessageDialog(null, "Houve um erro na escolha do arquivo de salvamento. Novo jogo iniciado sem salvamento.");
-				break;
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamenot. Novo jogo iniciado sem salvamento.");
-		}
-		
-		// Inicializa mecanica do jogo
 		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
 		inicializaMecanicaJogo();
 	}
@@ -355,13 +633,6 @@ public class Controller implements Observable {
 		if (model.jogadorVerificaBalancoMinimo(0) == false) // Se houver mais participantes, faca um for
 		{
 			JOptionPane.showMessageDialog(null, "Saldo insuficiente. Fim do Jogo");
-//			System.out.println("Encerrando em dez segundos");
-//			try {
-//				Thread.sleep(10000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			System.exit(0);
 		}
 
@@ -371,6 +642,11 @@ public class Controller implements Observable {
 
 		jogadorAtivo = 0;
 		janelaJogador.get(1).setVisible(false);
+		maoCorrente = 0;
+		
+		// Restaura cor da janela
+		for (int i = 0; i < maosMax; i++)
+			janelaJogador.get(i).mudaJanelaCor(maoCorrente);
 
 		mudancaNovaRodada();
 		estadoJogo = JOGADOR;
@@ -422,7 +698,7 @@ public class Controller implements Observable {
 				e.printStackTrace();
 			}
 		}
-
+		
 		while (model.dealerCalculaPontos() < hitUntil) {
 			System.out.println("BANCA FEZ HIT"); // TODO JOptionPane
 			dealerHit();
@@ -763,8 +1039,11 @@ public class Controller implements Observable {
 
 		if (model.jogadorQuebra(indexJ, indexMao) == true)
 		{
-			msg = "Mao " + (indexMao + 1) + " quebrou";
+			msg = "Mão " + (indexMao + 1) + " quebrou";
 			JOptionPane.showMessageDialog(null, msg);
+			
+			System.out.println(model.jogadorNumMaosAtivas(indexJ));
+			System.out.println(model.jogadorNumMaosFinalizadas(indexJ));
 			
 			// TODO extrair funcao
 			if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))

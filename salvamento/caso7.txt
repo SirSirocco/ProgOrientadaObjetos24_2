@@ -1,0 +1,21 @@
+DEALER
+Ouros J
+Paus A
+$$
+JOGADOR
+true
+2600
+2
+**
+100
+F
+2
+Ouros A
+Ouros 10
+**
+100
+T
+3
+Ouros A
+Espadas 2
+Paus 8

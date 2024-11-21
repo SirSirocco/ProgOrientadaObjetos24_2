@@ -87,6 +87,15 @@ public class FachadaModel {
 
 		return result;
 	}
+	
+	/* Sets */
+	public void setDealerMao(ArrayList<ArrayList<String>> cartas) {
+		dealer.mao.get(0).limpaMao();
+		
+		for (ArrayList<String> carta : cartas) {
+			dealer.mao.get(0).insere(new Carta(carta.get(0), carta.get(1)));
+		}
+	}
 
 	public int dealerCalculaPontos() {
 		return dealer.calculaPontos(0);
@@ -153,8 +162,36 @@ public class FachadaModel {
 	public int jogadorGetNumCartas(int indexJ, int indexMao) {
 		return jogadores.get(indexJ).getNumCartas(indexMao);
 	}
+	
+	/* Sets */
+	public void setMaoJogador(int indexJ, int indexMao, ArrayList<ArrayList<String>> cartas) {
+		Mao mao = jogadores.get(indexJ).mao.get(indexMao);
+		mao.limpaMao();
+		for (ArrayList<String> carta : cartas) {
+			mao.insere(new Carta(carta.get(0), carta.get(1)));
+		}
+	}
+	
+	public void setBalancoJogador(int indexJ, int valor) {
+		jogadores.get(indexJ).setBalanco(valor);
+	}
+	
+	public void setJogadorNumMaosAtivas(int indexJ, int numMaos) {
+		for (int i = 0; i < numMaos; i++) {
+			jogadores.get(indexJ).ativaMao(i);
+		}
+	}
+	
+	public void setApostaMaoJogador(int indexJ, int indexMao, int valor) {
+		jogadores.get(indexJ).setApostaMao(indexMao, valor);
+	}
 
 	/* Verificacoes */
+	
+	public void jogadorFezSplitAses(int indexJ) {
+		if (jogadores.get(indexJ).fezSplitAses())
+			jogadores.get(indexJ).setSplitAses(true);
+	}
 
 	public boolean jogadorVerificaBalancoMinimo(int indexJ) {
 		return jogadores.get(indexJ).verificaBalancoMinimo();
@@ -204,7 +241,7 @@ public class FachadaModel {
 	public boolean jogadorQuebra(int indexJ, int indexMao) {
 		boolean quebra = jogadores.get(indexJ).checaQuebra(indexMao);
 
-		if (quebra && !jogadores.get(indexJ).checaQuebrada(0))
+		if (quebra && !jogadores.get(indexJ).checaQuebrada(indexMao))
 			jogadores.get(indexJ).quebraMao(indexMao);
 
 		return quebra;
