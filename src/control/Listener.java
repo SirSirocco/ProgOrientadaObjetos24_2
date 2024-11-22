@@ -33,6 +33,12 @@ class JogoSalvo extends Listener implements ActionListener {
 
 class SalvarJogo extends Listener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
+		if (ctrl.buttonsSwitch == false)
+		{
+			// TODO implementar em todos os botões
+			System.out.println("Não está na vez do jogador.");
+			return;
+		}
 		ctrl.salvaJogo();
 	}
 }

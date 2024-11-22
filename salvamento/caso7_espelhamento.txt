@@ -1,6 +1,6 @@
 DEALER
-Ouros 2
-Paus 10
+Ouros J
+Paus A
 $$
 JOGADOR
 true
@@ -8,14 +8,14 @@ true
 2
 **
 100
-T
+F
 2
-Ouros J
+Ouros A
 Ouros 10
 **
 100
-Q
+T
 3
-Copas 10
-Espadas 4
+Ouros A
+Espadas 2
 Paus 8

@@ -14,8 +14,8 @@ Ouros J
 Ouros 10
 **
 100
-Q
+T
 3
 Copas 10
 Espadas 4
-Paus 8
+Paus 3

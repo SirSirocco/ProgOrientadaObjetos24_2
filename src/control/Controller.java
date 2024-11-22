@@ -41,6 +41,7 @@ public class Controller implements Observable {
 	private final String 	pastaSalvamento = "salvamento",
 							nomeFiltro = "Arquivos de Salvamento",
 							extensaoSalvamento = "txt";
+	private final File		diretorioSalvamento = new File(System.getProperty("user.di"), pastaSalvamento);
 	
 	// Tabela de estados do fluxo de jogo
 	private int estadoJogo; // -1 para banca e index para jogadores
@@ -69,7 +70,7 @@ public class Controller implements Observable {
 	private int jogadorAtivo = 0;
 	private boolean apostaOK = false;
 	private boolean dealerBlackjack = false;
-	private volatile boolean buttonsSwitch = true; // A flag compartilhada
+	protected volatile boolean buttonsSwitch = true; // A flag compartilhada
 	
 	// INSTANCIACAO
 	private Controller() {
@@ -490,12 +491,12 @@ public class Controller implements Observable {
 	 */
 	void jogoSalvoRecupera() {
 		JFileChooser seletorArquivo = new JFileChooser();
-		File diretorioSalvamento, arquivoEscolhido;
+		File /* diretorioSalvamento, */ arquivoEscolhido;
 		FileNameExtensionFilter filtro = new FileNameExtensionFilter(nomeFiltro, extensaoSalvamento);
 		int resultado;
 		
 		// Obtem diretorio de salvamento de forma portavel
-		diretorioSalvamento = new File(System.getProperty("user.dir"), pastaSalvamento);
+		// diretorioSalvamento = new File(System.getProperty("user.dir"), pastaSalvamento);
 		
 		// Logging para depuracao
 		System.out.println(diretorioSalvamento.getAbsolutePath());
@@ -529,13 +530,160 @@ public class Controller implements Observable {
 		}
 		
 		else
-			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamenot. Novo jogo iniciado sem salvamento.");
+			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamento. Novo jogo iniciado sem salvamento.");
 		
 		// Inicializa mecanica do jogo
 		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
 		estadoJogo = JOGADOR;
 		inicializaMecanicaJogo();
 	}
+	
+	///////////////////////////////
+	// SALVAMENTO DO JOGO
+	
+	/** Dealer **/
+	void salvaDealer(File arquivoSalvamento) {
+		BufferedWriter escritor;
+		ArrayList<ArrayList<String>> cartas = model.getCartasDealer();
+		
+		try {
+			escritor = new BufferedWriter(new FileWriter(arquivoSalvamento, true));
+			escritor.write("DEALER");
+			escritor.newLine(); // Escreve new line de forma portavel
+			
+			if (apostaOK) {
+				for (ArrayList<String> carta : cartas) {
+					escritor.write(String.format("%s %s", carta.get(0), carta.get(1)));
+					escritor.newLine();
+				}
+			}
+			escritor.write("$$");
+			escritor.newLine();
+			escritor.close();
+		}
+		
+		catch(IOException e) {
+			System.out.println("Erro no salvamento do arquivo.");
+		}
+	}
+	
+	/** Jogador **/
+	void salvaJogador(File arquivoSalvamento) {
+		BufferedWriter escritor;
+		ArrayList<ArrayList<String>> cartas;
+		
+		try {
+			escritor = new BufferedWriter(new FileWriter(arquivoSalvamento, true));
+			escritor.write("JOGADOR");
+			escritor.newLine(); // Escreve new line de forma portavel
+			escritor.write(Boolean.toString(apostaOK));
+			escritor.newLine();
+			escritor.write(Integer.toString(model.jogadorBalanco(jogadorAtivo)));
+			escritor.newLine();
+			
+			if (apostaOK) {
+				escritor.write(Integer.toString(model.jogadorNumMaosAtivas(jogadorAtivo)));
+				escritor.newLine();
+				
+				for (int i = 0; i < model.jogadorNumMaosAtivas(jogadorAtivo); i++) {
+					cartas = model.getCartasJogador(jogadorAtivo, i);
+					
+					escritor.write("**");
+					escritor.newLine();
+					
+					escritor.write(Integer.toString(model.jogadorAposta(jogadorAtivo, i)));
+					escritor.newLine();
+					
+					if (model.jogadorMaoQuebrada(jogadorAtivo, i))
+						escritor.write("Q");
+					else if (model.jogadorMaoFinalizada(jogadorAtivo, i))
+						escritor.write("F");
+					else
+						escritor.write("T");
+					escritor.newLine();
+					
+					escritor.write(Integer.toString(cartas.size()));
+					escritor.newLine(); // Escreve new line de forma portavel
+					
+					for (ArrayList<String> carta : cartas) {
+						escritor.write(String.format("%s %s", carta.get(0), carta.get(1)));
+						escritor.newLine();
+					}
+				}
+			}
+			
+			else {
+				escritor.write("0");
+				escritor.newLine();
+			}
+			
+			escritor.close();
+		}
+		
+		catch(IOException e) {
+			System.out.println("Erro no salvamento do arquivo.");
+		}
+	}
+	
+	
+	/** Geral **/
+	
+	void salvamentoEscreveArquivo(File arquivoSalvamento) {
+		FileWriter limpador;
+		
+		try {
+			limpador = new FileWriter(arquivoSalvamento, false); // Limpa conteudo do arquivo
+			limpador.close();
+		}
+		
+		catch(IOException e) {
+			System.out.println("Erro no salvamento do arquivo.");
+		}
+		
+		salvaDealer(arquivoSalvamento);
+		salvaJogador(arquivoSalvamento);
+	}
+	
+	void salvaJogo() {
+		String teminacaoSalvamento = "." + extensaoSalvamento;
+		JFileChooser seletorArquivo = new JFileChooser();
+		File arquivoEscolhido;
+		FileNameExtensionFilter filtro = new FileNameExtensionFilter(nomeFiltro, extensaoSalvamento);
+		int resultado;
+		
+		// Logging para depuracao
+		System.out.println(diretorioSalvamento.getAbsolutePath());
+		
+			// Configuracao do seletor de arquivos
+			seletorArquivo.setCurrentDirectory(diretorioSalvamento);
+			seletorArquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			seletorArquivo.setFileFilter(filtro);
+			seletorArquivo.setApproveButtonText("Salvar (.txt)");
+			
+			// Interacao com usuario
+			resultado = seletorArquivo.showSaveDialog(null); // Exibe dialogo de abertura de arquivo
+			
+			switch (resultado) {
+			case JFileChooser.APPROVE_OPTION:
+				// Escolha de arquivo
+				arquivoEscolhido = seletorArquivo.getSelectedFile();
+				
+				if (!arquivoEscolhido.getName().endsWith(teminacaoSalvamento))
+					arquivoEscolhido = new File(diretorioSalvamento, arquivoEscolhido.getName() + teminacaoSalvamento);
+				
+				salvamentoEscreveArquivo(arquivoEscolhido);
+				JOptionPane.showMessageDialog(null, "Jogo salvo com sucesso. Pressione OK para encerrar.");
+				exit();
+				break;
+			
+			// Escolha mal-sucedida
+			case JFileChooser.CANCEL_OPTION:
+			case JFileChooser.ERROR_OPTION:
+				JOptionPane.showMessageDialog(null, "Houve um erro no salvamento. Processo cancelado.");
+				break;
+			}
+	}
+
 
 	///////////////////////////////
 	// ROTINAS DE CONTROLE DE JOGO
@@ -591,10 +739,7 @@ public class Controller implements Observable {
 		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
 		inicializaMecanicaJogo();
 	}
-
-	void salvaJogo() {
-	}
-
+	
 	//////////////////////////////////////
 	// PAINEL DO JOGO
 
