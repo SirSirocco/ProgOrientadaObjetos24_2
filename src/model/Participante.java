@@ -2,19 +2,29 @@ package model;
 
 import java.util.*;
 
+/**
+ * Classe abstrata que implementa os participantes do jogo, que se especializam
+ * em Dealer e Jogador.
+ * 
+ * @since 23-11-2024
+ * @author Guilherme Senko
+ */
 abstract class Participante {
-	// VARIAVEIS DE CLASSE
-	private static final int apostaMin = 50; // Aposta minima
-	private static final int fatorGanhoAposta = 2; // Se jogador vence, tera de volta o dobro do que apostou
+	// CONSTANTES DE CLASSE
+	private static final int apostaMin = 50; 	// Aposta minima
+	static final int fatorGanhoAposta = 2; 		// Se jogador vence, tera de volta o dobro do que apostou
 
 	// VARIAVEIS DE INSTANCIA
 	List<Mao> mao;
-	int numMaosMax;			// Numero maximo de maos
-	boolean[] maosAtivas;	// Indica se a i-esima mao esta ativa (true) ou inativa (false)
+	
+	int numMaosMax; 			// Numero maximo de maos
+	int numMaosAtivas = 0; 		// Numero de maos em jogo
+	int numMaosFinalizadas = 0; // Numero de maos que finalizaram o turno (sempre menor ou igual a
+								// numMaosAtivas)
+	
+	boolean[] maosAtivas; 		// Indica se a i-esima mao esta ativa (true) ou inativa (false)
 	boolean[] maosFinalizadas;
 	boolean[] maosQuebradas;
-	int numMaosAtivas = 0;
-	int numMaosFinalizadas = 0;
 
 	// CONSTRUTOR
 	Participante(int numMaosMax) {
@@ -27,28 +37,29 @@ abstract class Participante {
 		maosAtivas = new boolean[numMaosMax];
 		maosQuebradas = new boolean[numMaosMax];
 		maosFinalizadas = new boolean[numMaosMax];
-		
+
 		for (int i = 0; i < numMaosMax; i++)
 			maosAtivas[i] = maosQuebradas[i] = maosFinalizadas[i] = false;
-		
+
 		ativaMao(0);
 	}
 
 	// METODOS DE CLASSE
 	/**
 	 * Valida se valor a ser aposta eh maior ou igual a aposta minima.
+	 * 
 	 * @return Se valido, retorna true. Se invalido, false.
 	 */
 	static boolean validaAposta(int valor) {
 		return valor >= apostaMin;
 	}
-	
+
 	/**
 	 * Funcao auxiliar que mapeia os valores simbolicos das cartas em numeros
 	 * inteiros.
 	 * 
 	 * @return o valor numerico correspondente ao simbolo. Ases sao representados
-	 * por 1; JKQ, por 10.
+	 *         por 1; JKQ, por 10.
 	 */
 	private static int mapeamentoAux(Carta carta) {
 		String valor;
@@ -67,23 +78,26 @@ abstract class Participante {
 
 	/**
 	 * Indica se carta1 e carta2 possuem mesmo valor.
-	 * @return -1 se tiverem valor diferente. Se tiverem mesmo valor, retorna o valor.
-	 * Ases tem valor 1, JKG tem valor 10.
+	 * 
+	 * @return -1 se tiverem valor diferente. Se tiverem mesmo valor, retorna o
+	 *         valor. Ases tem valor 1, JKG tem valor 10.
 	 */
 	static int verificaCartasMesmoValor(Carta carta1, Carta carta2) {
 		int mapeamento = mapeamentoAux(carta1);
-		
+
 		if (mapeamento == mapeamentoAux(carta2))
 			return mapeamento;
 		return -1;
 	}
-	
+
 	/**
 	 * Indica se a mao indMao de jogador vence da mao do dealer.
-	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
-	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
+	 * 
+	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso, ainda
+	 *                      que faca 21 pontos com duas cartas, o jogador nao tera
+	 *                      um Blackjack.
 	 * @return 0, se houver empate; um inteiro maior que zero, caso o jogador venca;
-	 * um inteiro menor que zero, caso o dealer venca.
+	 *         um inteiro menor que zero, caso o dealer venca.
 	 */
 	static int verificaVencedor(Jogador jogador, int indMao, int pontosDealer) {
 		int pontosJogador = jogador.possuiBlackjack(indMao) + jogador.mao.get(indMao).calculaPontosMao();
@@ -92,23 +106,25 @@ abstract class Participante {
 	}
 
 	// METODOS DE INSTANCIA
-	
+
 	int getNumMaosAtivas() {
 		return numMaosAtivas;
 	}
-	
+
 	int getNumMaosFinalizadas() {
 		return numMaosFinalizadas;
 	}
-	
+
 	int getNumCartas(int indexMao) {
 		return mao.get(indexMao).getNumCartas();
 	}
-	
+
 	/**
 	 * Indica se dada mao eh um Blackjack.
-	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso,
-	 * ainda que faca 21 pontos com duas cartas, o jogador nao tera um Blackjack.
+	 * 
+	 * @param asesSplitFlag indica se ocorreu um split de ases. Nesse caso, ainda
+	 *                      que faca 21 pontos com duas cartas, o jogador nao tera
+	 *                      um Blackjack.
 	 * @return 1, se for Blackjack. Do contrario, 0.
 	 */
 	int possuiBlackjack(int indMao) {
@@ -116,9 +132,10 @@ abstract class Participante {
 			return 1;
 		return 0;
 	}
-	
+
 	/**
 	 * Calcula pontos da mao indMao.
+	 * 
 	 * @return valor de pontos.
 	 */
 	int calculaPontos(int indiceMao) {
@@ -127,18 +144,18 @@ abstract class Participante {
 
 	/**
 	 * Verifica se mao indMao supera 21 pontos (quebra).
+	 * 
 	 * @return Se quebra, true. Do contrario, false.
 	 */
 	boolean checaQuebra(int indMao) {
 		return calculaPontos(indMao) > 21;
 	}
-	
+
 	//////////////////////////////////////////
 	boolean checaQuebrada(int indMao) {
 		return maosQuebradas[indMao];
 	}
-	
-	
+
 	boolean checaFinalizada(int indMao) {
 		return maosFinalizadas[indMao];
 	}
@@ -147,10 +164,10 @@ abstract class Participante {
 	void ativaMao(int indMao) {
 		if (maosAtivas[indMao] == false) {
 			maosAtivas[indMao] = true;
-			numMaosAtivas++;	
+			numMaosAtivas++;
 		}
 	}
-	
+
 	/////////////////////////////////
 	void quebraMao(int indMao) {
 		maosQuebradas[indMao] = true;
@@ -178,22 +195,22 @@ abstract class Participante {
 		maosFinalizadas[indMao] = true;
 		numMaosFinalizadas++;
 	}
-	
+
 	/////////////////////////////////////////////
 	void limpa() {
 		for (int i = 0; i < numMaosMax; i++)
 			mao.get(i).limpaMao();
-		
+
 		for (int i = 0; i < numMaosMax; i++)
 			maosAtivas[i] = maosFinalizadas[i] = maosQuebradas[i] = false;
-		
+
 		numMaosAtivas = numMaosFinalizadas = 0;
-		
+
 		ativaMao(0);
 		System.out.println("LIMPA"); ////////////////////////
 	}
 	/////////////////////////////////////////////
-	
+
 	boolean verificaPrimDuasCartasMesmoValor() {
 		return Participante.verificaCartasMesmoValor(mao.get(0).cartas.get(0), mao.get(0).cartas.get(1)) != -1;
 	}

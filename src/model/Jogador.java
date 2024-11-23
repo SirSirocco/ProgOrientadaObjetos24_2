@@ -141,7 +141,7 @@ class Jogador extends Participante {
 	}
 	
 	void venceAposta(int indMao) {
-		balanco += 2 * apostaMao[indMao];
+		balanco += Participante.fatorGanhoAposta * apostaMao[indMao];
 	}
 	
 	void recuperaAposta(int indMao) {
