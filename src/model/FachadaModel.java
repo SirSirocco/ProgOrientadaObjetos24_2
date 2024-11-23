@@ -104,7 +104,7 @@ public class FachadaModel {
 	/* Verificacoes */
 
 	public boolean dealerPossuiBlackjack() {
-		return dealer.possuiBlackjack(0) == 1;
+		return dealer.verificaBlackjack(0) == 1;
 	}
 
 	/* Acoes */
@@ -113,9 +113,9 @@ public class FachadaModel {
 	}
 
 	public boolean dealerQuebra() {
-		boolean quebra = dealer.checaQuebra(0);
+		boolean quebra = dealer.verificaQuebra(0);
 
-		if (quebra && !dealer.checaQuebrada(0))
+		if (quebra && !dealer.verificaMaoQuebrada(0))
 			dealer.quebraMao(0);
 
 		return quebra;
@@ -189,7 +189,7 @@ public class FachadaModel {
 	/* Verificacoes */
 	
 	public void jogadorFezSplitAses(int indexJ) {
-		if (jogadores.get(indexJ).fezSplitAses())
+		if (jogadores.get(indexJ).verificaSplitAses())
 			jogadores.get(indexJ).setSplitAses(true);
 	}
 
@@ -198,35 +198,35 @@ public class FachadaModel {
 	}
 
 	public boolean jogadorValidaApostaInicial(int indexJ) {
-		return jogadores.get(indexJ).validaApostaInicial();
+		return jogadores.get(indexJ).verificaApostaInicial();
 	}
 
 	public boolean jogadorPossuiBlackjack(int indexJ, int indexMao) {
-		return jogadores.get(indexJ).possuiBlackjack(indexMao) == 1;
+		return jogadores.get(indexJ).verificaBlackjack(indexMao) == 1;
 	}
 
 	public boolean jogadorMaoAtiva(int indexJ, int indexMao) {
-		return jogadores.get(indexJ).checaMaoAtiva(indexMao);
+		return jogadores.get(indexJ).verificaMaoAtiva(indexMao);
 	}
 
 	public boolean jogadorMaoQuebrada(int indexJ, int indexMao) {
-		return jogadores.get(indexJ).checaQuebrada(indexMao);
+		return jogadores.get(indexJ).verificaMaoQuebrada(indexMao);
 	}
 
 	public boolean jogadorMaoFinalizada(int indexJ, int indexMao) {
-		return jogadores.get(indexJ).checaFinalizada(indexMao);
+		return jogadores.get(indexJ).verificaMaoFinalizada(indexMao);
 	}
 
 	public int jogadorVerificaVitoria(int indexJ, int indexMao) {
-		if (jogadores.get(indexJ).checaQuebra(indexMao) == true)
+		if (jogadores.get(indexJ).verificaQuebra(indexMao) == true)
 			return -1;
 
 		return Participante.verificaVencedor(jogadores.get(indexJ), indexMao,
-				dealer.calculaPontos(0) + dealer.possuiBlackjack(0));
+				dealer.calculaPontos(0) + dealer.verificaBlackjack(0));
 	}
 
 	public boolean jogadorSaldoSuficienteDobra(int indexJ) {
-		return jogadores.get(indexJ).validaDobraAposta();
+		return jogadores.get(indexJ).verificaDobraAposta();
 	}
 
 	public boolean jogadorPrimCartasMesmoValor(int indexJ) {
@@ -239,9 +239,9 @@ public class FachadaModel {
 	}
 
 	public boolean jogadorQuebra(int indexJ, int indexMao) {
-		boolean quebra = jogadores.get(indexJ).checaQuebra(indexMao);
+		boolean quebra = jogadores.get(indexJ).verificaQuebra(indexMao);
 
-		if (quebra && !jogadores.get(indexJ).checaQuebrada(indexMao))
+		if (quebra && !jogadores.get(indexJ).verificaMaoQuebrada(indexMao))
 			jogadores.get(indexJ).quebraMao(indexMao);
 
 		return quebra;
@@ -255,7 +255,7 @@ public class FachadaModel {
 	 * @return True, se incremento for menor que o balanco. False, do contrario.
 	 */
 	public boolean jogadorIncrementaAposta(int indexJ, int indexMao, int valor) {
-		return jogadores.get(indexJ).aposta(valor, indexMao);
+		return jogadores.get(indexJ).aposta(indexMao, valor);
 	}
 
 	public void jogadorVenceAposta(int indexJ, int indexMao) {

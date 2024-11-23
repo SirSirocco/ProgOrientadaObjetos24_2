@@ -46,7 +46,7 @@ public class ParticipanteTeste {
 		dealer.mao.get(0).insere(new Carta("Paus", "A"));
 		dealer.mao.get(0).insere(new Carta("Paus", "10"));
 		
-		assertEquals(1, dealer.possuiBlackjack(0));
+		assertEquals(1, dealer.verificaBlackjack(0));
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class ParticipanteTeste {
 		dealer.mao.get(0).insere(new Carta("Paus", "5"));
 		dealer.mao.get(0).insere(new Carta("Copas", "5"));
 		
-		assertEquals(0, dealer.possuiBlackjack(0));
+		assertEquals(0, dealer.verificaBlackjack(0));
 	}
 	
 //	/**
@@ -174,7 +174,7 @@ public class ParticipanteTeste {
     	participante.mao.get(0).insere(new Carta("Paus", "K"));
     	participante.mao.get(0).insere(new Carta("Ouros", "Q"));
     	participante.mao.get(0).insere(new Carta("Copas", "2"));
-        assertTrue(participante.checaQuebra(0));
+        assertTrue(participante.verificaQuebra(0));
     }
     
     /**
@@ -186,7 +186,7 @@ public class ParticipanteTeste {
     	participante.mao.get(0).insere(new Carta("Paus", "A"));
     	participante.mao.get(0).insere(new Carta("Ouros", "A"));
     	participante.mao.get(0).insere(new Carta("Copas", "2"));
-        assertFalse(participante.checaQuebra(0));
+        assertFalse(participante.verificaQuebra(0));
     }
 
     /**
@@ -196,7 +196,7 @@ public class ParticipanteTeste {
     @Test
     public void testAtivaMao() {
         participante.ativaMao(1);
-        assertTrue(participante.checaMaoAtiva(1));
+        assertTrue(participante.verificaMaoAtiva(1));
     }
 
     /**
@@ -207,7 +207,7 @@ public class ParticipanteTeste {
     public void testChecaMaoInativa() {
         participante.ativaMao(1);
         participante.stand(1);
-        assertFalse(participante.checaMaoAtiva(1));
+        assertFalse(participante.verificaMaoAtiva(1));
     }
     
     /**
@@ -229,6 +229,6 @@ public class ParticipanteTeste {
     public void testStand() {
         participante.stand(0);
         assertEquals(0, participante.numMaosAtivas);
-        assertFalse(participante.checaMaoAtiva(0));
+        assertFalse(participante.verificaMaoAtiva(0));
     }
 }

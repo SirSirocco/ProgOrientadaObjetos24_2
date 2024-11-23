@@ -23,7 +23,7 @@ public class Controller implements Observable {
 						DIRETORIO_INEXIST = 2;
 	
 	// SINGLETON
-	static Controller ctrl = null;
+	private static Controller ctrl = null;
 
 	// FACADE
 	private FachadaModel model = FachadaModel.getFachada();

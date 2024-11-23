@@ -19,7 +19,7 @@ public class JogadorTeste {
 		int balancoInicial = jogador.getBalanco(),
 			valor = 2300;
 		
-		assertTrue(jogador.aposta(valor, 0));
+		assertTrue(jogador.aposta(0, valor));
 		assertEquals(balancoInicial - valor, jogador.getBalanco());
 	}
 	
@@ -32,7 +32,7 @@ public class JogadorTeste {
 		Jogador jogador = new Jogador();
 		int valor = 10;
 		
-		assertFalse(jogador.aposta(valor, 0));
+		assertFalse(jogador.aposta(0, valor));
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class JogadorTeste {
 		Jogador jogador = new Jogador();
 		int valor = 2500;
 		
-		assertFalse(jogador.aposta(valor, 0));
+		assertFalse(jogador.aposta(0, valor));
 	}
 	/**
 	 * Caso 4: min > valor && valor > balanco.
@@ -55,8 +55,8 @@ public class JogadorTeste {
 		Jogador jogador = new Jogador();
 		int valor1 = 2370, valor2 = 40;
 		
-		assertTrue(jogador.aposta(valor1, 0)); // Faz aposta auxiliar para preparar caso 4
-		assertFalse("balanco < valor2 < min", jogador.aposta(valor2, 0)); // Agora, temos balanco < valor2 < min
+		assertTrue(jogador.aposta(0, valor1)); // Faz aposta auxiliar para preparar caso 4
+		assertFalse("balanco < valor2 < min", jogador.aposta(0, valor2)); // Agora, temos balanco < valor2 < min
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class JogadorTeste {
 			valor = 1200,
 			esperado = balancoInicial - valor + (valor / 2);
 		
-		jogador.aposta(valor, 0);
+		jogador.aposta(0, valor);
 		jogador.surrender();
 		assertEquals(esperado, jogador.getBalanco());
 	}
@@ -86,7 +86,7 @@ public class JogadorTeste {
 			valor = 1201,
 			esperado = balancoInicial - valor + ((valor - 1) / 2);
 		
-		jogador.aposta(valor, 0);
+		jogador.aposta(0, valor);
 		jogador.surrender();
 		assertEquals(esperado, jogador.getBalanco());
 	}
@@ -104,7 +104,7 @@ public class JogadorTeste {
 		Jogador jogador = new Jogador();
 		int valor = 1200;
 		
-		assertTrue(jogador.aposta(valor, 0));
+		assertTrue(jogador.aposta(0, valor));
 		assertTrue(jogador.double_(0));
 	}
 	
@@ -116,7 +116,7 @@ public class JogadorTeste {
 		Jogador jogador = new Jogador();
 		int valor = 1400;
 		
-		assertTrue(jogador.aposta(valor, 0));
+		assertTrue(jogador.aposta(0, valor));
 		assertFalse(jogador.double_(0));
 	}
 	
