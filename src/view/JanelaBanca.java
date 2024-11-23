@@ -181,38 +181,70 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 	// MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		final int buttonHeight = 50, buttonWidth = 142, buttonY = 730;
-		final int buttonOffset = 151;
+		final int buttonWidth = 142, buttonHeigth = 50;
+
+		final int buttonNum1 = 4;
+		final int buttonY1 = 730;
+		final int buttonOffset1 = 151;
+		int buttonPos1[] = new int[buttonNum1];
+
+		final int buttonNum2 = 3;
+		final int buttonX2 = 853;
+		final int buttonOffset2 = 60;
+		int buttonPos2[] = new int[buttonNum2];
 		
 		final int chipNum = 6;
 		final int chipSide = 60, chipOffset = 70, chipX0 = 939;
 		int chipPos[] = new int[chipNum];
+
+		final int exitButtonX = 10, exitButtonY = 608, exitButtonHeight = 68, exitButtonWidth = 190;
 		
 		int x = e.getX(), y = e.getY();
 		
-		final int firstButton = 218;
-		final int secondButton = 218 + buttonOffset;
-		final int thirdButton = 218 + buttonOffset*2;
-		final int fourthButton = 218 + buttonOffset*3;
+		for (int i = 0; i < buttonPos1.length; i++) {
+			buttonPos1[i] = 218 + i * buttonOffset1;
+		}
+
+		for (int i = 0; i < buttonPos2.length; i++) {
+			buttonPos2[i] = 615 + i * buttonOffset2;
+		}
 		
 		for (int i = 0; i < chipPos.length; i++) {
 			chipPos[i] = 165 + i * chipOffset;
 		}
 		
-		final int hitButtonX = 853, hitButtonY = 615, hitButtonWidth = 140, hitButtonHeigth = 43, offset = 60;
-		final int exitButtonX = 10, exitButtonY = 608, exitButtonHeight = 68, exitButtonWidth = 190;
 		
 		System.out.printf("x: %d y: %d\n", x, y);
-		if ((x >= firstButton && x <= firstButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
-			doubleButton();
-		if ((x >= secondButton && x <= secondButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
-			splitButton();
-		if ((x >= thirdButton && x <= thirdButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
-			clearButton();
-		if ((x >= fourthButton && x <= fourthButton + buttonWidth) && (y >= buttonY && y <= buttonY + buttonHeight))
-			dealButton();
+		if (y >= buttonY1 && y <= buttonY1 + buttonHeigth) {
+
+			if (x >= buttonPos1[0] && x <= buttonPos1[0] + buttonWidth) {
+				doubleButton();
+			}
+			if (x >= buttonPos1[1] && x <= buttonPos1[1] + buttonWidth) {
+				splitButton();
+			}
+			if (x >= buttonPos1[2] && x <= buttonPos1[2] + buttonWidth) {
+				clearButton();
+			}
+			if (x >= buttonPos1[3] && x <= buttonPos1[3] + buttonWidth) {
+				dealButton();
+			}
+		}
+		
+		if (x >= buttonX2 && x <= buttonX2 + buttonWidth) {
+			if (y >= buttonPos2[0] && y <= buttonPos2[0] + buttonHeigth) {
+				hitButton();
+			}
+			if (y >= buttonPos2[1] && y <= buttonPos2[1] + buttonHeigth) {
+				standButton();
+			}
+			if (y >= buttonPos2[2] && y <= buttonPos2[2] + buttonHeigth) {
+				surrenderButton();
+			}
+		}
 		
 		if (x >= chipX0 && x <= chipX0 + chipSide) {
+
 			if (y >= chipPos[0] && y <= chipPos[chipNum - 1] + chipSide) {
 				y = y - chipPos[0];
 				int indexY = y / ( (chipPos[chipNum - 1] - chipPos[0] + chipSide) / chipNum);
@@ -220,25 +252,7 @@ public class JanelaBanca extends JFrame implements Observer, MouseListener {
 			}
 		}
 		
-		if (x >= hitButtonX && x <= hitButtonX + hitButtonWidth)
-		{
-			if (y >= hitButtonY && y <= hitButtonY + hitButtonHeigth)
-			{
-				hitButton();
-			}
-			
-			if (y >= hitButtonY + offset && y <= hitButtonY + hitButtonHeigth + offset)
-			{
-				standButton();
-			}
-			
-			if (y >= hitButtonY + 2 * offset && y <= hitButtonY + hitButtonHeigth + 2 * offset)
-			{
-				surrenderButton();
-			}
-		}
-		
-		if (x >= exitButtonX && x <= exitButtonX + exitButtonWidth  && y >= exitButtonY && y <= exitButtonY + exitButtonY + exitButtonWidth)
+		if ((x >= exitButtonX && x <= exitButtonX + exitButtonWidth)  && (y >= exitButtonY && y <= exitButtonY + exitButtonHeight))
 		{
 			exitButton();
 		}
