@@ -136,7 +136,7 @@ public class ParticipanteTeste {
     public void testCalculaPontosNum() {
     	participante.mao.get(0).insere(new Carta("Copas", "8"));
     	participante.mao.get(0).insere(new Carta("Espadas", "7"));
-        int pontos = participante.calculaPontos(0);
+        int pontos = participante.getPontos(0);
         assertEquals(15, pontos);
     }
     
@@ -148,7 +148,7 @@ public class ParticipanteTeste {
     public void testCalculaPontosBJ() {
     	participante.mao.get(0).insere(new Carta("Copas", "A"));
     	participante.mao.get(0).insere(new Carta("Espadas", "10"));
-        int pontos = participante.calculaPontos(0);
+        int pontos = participante.getPontos(0);
         assertEquals(21, pontos);
     }
     
@@ -161,7 +161,7 @@ public class ParticipanteTeste {
     	participante.mao.get(0).insere(new Carta("Copas", "A"));
     	participante.mao.get(0).insere(new Carta("Espadas", "A"));
     	participante.mao.get(0).insere(new Carta("Espadas", "7"));
-        int pontos = participante.calculaPontos(0);
+        int pontos = participante.getPontos(0);
         assertEquals(19, pontos);
     }
     

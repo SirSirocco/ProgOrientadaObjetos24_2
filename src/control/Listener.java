@@ -1,17 +1,21 @@
 package control;
 
 import java.awt.event.*;
+import javax.swing.JOptionPane;
 
 /**
  * Classe abstrata auxiliar.
  */
 abstract class Listener {
 	Controller ctrl;
-	
+
 	Listener() {
 		ctrl = Controller.getController();
 	}
 }
+
+///////////////////////////
+// LISTENERS PARA JOGO NOVO
 
 /**
  * Listener para jogo novo.
@@ -22,58 +26,67 @@ class JogoNovo extends Listener implements ActionListener {
 	}
 }
 
+////////////////////////////
+// LISTENERS PARA JOGO SALVO
+
 /**
  * Listener para continuacao de jogo salvo.
  */
 class JogoSalvo extends Listener implements ActionListener {
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		ctrl.jogoSalvoRecupera();
 	}
 }
 
-class SalvarJogo extends Listener implements ActionListener {
+class JogoSalvar extends Listener implements ActionListener {
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (ctrl.buttonsSwitch == false)
-		{
-			// TODO implementar em todos os botões
-			System.out.println("Não está na vez do jogador.");
+		if (ctrl.buttonsSwitch == false) {
+			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}
 		ctrl.salvaJogo();
 	}
 }
 
-// LISTENERS PARA CONTROLE DO JOGADOR
-class HitJogador extends Listener implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
-		ctrl.jogadorHitCond();
-	}
-}
+///////////////////////////////////////
+// LISTENERS PARA INTERACAO COM JOGADOR
 
-class StandJogador extends Listener implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
-		ctrl.jogadorStandCond();
-	}
-}
-
-class DoubleJogador extends Listener implements ActionListener {
+class JogadorDouble extends Listener implements ActionListener {
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		ctrl.jogadorDoubleCond();
 	}
 }
 
-class SurrenderJogador extends Listener implements ActionListener {
+class JogadorHit extends Listener implements ActionListener {
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		ctrl.jogadorSurrenderCond();
+		ctrl.jogadorHitCond();
 	}
 }
 
 /**
  * Listener para o split do jogador.
  */
-class SplitJogador extends Listener implements ActionListener {
+class JogadorSplit extends Listener implements ActionListener {
 	@Override
-    public void actionPerformed(ActionEvent e) {
-        ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
-    }
+	public void actionPerformed(ActionEvent e) {
+		ctrl.jogadorSplitCond(); // Realiza a lógica do split no modelo
+	}
+}
+
+class JogadorStand extends Listener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		ctrl.jogadorStandCond();
+	}
+}
+
+class JogadorSurrender extends Listener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		ctrl.jogadorSurrenderCond();
+	}
 }

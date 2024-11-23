@@ -29,7 +29,7 @@ class Jogador extends Participante {
 
 	//////////
 	/* GETS */
-	int getApostas(int indiceMao) {
+	int getAposta(int indiceMao) {
 		return apostaMao[indiceMao];
 	}
 

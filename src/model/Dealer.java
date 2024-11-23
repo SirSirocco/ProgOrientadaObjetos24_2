@@ -12,7 +12,10 @@ class Dealer extends Participante {
 	static final int maosMaxDealer = 1; // Numero maximo de maos do dealer
 	
 	// CONSTANTES DE INSTANCIA
-	final int hitUntil = 17;			// Numero de pontos a partir do qual o dealer para de comprar cartas
+	/**
+	 * Numero de pontos a partir do qual o dealer para de comprar cartas.
+	 */
+	final int hitUntil = 17;
 
 	// SINGLETON
 	private static Dealer dealer = null;

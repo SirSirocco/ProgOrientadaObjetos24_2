@@ -142,7 +142,7 @@ public class Controller implements Observable {
 	JanelaBanca criaJBanca() {
 		JanelaBanca janela = new JanelaBanca();
 
-		janela.getBtnSave().addActionListener(new SalvarJogo());
+		janela.getBtnSave().addActionListener(new JogoSalvar());
 
 		return janela;
 	}
@@ -174,11 +174,11 @@ public class Controller implements Observable {
 	 * @param cartas Lista de listas com dois elementos da forma (naipe, valor).
 	 */
 	void setDealerMao(ArrayList<ArrayList<String>> cartas) {
-		model.setDealerMao(cartas);
+		model.dealerSetMao(cartas);
 		mudancaDealerMao();
 		
 		// Se dealer tiver blackjack, atualiza flag correspondente do ctrl
-		dealerBlackjack = model.dealerPossuiBlackjack();
+		dealerBlackjack = model.dealerVerificaBlackjack();
 	}
 	
 	/** Jogador **/
@@ -190,7 +190,7 @@ public class Controller implements Observable {
 	 * @param valor Valor da aposta.
 	 */
 	void setJogadorApostaMao(int indiceMao, int valor) {
-		model.setApostaMaoJogador(jogadorAtivo, indiceMao, valor);
+		model.jogadorSetApostaMao(jogadorAtivo, indiceMao, valor);
 		mudancaJogadorAposta(indiceMao);
 	}
 	
@@ -201,7 +201,7 @@ public class Controller implements Observable {
 	 * @param valor Valor do balanco.
 	 */
 	void setJogadorBalanco(int valor) {
-		model.setBalancoJogador(jogadorAtivo, valor);
+		model.jogadorSetBalanco(jogadorAtivo, valor);
 		mudancaJogadorBalanco();
 	}
 	
@@ -213,7 +213,7 @@ public class Controller implements Observable {
 	 * @param cartas Lista de listas com dois elementos da forma (naipe, valor).
 	 */
 	void setJogadorMao(int indiceMao, ArrayList<ArrayList<String>> cartas) {
-		model.setMaoJogador(jogadorAtivo, indiceMao, cartas);
+		model.jogadorSetMao(jogadorAtivo, indiceMao, cartas);
 		mudancaJogadorMao(indiceMao);
 	}
 	
@@ -221,7 +221,7 @@ public class Controller implements Observable {
 	 * Define numero de maos ativas do jogador como numMaos.
 	 */
 	void setJogadorNumMaosAtivas(int numMaos) {
-		model.setJogadorNumMaosAtivas(jogadorAtivo, numMaos);
+		model.jogadorSetNumMaosAtivas(jogadorAtivo, numMaos);
 	}
 	
 	/**
@@ -311,7 +311,7 @@ public class Controller implements Observable {
 		}
 		
 		// Se jogador tiver feito split de ases, model ativa flag correspondente
-		model.jogadorFezSplitAses(jogadorAtivo);
+		model.jogadorVerificaSplitAses(jogadorAtivo);
 		
 		scannerAux.close();
 		// Nao devemos fechar scannerSecao aqui, porque sera usado em outras funcoes
@@ -533,7 +533,7 @@ public class Controller implements Observable {
 			JOptionPane.showMessageDialog(null, "Ainda não há arquivos de salvamento. Novo jogo iniciado sem salvamento.");
 		
 		// Inicializa mecanica do jogo
-		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
+		initJanelas(model.jogadorGetNumMaosAtivas(jogadorAtivo));
 		estadoJogo = JOGADOR;
 		inicializaMecanicaJogo();
 	}
@@ -544,7 +544,7 @@ public class Controller implements Observable {
 	/** Dealer **/
 	void salvaDealer(File arquivoSalvamento) {
 		BufferedWriter escritor;
-		ArrayList<ArrayList<String>> cartas = model.getCartasDealer();
+		ArrayList<ArrayList<String>> cartas = model.dealerGetCartas();
 		
 		try {
 			escritor = new BufferedWriter(new FileWriter(arquivoSalvamento, true));
@@ -578,25 +578,25 @@ public class Controller implements Observable {
 			escritor.newLine(); // Escreve new line de forma portavel
 			escritor.write(Boolean.toString(apostaOK));
 			escritor.newLine();
-			escritor.write(Integer.toString(model.jogadorBalanco(jogadorAtivo)));
+			escritor.write(Integer.toString(model.jogadorGetBalanco(jogadorAtivo)));
 			escritor.newLine();
 			
 			if (apostaOK) {
-				escritor.write(Integer.toString(model.jogadorNumMaosAtivas(jogadorAtivo)));
+				escritor.write(Integer.toString(model.jogadorGetNumMaosAtivas(jogadorAtivo)));
 				escritor.newLine();
 				
-				for (int i = 0; i < model.jogadorNumMaosAtivas(jogadorAtivo); i++) {
+				for (int i = 0; i < model.jogadorGetNumMaosAtivas(jogadorAtivo); i++) {
 					cartas = model.getCartasJogador(jogadorAtivo, i);
 					
 					escritor.write("**");
 					escritor.newLine();
 					
-					escritor.write(Integer.toString(model.jogadorAposta(jogadorAtivo, i)));
+					escritor.write(Integer.toString(model.jogadorGetAposta(jogadorAtivo, i)));
 					escritor.newLine();
 					
-					if (model.jogadorMaoQuebrada(jogadorAtivo, i))
+					if (model.jogadorVerificaMaoQuebrada(jogadorAtivo, i))
 						escritor.write("Q");
-					else if (model.jogadorMaoFinalizada(jogadorAtivo, i))
+					else if (model.jogadorVerificaMaoFinalizada(jogadorAtivo, i))
 						escritor.write("F");
 					else
 						escritor.write("T");
@@ -694,10 +694,10 @@ public class Controller implements Observable {
 		 */
 		model = FachadaModel.getFachada();
 
-		maosMax = model.getMaosMax();
-		numJogadores = model.getNumJogadores();
+		maosMax = model.getJogadoresMaosMax();
+		numJogadores = model.getJogadoresNum();
 		hitUntil = model.getHitUntil();
-		cartasNovaRodada = model.getCartasNovaRodada();
+		cartasNovaRodada = model.getNumCartasNovaRodada();
 		maoCorrente = 0;
 		
 		estadoJogo = NOVA_RODADA;
@@ -736,7 +736,7 @@ public class Controller implements Observable {
 
 	void jogoNovo() {
 		estadoJogo = NOVA_RODADA;
-		initJanelas(model.jogadorNumMaosAtivas(jogadorAtivo));
+		initJanelas(model.jogadorGetNumMaosAtivas(jogadorAtivo));
 		inicializaMecanicaJogo();
 	}
 	
@@ -802,7 +802,7 @@ public class Controller implements Observable {
 		for (int i = 0; i < cartasNovaRodada; i++)
 			dealerHit();
 
-		dealerBlackjack = model.dealerPossuiBlackjack();
+		dealerBlackjack = model.dealerVerificaBlackjack();
 
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < cartasNovaRodada; j++)
@@ -834,7 +834,7 @@ public class Controller implements Observable {
 			return;
 		}
 		
-		else if (model.dealerCalculaPontos() >= hitUntil) {
+		else if (model.dealerGetPontos() >= hitUntil) {
 			System.out.println("BANCA NAO FARÁ HIT"); // TODO JOptionPane
 			try {
 				Thread.sleep(3000);
@@ -844,7 +844,7 @@ public class Controller implements Observable {
 			}
 		}
 		
-		while (model.dealerCalculaPontos() < hitUntil) {
+		while (model.dealerGetPontos() < hitUntil) {
 			System.out.println("BANCA FEZ HIT"); // TODO JOptionPane
 			dealerHit();
 			
@@ -872,10 +872,10 @@ public class Controller implements Observable {
 		System.out.println("DEALER QUEBRA EXECUTADO");
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorMaoAtiva(i, j) == true) {
+				if (model.jogadorVerificaMaoAtiva(i, j) == true) {
 					msg = String.format("Jogador %d | Mão %d: " , i + 1, j + 1);
 					
-					if (model.jogadorMaoQuebrada(i, j)) {
+					if (model.jogadorVerificaMaoQuebrada(i, j)) {
 						jogadorRecuperaAposta(i, j);
 						msg += "EMPATE\n";
 					}
@@ -904,7 +904,7 @@ public class Controller implements Observable {
 		System.out.println("CHECA VENCEDOR EXECUTADO");
 		for (int i = 0; i < numJogadores; i++) {
 			for (int j = 0; j < maosMax; j++) {
-				if (model.jogadorMaoAtiva(i, j) == true) {
+				if (model.jogadorVerificaMaoAtiva(i, j) == true) {
 					msg = String.format("Jogador %d | Mão %d: " , i + 1, j + 1);
 					
 					if ((jogadorVencedorFlag = model.jogadorVerificaVitoria(i, j)) > 0) {
@@ -953,11 +953,11 @@ public class Controller implements Observable {
 	/* Gets */
 
 	public int getDealerPontos() {
-		return model.dealerCalculaPontos();
+		return model.dealerGetPontos();
 	}
 
 	public ArrayList<ArrayList<String>> getDealerCartas() {
-		return model.getCartasDealer();
+		return model.dealerGetCartas();
 	}
 
 	void mudancaDealerMao() {
@@ -975,11 +975,11 @@ public class Controller implements Observable {
 
 	/* Gets */
 	public int getJogadorAposta(int indexJ, int indexMao) {
-		return model.jogadorAposta(indexJ, indexMao);
+		return model.jogadorGetAposta(indexJ, indexMao);
 	}
 
 	public int getJogadorBalanco(int indexJ) {
-		return model.jogadorBalanco(indexJ);
+		return model.jogadorGetBalanco(indexJ);
 	}
 
 	public ArrayList<ArrayList<String>> getJogadorCartas(int indexJ, int indexMao) {
@@ -987,7 +987,7 @@ public class Controller implements Observable {
 	}
 
 	public int getJogadorPontos(int indexJ, int indexMao) {
-		return model.jogadorCalculaPontos(indexJ, indexMao);
+		return model.jogadorGetPontos(indexJ, indexMao);
 	}
 
 	/* MUDANCA */
@@ -1061,7 +1061,7 @@ public class Controller implements Observable {
 		}
 		int status = 0;
 
-		if (model.jogadorValidaApostaInicial(jogadorAtivo) == false)
+		if (model.jogadorVerificaApostaInicial(jogadorAtivo) == false)
 			status = 1;
 
 		else if (apostaOK)
@@ -1142,7 +1142,7 @@ public class Controller implements Observable {
 		if (apostaOK == false)
 			status = 1;
 
-		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+		else if (model.jogadorGetNumMaosAtivas(jogadorAtivo) > 1)
 			status = 2;
 
 		else if (model.jogadorGetNumCartas(jogadorAtivo, 0) > 2)
@@ -1187,11 +1187,11 @@ public class Controller implements Observable {
 			msg = "Mão " + (indexMao + 1) + " quebrou";
 			JOptionPane.showMessageDialog(null, msg);
 			
-			System.out.println(model.jogadorNumMaosAtivas(indexJ));
-			System.out.println(model.jogadorNumMaosFinalizadas(indexJ));
+			System.out.println(model.jogadorGetNumMaosAtivas(indexJ));
+			System.out.println(model.jogadorGetNumMaosFinalizadas(indexJ));
 			
 			// TODO extrair funcao
-			if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+			if (model.jogadorGetNumMaosAtivas(indexJ) == model.jogadorGetNumMaosFinalizadas(indexJ))
 				buttonsSwitch = false;
 				estadoJogo = DEALER;
 		}
@@ -1211,10 +1211,10 @@ public class Controller implements Observable {
 		if (apostaOK == false)
 			status = 1;
 
-		else if (model.jogadorMaoQuebrada(jogadorAtivo, maoCorrente) == true)
+		else if (model.jogadorVerificaMaoQuebrada(jogadorAtivo, maoCorrente) == true)
 			status = 2;
 
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, maoCorrente) == true)
+		else if (model.jogadorVerificaMaoFinalizada(jogadorAtivo, maoCorrente) == true)
 			status = 3;
 
 		switch (status) {
@@ -1241,7 +1241,7 @@ public class Controller implements Observable {
 	void jogadorStand(int indexJ, int indexMao) {
 		model.jogadorStand(indexJ, indexMao);
 		
-		if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+		if (model.jogadorGetNumMaosAtivas(indexJ) == model.jogadorGetNumMaosFinalizadas(indexJ))
 		{
 			buttonsSwitch = false;
 			estadoJogo = DEALER;
@@ -1261,10 +1261,10 @@ public class Controller implements Observable {
 		if (apostaOK == false)
 			status = 1;
 
-		else if (model.jogadorMaoQuebrada(jogadorAtivo, maoCorrente) == true)
+		else if (model.jogadorVerificaMaoQuebrada(jogadorAtivo, maoCorrente) == true)
 			status = 2;
 
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, maoCorrente) == true)
+		else if (model.jogadorVerificaMaoFinalizada(jogadorAtivo, maoCorrente) == true)
 			status = 3;
 
 		switch (status) {
@@ -1292,7 +1292,7 @@ public class Controller implements Observable {
 		mudancaJogadorAposta(0);
 		mudancaJogadorMao(0);
 		
-		if (model.jogadorNumMaosAtivas(indexJ) == model.jogadorNumMaosFinalizadas(indexJ))
+		if (model.jogadorGetNumMaosAtivas(indexJ) == model.jogadorGetNumMaosFinalizadas(indexJ))
 		{
 			buttonsSwitch = false;
 			estadoJogo = DEALER;
@@ -1311,16 +1311,16 @@ public class Controller implements Observable {
 		if (apostaOK == false)
 			status = 1;
 
-		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+		else if (model.jogadorGetNumMaosAtivas(jogadorAtivo) > 1)
 			status = 2;
 
-		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
+		else if (model.jogadorVerificaMaoQuebrada(jogadorAtivo, 0) == true)
 			status = 3;
 
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
+		else if (model.jogadorVerificaMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 4;
 
-		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == false)
+		else if (model.jogadorVerificaDobraAposta(jogadorAtivo) == false)
 			status = 5;
 
 		switch (status) {
@@ -1373,19 +1373,19 @@ public class Controller implements Observable {
 		if (apostaOK == false)
 			status = 1;
 
-		else if (model.jogadorNumMaosAtivas(jogadorAtivo) > 1)
+		else if (model.jogadorGetNumMaosAtivas(jogadorAtivo) > 1)
 			status = 2;
 
-		else if (model.jogadorMaoQuebrada(jogadorAtivo, 0) == true)
+		else if (model.jogadorVerificaMaoQuebrada(jogadorAtivo, 0) == true)
 			status = 3;
 
-		else if (model.jogadorMaoFinalizada(jogadorAtivo, 0) == true)
+		else if (model.jogadorVerificaMaoFinalizada(jogadorAtivo, 0) == true)
 			status = 4;
 
-		else if (model.jogadorSaldoSuficienteDobra(jogadorAtivo) == false)
+		else if (model.jogadorVerificaDobraAposta(jogadorAtivo) == false)
 			status = 5;
 
-		else if (model.jogadorPrimCartasMesmoValor(jogadorAtivo) == false)
+		else if (model.jogadorVerificaPrimCartasMesmoValor(jogadorAtivo) == false)
 			status = 6;
 
 		switch (status) {

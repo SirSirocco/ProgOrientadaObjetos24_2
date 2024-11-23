@@ -112,15 +112,6 @@ abstract class Participante {
 	//////////
 	/* GETS */
 
-	/**
-	 * Calcula pontos da mao indiceMao.
-	 * 
-	 * @return valor de pontos.
-	 */
-	int calculaPontos(int indiceMao) {
-		return mao.get(indiceMao).calculaPontosMao();
-	}
-
 	int getNumCartas(int indiceMao) {
 		return mao.get(indiceMao).getNumCartas();
 	}
@@ -131,6 +122,15 @@ abstract class Participante {
 
 	int getNumMaosFinalizadas() {
 		return numMaosFinalizadas;
+	}
+	
+	/**
+	 * Retorna pontos da mao indiceMao.
+	 * 
+	 * @return valor de pontos.
+	 */
+	int getPontos(int indiceMao) {
+		return mao.get(indiceMao).calculaPontosMao();
 	}
 
 	//////////////////
@@ -189,7 +189,7 @@ abstract class Participante {
 	 * @return true, se quebrada; false, do contrario.
 	 */
 	boolean verificaQuebra(int indiceMao) {
-		return calculaPontos(indiceMao) > 21;
+		return getPontos(indiceMao) > 21;
 	}
 
 	///////////
