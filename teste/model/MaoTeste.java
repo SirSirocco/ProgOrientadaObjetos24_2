@@ -1,8 +1,7 @@
 package model;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class MaoTeste {
 	Mao teste = new Mao();
@@ -13,36 +12,36 @@ public class MaoTeste {
 	Carta carta5 = new Carta("Paus", "3");
 
 	/**
-	 * Testa se as cartas K e A são devidamente contabilizadas
+	 * Testa se as cartas A e K são devidamente contabilizadas.
 	 */
 	@Test
 	public void testMaoCartaAeK() {
-		
+
 		teste.insere(carta1);
 		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
+		assertEquals("Cartas A e K não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
-	 * Testa se as cartas Q e A são devidamente contabilizadas
+	 * Testa se as cartas A e Q são devidamente contabilizadas.
 	 */
 	@Test
 	public void testMaoCartaAeQ() {
-		
+
 		teste.insere(carta1);
-		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
+		teste.insere(carta3);
+		assertEquals("Cartas A e Q não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
-	 * Testa se as cartas J e A são devidamente contabilizadas
+	 * Testa se as cartas A e J são devidamente contabilizadas.
 	 */
 	@Test
 	public void testMaoCartaAeJ() {
-		
+
 		teste.insere(carta1);
-		teste.insere(carta2);
-		assertEquals("Cartas K e A não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
+		teste.insere(carta4);
+		assertEquals("Cartas A e J não estão sendo devidamente contabilizadas", 21, teste.calculaPontosMao());
 	}
 
 	/**
@@ -55,11 +54,11 @@ public class MaoTeste {
 		teste.insere(carta2);
 		assertEquals("Carta A contabilizando um valor errado", 12, teste.calculaPontosMao());
 	}
-	
+
 	/**
 	 * Testa se carta com numero é devidamente contabilizada
 	 */
-	
+
 	@Test
 	public void testeValorCartaComNumero() {
 		teste.insere(carta1);

@@ -1,0 +1,6 @@
+DEALER
+$$
+JOGADOR
+false
+2234
+0

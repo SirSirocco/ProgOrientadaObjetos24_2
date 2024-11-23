@@ -1,19 +1,24 @@
 package model;
 
+/**
+ * Classe que implementa as cartas do jogo.
+ * 
+ * @since 23-11-2023
+ * @author Joao Marcello Amaral
+ */
 class Carta {
-	private String naipe;
-	private String valor;
-	
-	public Carta(String naipe, String valor) {
+	private String naipe, valor;
+
+	Carta(String naipe, String valor) {
 		this.naipe = naipe;
 		this.valor = valor;
 	}
 
-	public String getNaipe() {
+	String getNaipe() {
 		return naipe;
 	}
-	
-	public String getValor() {
+
+	String getValor() {
 		return valor;
 	}
 }

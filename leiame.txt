@@ -1,0 +1,10 @@
+# Integrantes:
+* Guilherme Riechert Senko  - 2011478
+* João Marcello Amaral Lima - 2010580
+* Pedro de Almeida Barizon  - 2211350
+
+# Classe com método main:
+A classe que contém o método main() chama-se Main, localizada
+no pacote control.
+
+# Link do vídeo-relatório final:

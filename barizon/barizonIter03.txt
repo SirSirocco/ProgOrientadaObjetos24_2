@@ -1,0 +1,64 @@
+novaRodada
+{
+    limpaJogadores
+    embaralhaFonte
+    
+    2x :::
+    {
+        Dealer faz Hit
+        Jogador faz Hit
+    }
+
+    estado = PRIM_JOGADOR
+}
+
+Teste 01: Testar se as funcoes estao sendo chamadas adequadamente
+S.: Vou colocar prints em cada um das funções no MODEL para ver se foram chamadas
+    adequadamente.
+
+
+Obs.:
+- EXIT_ON_CLOSE também mata a thread do jogo (testei com print no loop)
+
+jogadorVez()
+{
+    ativaHitFlag
+    ativaDoubleFlag
+
+    if (!dealer.possuiBlackjack())
+    {
+        ativaSurrenderFlag
+    }
+
+    ativaStandFlag
+
+
+    checaCartasIguais ???
+    {
+        ativaFlagSplit
+
+        ativaSplit ???
+        {
+            jogador.split()
+            {
+                jogador.ativaSplitflag()
+            }
+        }
+    }
+
+    Para cada mao ativa :::
+        possuiBlackjack ???
+        {
+
+        }
+    
+}
+
+dealerVez
+{
+
+}
+
+
+//////////////////////
+OBS.: Jogador deve sobrescrever limpa
