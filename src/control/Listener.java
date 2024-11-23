@@ -42,7 +42,7 @@ class JogoSalvo extends Listener implements ActionListener {
 class JogoSalvar extends Listener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (ctrl.buttonsSwitch == false) {
+		if (ctrl.botoesJogadorAtivos == false) {
 			JOptionPane.showMessageDialog(null, "Não está na vez do jogador.");
 			return;
 		}

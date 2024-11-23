@@ -38,8 +38,8 @@ class ProcessadorImagem {
 			valor = valor.toLowerCase();
 		}
 		
-		System.out.println("< " + naipe + " >");
-		System.out.println("<" + valor + ">");
+		// System.out.println("< " + naipe + " >");
+		// System.out.println("<" + valor + ">");
 		
 		if (valor.contentEquals("10"))
 			valor = "t";
