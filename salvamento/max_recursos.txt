@@ -1,0 +1,58 @@
+DEALER
+Copas 2
+Copas 2
+$$
+JOGADOR
+true
+2100
+2
+**
+200
+T
+21
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+**
+100
+T
+21
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
+Copas A
