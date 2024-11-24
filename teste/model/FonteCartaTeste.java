@@ -14,7 +14,7 @@ public class FonteCartaTeste {
 		Carta retorno = FonteCarta.compraCarta();
 		assertNotNull(retorno.getNaipe());
 	}
-	
+
 	/**
 	 * Checa se a funcao "checaEmbaralha" esta retornando devidamente.
 	 */
