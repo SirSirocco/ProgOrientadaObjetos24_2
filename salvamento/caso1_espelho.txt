@@ -1,6 +1,0 @@
-DEALER
-$$
-JOGADOR
-false
-2400
-0

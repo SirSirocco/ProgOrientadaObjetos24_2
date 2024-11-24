@@ -4,7 +4,7 @@ Copas 2
 $$
 JOGADOR
 true
-2100
+2000
 2
 **
 200
@@ -32,19 +32,9 @@ Copas A
 Copas A
 Copas A
 **
-100
+200
 T
-21
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
-Copas A
+11
 Copas A
 Copas A
 Copas A

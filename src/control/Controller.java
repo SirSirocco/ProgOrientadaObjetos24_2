@@ -1410,7 +1410,7 @@ public class Controller implements Observable {
 
 		switch (status) {
 		case 0:
-			msg = String.format("Stand na mão %d realizado com sucesso.\n", maoCorrente);
+			msg = String.format("Stand na mão %d realizado com sucesso.\n", maoCorrente + 1);
 			JOptionPane.showMessageDialog(null, msg);
 			jogadorStand(jogadorAtivo, maoCorrente);
 			break;

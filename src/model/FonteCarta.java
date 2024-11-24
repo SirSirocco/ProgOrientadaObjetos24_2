@@ -28,153 +28,153 @@ class FonteCarta {
 		fonte = new ArrayList<Carta>();
 
 		// Teste fichas
-		 fonte.add(new Carta("Copas", "10"));
-		 fonte.add(new Carta("Ouros", "J"));
-		
-		 fonte.add(new Carta("Copas", "7"));
-		 fonte.add(new Carta("Espadas", "10"));
-		 fonte.add(new Carta("Espadas", "5"));
+		// fonte.add(new Carta("Copas", "10"));
+		// fonte.add(new Carta("Ouros", "J"));
+		//
+		// fonte.add(new Carta("Copas", "7"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Espadas", "5"));
 
 		// Teste Dealer BJ
-		fonte.add(new Carta("Copas", "A"));
-		fonte.add(new Carta("Ouros", "K"));
-
-		fonte.add(new Carta("Copas", "7"));
-		fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Copas", "A"));
+		// fonte.add(new Carta("Ouros", "K"));
+		//
+		// fonte.add(new Carta("Copas", "7"));
+		// fonte.add(new Carta("Espadas", "10"));
 
 		// Teste Jogador BJ(+ BJ > 21)
-		fonte.add(new Carta("Espadas", "5"));
-		fonte.add(new Carta("Copas", "6"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Espadas", "A"));
-
-		fonte.add(new Carta("Copas", "10"));
+		// fonte.add(new Carta("Espadas", "5"));
+		// fonte.add(new Carta("Copas", "6"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Espadas", "A"));
+		//
+		// fonte.add(new Carta("Copas", "10"));
 
 		// Teste Double
-		fonte.add(new Carta("Espadas", "3"));
-		fonte.add(new Carta("Ouros", "2"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Espadas", "5"));
-
-		fonte.add(new Carta("Paus", "6"));
-
-		fonte.add(new Carta("Paus", "6"));
-		fonte.add(new Carta("Copas", "6"));
+		// fonte.add(new Carta("Espadas", "3"));
+		// fonte.add(new Carta("Ouros", "2"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Espadas", "5"));
+		//
+		// fonte.add(new Carta("Paus", "6"));
+		//
+		// fonte.add(new Carta("Paus", "6"));
+		// fonte.add(new Carta("Copas", "6"));
 
 		////////////////
 		// Split sem Hit
 
 		// Vitoria dupla
-		fonte.add(new Carta("Espadas", "10"));
-		fonte.add(new Carta("Ouros", "7"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Espadas", "Q"));
-
-		fonte.add(new Carta("Paus", "8"));
-		fonte.add(new Carta("Paus", "9"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Ouros", "7"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Espadas", "Q"));
+		//
+		// fonte.add(new Carta("Paus", "8"));
+		// fonte.add(new Carta("Paus", "9"));
 
 		// Vitoria em uma mao
-		fonte.add(new Carta("Espadas", "10"));
-		fonte.add(new Carta("Ouros", "7"));
-
-		fonte.add(new Carta("Copas", "9"));
-		fonte.add(new Carta("Espadas", "9"));
-
-		fonte.add(new Carta("Paus", "9"));
-		fonte.add(new Carta("Copas", "A"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Ouros", "9"));
+		//
+		// fonte.add(new Carta("Copas", "9"));
+		// fonte.add(new Carta("Espadas", "9"));
+		//
+		// fonte.add(new Carta("Paus", "9"));
+		// fonte.add(new Carta("Copas", "A"));
 
 		// Derrota em ambas as maos (+ split ases)
-		fonte.add(new Carta("Copas", "J"));
-		fonte.add(new Carta("Paus", "10"));
-
-		fonte.add(new Carta("Copas", "A"));
-		fonte.add(new Carta("Copas", "A"));
-
-		fonte.add(new Carta("Paus", "10"));
-		fonte.add(new Carta("Copas", "K"));
+		// fonte.add(new Carta("Copas", "J"));
+		// fonte.add(new Carta("Paus", "A"));
+		//
+		// fonte.add(new Carta("Copas", "A"));
+		// fonte.add(new Carta("Copas", "A"));
+		//
+		// fonte.add(new Carta("Paus", "10"));
+		// fonte.add(new Carta("Copas", "K"));
 
 		// Rendicao sem Hit
-		fonte.add(new Carta("Copas", "10"));
-		fonte.add(new Carta("Paus", "10"));
-
-		fonte.add(new Carta("Copas", "9"));
-		fonte.add(new Carta("Ouros", "10"));
+		// fonte.add(new Carta("Copas", "10"));
+		// fonte.add(new Carta("Paus", "10"));
+		//
+		// fonte.add(new Carta("Copas", "9"));
+		// fonte.add(new Carta("Ouros", "10"));
 
 		////////////////
 		// Split com Hit
 
 		// Vitoria dupla
-		fonte.add(new Carta("Espadas", "10"));
-		fonte.add(new Carta("Ouros", "3"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Copas", "Q"));
-
-		fonte.add(new Carta("Paus", "5"));
-		fonte.add(new Carta("Copas", "10"));
-
-		fonte.add(new Carta("Paus", "6")); 	// Mao 0
-		fonte.add(new Carta("Paus", "A"));	// Mao 1
-
-		fonte.add(new Carta("Ouros", "5"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Ouros", "3"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Copas", "Q"));
+		//
+		// fonte.add(new Carta("Paus", "5"));
+		// fonte.add(new Carta("Copas", "10"));
+		//
+		// fonte.add(new Carta("Paus", "6")); // Mao 0
+		// fonte.add(new Carta("Paus", "A")); // Mao 1
+		//
+		// fonte.add(new Carta("Ouros", "5"));
 
 		// Vitoria em uma mao
-		fonte.add(new Carta("Espadas", "10"));
-		fonte.add(new Carta("Ouros", "3"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Copas", "Q"));
-
-		fonte.add(new Carta("Paus", "5"));
-		fonte.add(new Carta("Copas", "10"));
-
-		fonte.add(new Carta("Paus", "3")); 	// Mao 0
-		fonte.add(new Carta("Paus", "A"));	// Mao 1
-
-		fonte.add(new Carta("Ouros", "5"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Ouros", "3"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Copas", "Q"));
+		//
+		// fonte.add(new Carta("Paus", "5"));
+		// fonte.add(new Carta("Copas", "10"));
+		//
+		// fonte.add(new Carta("Paus", "3")); // Mao 0
+		// fonte.add(new Carta("Paus", "A")); // Mao 1
+		//
+		// fonte.add(new Carta("Ouros", "5"));
 
 		// Derrota em ambas as maos
-		fonte.add(new Carta("Espadas", "10"));
-		fonte.add(new Carta("Ouros", "3"));
-
-		fonte.add(new Carta("Copas", "Q"));
-		fonte.add(new Carta("Copas", "Q"));
-
-		fonte.add(new Carta("Paus", "5"));
-		fonte.add(new Carta("Copas", "8"));
-
-		fonte.add(new Carta("Paus", "3")); 	// Mao 0
-		fonte.add(new Carta("Paus", "A"));	// Mao 1
-
-		fonte.add(new Carta("Ouros", "7"));
+		// fonte.add(new Carta("Espadas", "10"));
+		// fonte.add(new Carta("Ouros", "3"));
+		//
+		// fonte.add(new Carta("Copas", "Q"));
+		// fonte.add(new Carta("Copas", "Q"));
+		//
+		// fonte.add(new Carta("Paus", "5"));
+		// fonte.add(new Carta("Copas", "8"));
+		//
+		// fonte.add(new Carta("Paus", "3")); // Mao 0
+		// fonte.add(new Carta("Paus", "A")); // Mao 1
+		//
+		// fonte.add(new Carta("Ouros", "7"));
 
 		// Rendicao com Hit
-		fonte.add(new Carta("Copas", "10"));
-		fonte.add(new Carta("Paus", "10"));
-
-		fonte.add(new Carta("Copas", "4"));
-		fonte.add(new Carta("Ouros", "10"));
-
-		fonte.add(new Carta("Ouros", "5"));
+		// fonte.add(new Carta("Copas", "10"));
+		// fonte.add(new Carta("Paus", "10"));
+		//
+		// fonte.add(new Carta("Copas", "4"));
+		// fonte.add(new Carta("Ouros", "10"));
+		//
+		// fonte.add(new Carta("Ouros", "5"));
 
 		// Salvamento
-		fonte.add(new Carta("Copas", "2"));
-		fonte.add(new Carta("Copas", "2"));
-
-		fonte.add(new Carta("Copas", "A"));
-		fonte.add(new Carta("Copas", "A"));
-
-		for (int i = 0; i < 42; i++)
-			fonte.add(new Carta("Copas", "A"));
-
-		fonte.add(new Carta("Copas", "2"));
-		fonte.add(new Carta("Copas", "2"));
-		fonte.add(new Carta("Copas", "3"));
-		for (int i = 0; i < 6; i++)
-			fonte.add(new Carta("Copas", "A"));
+		// fonte.add(new Carta("Copas", "2"));
+		// fonte.add(new Carta("Copas", "2"));
+		//
+		// fonte.add(new Carta("Copas", "A"));
+		// fonte.add(new Carta("Copas", "A"));
+		//
+		// for (int i = 0; i < 42; i++)
+		// fonte.add(new Carta("Copas", "A"));
+		//
+		// fonte.add(new Carta("Copas", "2"));
+		// fonte.add(new Carta("Copas", "2"));
+		// fonte.add(new Carta("Copas", "3"));
+		// for (int i = 0; i < 6; i++)
+		// fonte.add(new Carta("Copas", "A"));
 
 		for (int i = 0; i < numBaralhos; i++) {
 			for (String naipe : naipes) {
@@ -184,7 +184,7 @@ class FonteCarta {
 			}
 		}
 
-		// embaralha();
+		embaralha();
 	}
 
 	/**
