@@ -81,10 +81,6 @@ public class FachadaModel {
 	////////////
 	/** GETS **/
 
-	public int dealerGetPontos() {
-		return dealer.getPontos(0);
-	}
-
 	/**
 	 * Obtem cartas da mao do dealer.
 	 * 
@@ -102,6 +98,10 @@ public class FachadaModel {
 		}
 
 		return resultado;
+	}
+
+	public int dealerGetPontos() {
+		return dealer.getPontos(0);
 	}
 
 	////////////

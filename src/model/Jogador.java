@@ -94,7 +94,7 @@ class Jogador extends Participante {
 	@Override
 	int verificaBlackjack(int indiceMao) {
 		// Se jogador tiver feito split de ases, nao podera mais fazer blackjack
-
+		
 		if (mao.get(indiceMao).getNumCartas() == 2 && mao.get(indiceMao).calculaPontosMao() == 21 && !flagSplitAses)
 			return 1;
 		return 0;
@@ -197,7 +197,7 @@ class Jogador extends Participante {
 			Carta carta2 = mao.get(0).cartas.get(1);
 
 			// Mao 0
-			mao.get(0).cartas.clear();
+			mao.get(0).limpaMao();
 			mao.get(0).insere(carta1);
 			hit(0);
 
